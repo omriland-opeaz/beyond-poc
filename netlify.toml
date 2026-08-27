@@ -1,0 +1,22 @@
+# Git-connected builds start at the repo root. The live demo lives in app/;
+# the rest of the repo is the Claude Design handoff and must not be published.
+# publish is relative to base, so this ships app/dist.
+[build]
+  base = "app"
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+  PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD = "1"
+
+# Single page. Any path lands on the app, so ?view=… links keep working.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
