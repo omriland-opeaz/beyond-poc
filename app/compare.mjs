@@ -41,6 +41,15 @@ async function settle(page) {
     content: `*,*::before,*::after{animation:none!important;transition:none!important}
               #by-ask::placeholder{color:transparent!important}`,
   });
+  /* Appending to the thread grows the scroller, and the two pages do not always
+     land on the same scroll offset. Rewind every scrollable box to the top. */
+  await page.evaluate(() => {
+    window.scrollTo(0, 0);
+    for (const el of document.querySelectorAll("*")) {
+      if (el.scrollTop) el.scrollTop = 0;
+      if (el.scrollLeft) el.scrollLeft = 0;
+    }
+  });
   await page.waitForTimeout(800);
 }
 

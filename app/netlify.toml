@@ -1,9 +1,14 @@
+# Deployed from this directory. The rest of the repo is the Claude Design handoff
+# bundle (transcripts, prototypes) and is never uploaded or published.
+# For a Git-connected build, set the base directory to `app` in Netlify.
 [build]
   command = "npm run build"
   publish = "dist"
 
 [build.environment]
   NODE_VERSION = "22"
+  # compare.mjs needs Playwright locally; the deploy build never runs it.
+  PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD = "1"
 
 # Single page. Any path lands on the app, so ?view=… links keep working.
 [[redirects]]
