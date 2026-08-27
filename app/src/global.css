@@ -1,0 +1,104 @@
+  html, body { margin:0; padding:0; height:100%; background:#FFFFFF; }
+  body { font-family:'Space Grotesk','Inter',-apple-system,sans-serif; -webkit-font-smoothing:antialiased; color:#14170F; }
+  * { box-sizing:border-box; }
+  button { font-family:inherit; cursor:pointer; }
+  input { font-family:inherit; }
+  a { color:#5F7A12; text-decoration:none; }
+  a:hover { color:#14170F; }
+  ::-webkit-scrollbar { width:9px; height:9px; }
+  ::-webkit-scrollbar-thumb { background:rgba(20,23,15,.16); border-radius:9px; }
+  ::-webkit-scrollbar-thumb:hover { background:rgba(20,23,15,.28); }
+  ::-webkit-scrollbar-track { background:transparent; }
+  /* Browser surfaces belong to the palette too. */
+  ::selection { background:#C8F068; color:#14170F; }
+  :focus-visible { outline:2px solid #14170F; outline-offset:2px; border-radius:4px; }
+  :focus:not(:focus-visible) { outline:none; }
+  input, textarea { caret-color:#5F7A12; }
+  summary::-webkit-details-marker { display:none; }
+  @keyframes byFade { from { opacity:0; transform:translateY(5px) } to { opacity:1; transform:none } }
+  @keyframes byPulse { 0%,100% { opacity:1 } 50% { opacity:.3 } }
+  @keyframes byFlow { to { stroke-dashoffset: -27; } }
+  @keyframes byPulseTxt { 0%,100%{opacity:.55} 50%{opacity:1} }
+@keyframes byRing { 0% { transform:scale(.8); opacity:.5 } 100% { transform:scale(1.5); opacity:0 } }
+@keyframes byDrift { 0% { transform:translateX(0) } 50% { transform:translateX(-14px) } 100% { transform:translateX(0) } }
+@keyframes byBob { 0% { transform:translateY(0) } 50% { transform:translateY(-3px) } 100% { transform:translateY(0) } }
+@keyframes byInk { 0% { stroke-dashoffset:0 } 50% { stroke-dashoffset:-7 } 100% { stroke-dashoffset:0 } }
+@keyframes byRise { from { opacity:0; transform:translateY(14px) } to { opacity:1; transform:none } }
+@keyframes byRockHover { 0%,100% { transform:translateY(0) rotate(-4deg) } 50% { transform:translateY(-9px) rotate(1deg) } }
+@keyframes byRockFall { 0% { transform:translateY(0) rotate(-4deg); opacity:1 } 9% { transform:translateY(-12px) rotate(-9deg); opacity:1 } 23% { transform:translateY(-6px) rotate(-6deg); opacity:1 } 39% { transform:translateY(12px) rotate(0deg); opacity:1 } 56% { transform:translateY(38px) rotate(6deg); opacity:1 } 69% { transform:translateY(62px) rotate(11deg); opacity:1 } 80% { transform:translateY(89px) rotate(16deg); opacity:1 } 90% { transform:translateY(112px) rotate(19deg); opacity:.65 } 100% { transform:translateY(140px) rotate(23deg); opacity:0 } }
+@keyframes byCrown { 0% { transform:scale(.7,.15); opacity:0 } 20% { opacity:1 } 50% { transform:scale(1.05,1.1); opacity:.95 } 100% { transform:scale(1.22,.35); opacity:0 } }
+@keyframes byDropA { 0% { transform:translate(0,0); opacity:0 } 12% { opacity:1 } 55% { transform:translate(-22px,-30px); opacity:1 } 100% { transform:translate(-38px,-2px); opacity:0 } }
+@keyframes byDropB { 0% { transform:translate(0,0); opacity:0 } 12% { opacity:1 } 52% { transform:translate(20px,-34px); opacity:1 } 100% { transform:translate(34px,-6px); opacity:0 } }
+@keyframes byDropC { 0% { transform:translate(0,0); opacity:0 } 14% { opacity:1 } 50% { transform:translate(4px,-42px); opacity:1 } 100% { transform:translate(10px,2px); opacity:0 } }
+@keyframes byRipple { 0% { transform:scale(.22); opacity:0 } 7% { opacity:.95 } 70% { opacity:.32 } 100% { transform:scale(1.4); opacity:0 } }
+@keyframes byDraw { to { stroke-dashoffset:0 } }
+
+/* --- Intro motion ------------------------------------------------------------
+   The focal moment is the basin filling: the three step panels are not faded in,
+   they are revealed by a waterline that crosses the row left to right. The fill
+   edge is a hand-shaped bezier, and a second mask strokes the same path so the
+   crest line rides exactly on it -- water edge on lime, lime edge on water and
+   on ink. Everything else on this screen stays quiet so the level is the only
+   thing moving.                                                              */
+@keyframes byFadeIn { from { opacity:0 } to { opacity:1 } }
+/* The strike through "place" is drawn rather than switched on. */
+@keyframes byPen { from { clip-path:inset(0 100% 0 0) } to { clip-path:inset(0 -8% 0 0) } }
+@keyframes byBasinDrain {
+  from { -webkit-mask-position:50% 0%;   mask-position:50% 0% }
+  to   { -webkit-mask-position:50% 100%; mask-position:50% 100% }
+}
+@keyframes byBasinCrest {
+  0%   { -webkit-mask-position:50% 0%;   mask-position:50% 0%;   opacity:0 }
+  16%  { opacity:1 }
+  76%  { opacity:1 }
+  100% { -webkit-mask-position:50% 100%; mask-position:50% 100%; opacity:0 }
+}
+.by-basin { position:relative; display:grid; overflow:hidden; border-radius:18px; min-height:330px }
+.by-veil, .by-crest {
+  position:absolute; inset:0; pointer-events:none;
+  -webkit-mask-size:100% 212%;   mask-size:100% 212%;
+  -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
+  -webkit-mask-position:50% 0%;  mask-position:50% 0%;
+  animation:byBasinDrain 660ms cubic-bezier(.16,1,.3,1) both;
+}
+.by-veil  { background:#F7F7EF; -webkit-mask-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMjEyIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIj48cGF0aCBkPSJNMCwwIEgxMDAgVjEwMyBDOTAsMTA4IDgwLDk5IDcwLDEwNCBDNTgsMTExIDQ2LDk5IDM0LDEwNSBDMjIsMTEyIDEyLDEwMCAwLDEwNiBaIiBmaWxsPSIjZmZmIi8+PC9zdmc+"); mask-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMjEyIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIj48cGF0aCBkPSJNMCwwIEgxMDAgVjEwMyBDOTAsMTA4IDgwLDk5IDcwLDEwNCBDNTgsMTExIDQ2LDk5IDM0LDEwNSBDMjIsMTEyIDEyLDEwMCAwLDEwNiBaIiBmaWxsPSIjZmZmIi8+PC9zdmc+") }
+.by-crest { opacity:0; -webkit-mask-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMjEyIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIj48cGF0aCBkPSJNMCwxMDYgQzEyLDEwMCAyMiwxMTIgMzQsMTA1IEM0Niw5OSA1OCwxMTEgNzAsMTA0IEM4MCw5OSA5MCwxMDggMTAwLDEwMyIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjEuMSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+"); mask-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMjEyIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIj48cGF0aCBkPSJNMCwxMDYgQzEyLDEwMCAyMiwxMTIgMzQsMTA1IEM0Niw5OSA1OCwxMTEgNzAsMTA0IEM4MCw5OSA5MCwxMDggMTAwLDEwMyIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjEuMSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+"); animation-name:byBasinCrest }
+.by-crest-water { background:#5B9BD9 }
+.by-crest-lime  { background:#C8F068 }
+.by-d1 { animation-delay:620ms }
+.by-d2 { animation-delay:820ms }
+.by-d3 { animation-delay:1020ms }
+/* Feedback on the one action this screen offers. */
+.by-cta { transition:background 150ms ease, transform 160ms cubic-bezier(.16,1,.3,1) }
+.by-cta:hover { background:#B6E44E !important; transform:translateY(-1px) }
+.by-cta:active { transform:translateY(0); transition-duration:90ms }
+.by-cta .by-arrow { display:inline-block; transition:transform 190ms cubic-bezier(.16,1,.3,1) }
+.by-cta:hover .by-arrow { transform:translateX(4px) }
+/* Reduced motion: nothing loops, nothing travels. Durations collapse rather than
+   being removed, so animations that hold an end state (the drawn circle on
+   "Filed.", the rock's fall-out) still land on it instead of freezing at frame 0. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration:.001ms !important;
+    animation-iteration-count:1 !important;
+    animation-delay:0ms !important;
+    transition-duration:.001ms !important;
+  }
+  /* The basin still ends full; it simply is not poured. */
+  .by-veil, .by-crest { display:none }
+}
+  /* v3: the ask screen is the front door. Nothing on it competes with the box. */
+  .by-box { transition:border-color 160ms ease, box-shadow 160ms ease }
+  .by-box:focus-within { border-color:#14170F; box-shadow:0 0 0 4px rgba(200,240,104,.45) }
+  .by-row:hover { background:#F1F1E6 }
+  @keyframes byStep { 0%,100% { opacity:.45 } 50% { opacity:1 } }
+
+/* The prototype carries its hover states in `style-hover` attributes, which the
+   design-canvas runtime does not apply. They are the states BEYOND-GUIDELINES.md
+   specifies, so the live demo honours them. Resting pixels are unchanged. */
+.by-h-ink:hover   { border-color:#14170F !important }
+.by-h-lime:hover  { background:#B6E44E !important }
+.by-h-drop:hover  { border-color:#14170F !important; background:#FBFCF3 !important }
+.by-h-chip:hover  { border-color:#14170F !important; background:#F7F7EF !important }
+.by-h-alert:hover { background:rgba(192,71,63,.08) !important }
+.by-h-tint:hover  { background:#EFEFE4 !important }
