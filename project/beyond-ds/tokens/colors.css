@@ -1,0 +1,60 @@
+:root {
+  /* ---- Base ------------------------------------------------------------- */
+  --by-lime: #C8F068;        /* the one accent */
+  --by-lime-hover: #B6E44E;  /* primary button, pressed-adjacent */
+  --by-lime-deep: #B9E353;   /* lime as type, on cream only */
+  --by-lime-shade: #A5CE3C;  /* hand-drawn strokes and edges */
+  --by-lime-type: #5F7A12;   /* lime read as text at body size; links */
+  --by-lime-tint: #FBFEF3;   /* lime-tinted surface */
+
+  --by-ink: #14170F;
+  --by-cream: #F7F7EF;
+  --by-paper: #FFFFFF;
+
+  --by-line: #E5E5DA;
+  --by-line-strong: #D3D3C4;
+  --by-line-faint: #EFEFE4;
+
+  --by-grey: #6B6B61;
+  --by-grey-light: #A3A399;
+
+  /* Water belongs to the lake. Never a button, link or status. */
+  --by-water-light: #9FD1F2;
+  --by-water: #5B9BD9;
+  --by-water-ink: #0B2233;
+  --by-water-gradient: linear-gradient(160deg, #9FD1F2, #5B9BD9);
+
+  /* ---- Semantic (meaning, not brand) ------------------------------------ */
+  --by-waiting: #9A5C0F;     /* a proposal waiting on you */
+  --by-broken: #C0473F;      /* a broken feed, an alert */
+  --by-confirmed: #029B82;   /* confidence, done automatically */
+
+  /* ---- Aliases ----------------------------------------------------------- */
+  --by-bg-page: var(--by-cream);
+  --by-bg-surface: var(--by-paper);
+  --by-bg-sunken: var(--by-cream);
+  --by-bg-inverse: var(--by-ink);
+
+  --by-text-primary: var(--by-ink);
+  --by-text-secondary: var(--by-grey);
+  --by-text-caption-color: var(--by-grey-light);
+  --by-text-on-ink: var(--by-cream);
+  --by-text-on-lime: var(--by-ink);
+  --by-text-on-water: var(--by-water-ink);
+  --by-text-link: var(--by-lime-type);
+  --by-text-link-hover: var(--by-ink);
+
+  --by-border: var(--by-line);
+  --by-border-strong: var(--by-line-strong);
+  --by-border-focus: var(--by-ink);
+  --by-focus-ring: rgba(200, 240, 104, 0.45);
+
+  --by-selection-bg: var(--by-lime);
+  --by-selection-fg: var(--by-ink);
+
+  /* Sidebar: active row is an ink label on a lime wash with an ink left edge.
+     Never lime type. */
+  --by-nav-active-bg: linear-gradient(90deg, rgba(200,240,104,.42), transparent);
+  --by-nav-active-edge: var(--by-ink);
+  --by-nav-inactive: var(--by-grey);
+}

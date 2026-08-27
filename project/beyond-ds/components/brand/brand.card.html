@@ -1,0 +1,50 @@
+<!-- @dsCard group="Components" viewport="700x330" name="Brand" subtitle="Logo, wordmark, step panel, lake, hand-drawn marks" -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../../styles.css">
+<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="../../../_ds_bundle.js"></script>
+<style>
+  body { margin:0; padding:18px 20px; background:var(--by-cream); font-family:var(--by-font-sans); color:var(--by-ink); }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+  const NS = Object.values(window).find(v => v && typeof v === "object" && v.Logo && v.Lake) || window;
+  const { Logo, Wordmark, StepPanel, Lake, HandStrike } = NS;
+  const Lab = ({ t }) => <div style={{ fontSize: 9.5, fontWeight: 700, letterSpacing: ".1em", textTransform: "uppercase", color: "var(--by-grey)" }}>{t}</div>;
+  ReactDOM.createRoot(document.getElementById("root")).render(
+    <div style={{ display: "grid", gridTemplateColumns: "1fr 250px", gap: 22, alignItems: "start" }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          <Lab t="Lockup" />
+          <div style={{ display: "flex", alignItems: "center", gap: 20, flexWrap: "wrap" }}>
+            <Logo size={28} /><Logo size={20} /><Logo size={28} wordmark={false} />
+            <span style={{ background: "var(--by-ink)", padding: "8px 12px", borderRadius: 8 }}>
+              <Logo size={20} tone="cream" eclipse="var(--by-cream)" />
+            </span>
+          </div>
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          <Lab t="In copy · hand-drawn marks" />
+          <div style={{ fontSize: 15, lineHeight: 1.7 }}>
+            <Wordmark /> reads it, and files it in one <HandStrike>place</HandStrike> lake. <HandStrike kind="circle">Filed.</HandStrike>
+          </div>
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 10 }}>
+          <StepPanel n="01" label="CONNECT" tone="lime" minHeight={132} title="Plug in anything." style={{ padding: "14px 15px" }} />
+          <StepPanel n="02" label="DIGEST" tone="water" minHeight={132} title="Until it compares." style={{ padding: "14px 15px" }} />
+          <StepPanel n="03" label="COCKPIT" tone="ink" minHeight={132} title="Ask anything." style={{ padding: "14px 15px" }} />
+        </div>
+      </div>
+      <Lake width={240} rows="3.1M" foot="recomputed 14 min ago" />
+    </div>
+  );
+</script>
+</body>
+</html>

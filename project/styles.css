@@ -1,0 +1,6 @@
+/* _beyond design system — global entry point.
+   Consumers link this one file. Imports only; no rules live here. */
+@import "beyond-ds/tokens/typography.css";
+@import "beyond-ds/tokens/colors.css";
+@import "beyond-ds/tokens/spacing.css";
+@import "beyond-ds/tokens/motion.css";

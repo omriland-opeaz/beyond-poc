@@ -1,0 +1,38 @@
+<!-- @dsCard group="Brand" viewport="700x230" name="Drawing style" subtitle="One shape, one gradient, a lime edge, three white marks" -->
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>Drawing</title>
+<link rel="stylesheet" href="../../styles.css">
+<style>
+  body { margin:0; padding:16px 18px; background:var(--by-cream); color:var(--by-ink);
+         font-family:var(--by-font-sans); -webkit-font-smoothing:antialiased; }
+  .grid { display:flex; gap:10px; flex-wrap:wrap; }
+  .sw { display:flex; flex-direction:column; gap:6px; min-width:0; }
+  .chip { height:56px; border-radius:8px; }
+  .n { font-size:11px; font-weight:700; letter-spacing:-0.01em; }
+  .h { font-size:10px; color:var(--by-grey); font-variant-numeric:tabular-nums; }
+  .u { font-size:9.5px; color:var(--by-grey-light); line-height:1.4; }
+  .row { display:flex; align-items:baseline; gap:14px; padding:6px 0; border-bottom:1px solid var(--by-line); }
+  .lab { font-size:9.5px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--by-grey); }
+</style></head><body>
+<div style="display:grid;grid-template-columns:260px 1fr;gap:24px;align-items:center">
+  <svg viewBox="0 0 240 216" style="width:100%;height:auto">
+    <defs><linearGradient id="w" x1="0" y1="0" x2="0.3" y2="1"><stop offset="0" stop-color="#9FD1F2"/><stop offset="1" stop-color="#5B9BD9"/></linearGradient></defs>
+    <path d="M20,112 C8,80 30,50 64,42 C90,36 104,16 136,18 C174,21 200,40 214,68 C230,100 226,136 200,160 C174,184 136,198 100,188 C66,178 32,144 20,112 Z" fill="#C8F068" opacity=".34" transform="translate(3,5)"/>
+    <path d="M20,112 C8,80 30,50 64,42 C90,36 104,16 136,18 C174,21 200,40 214,68 C230,100 226,136 200,160 C174,184 136,198 100,188 C66,178 32,144 20,112 Z" fill="url(#w)" stroke="#C8F068" stroke-width="3"/>
+    <g fill="none" stroke="rgba(255,255,255,.55)" stroke-width="1.4" stroke-linecap="round">
+      <path d="M52,146 q9,-7 18,0 t18,0"/><path d="M150,54 q9,-7 18,0 t18,0"/><path d="M162,150 q9,-7 18,0 t18,0"/>
+    </g>
+    <g fill="none" stroke="rgba(255,255,255,.6)" stroke-width="1.2">
+      <ellipse cx="118" cy="104" rx="34" ry="22" style="transform-origin:118px 104px;animation:byRing 3.4s ease-out infinite"/>
+    </g>
+  </svg>
+  <div style="display:flex;flex-direction:column;gap:7px;font-size:11.5px;line-height:1.5;color:var(--by-grey)">
+    <div><b style="color:var(--by-ink)">One idea per drawing.</b> A lake. A river. An eclipse. Never a scene.</div>
+    <div><b style="color:var(--by-ink)">Irregular, not geometric.</b> The shoreline is a hand-shaped bezier. Perfect circles are for the mark and the ripples.</div>
+    <div><b style="color:var(--by-ink)">Flat fill plus one gradient.</b> No texture, no noise, no shadow on the drawing.</div>
+    <div><b style="color:var(--by-ink)">The two colours touch.</b> A lime edge on water, a water edge on lime.</div>
+    <div><b style="color:var(--by-ink)">Detail in thin white strokes</b> at 40–60% opacity. Three or four marks, never a pattern.</div>
+    <div><b style="color:var(--by-ink)">Never:</b> 3D, isometric, gradient mesh, glassmorphism, stock illustration, emoji, icon sets as decoration.</div>
+  </div>
+</div>
+</body></html>

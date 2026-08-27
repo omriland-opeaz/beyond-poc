@@ -1,0 +1,53 @@
+<!-- @dsCard group="Components" viewport="700x360" name="Data" subtitle="Sparkline, bars, donut, ranked rows, cockpit card" -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../../styles.css">
+<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="../../../_ds_bundle.js"></script>
+<style>body { margin:0; padding:18px 20px; background:var(--by-cream); font-family:var(--by-font-sans); color:var(--by-ink); }</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+  const NS = Object.values(window).find(v => v && typeof v === "object" && v.Sparkline && v.MetricCard) || window;
+  const { Sparkline, BarChart, Donut, RankRows, MetricCard } = NS;
+  const Lab = ({ t }) => <div style={{ fontSize: 9.5, fontWeight: 700, letterSpacing: ".1em", textTransform: "uppercase", color: "var(--by-grey)", marginBottom: 6 }}>{t}</div>;
+  ReactDOM.createRoot(document.getElementById("root")).render(
+    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 300px", gap: 20, alignItems: "start" }}>
+      <div>
+        <Lab t="Trend · area" />
+        <Sparkline height={92} area values={[12.1, 12.4, 11.8, 11.9, 11.2, 10.9]} axis={["Q3 24", "Q3 25", "Q2 26"]} />
+        <div style={{ height: 14 }} />
+        <Lab t="Volume" />
+        <BarChart height={78} values={[42, 51, 47, 63, 58, 71]} axis={["Apr", "Jun", "Aug"]} highlight={5} />
+      </div>
+      <div>
+        <Lab t="Ranked · zero line" />
+        <RankRows showZero rows={[
+          { label: "Cocody", note: "112 pharmacies", value: -11.4, display: "−11.4%" },
+          { label: "Plateau", note: "48 pharmacies", value: -3.2, display: "−3.2%" },
+          { label: "Yopougon", note: "204 pharmacies", value: 2.1, display: "+2.1%" },
+          { label: "Bouaké", note: "96 pharmacies", value: 4.8, display: "+4.8%" }
+        ]} />
+        <div style={{ height: 14 }} />
+        <Lab t="Share" />
+        <Donut size={92} slices={[
+          { label: "Doliv", value: 31.4, color: "var(--by-ink)", display: "31.4%" },
+          { label: "Rival 1 g", value: 24.8, color: "var(--by-lime)", display: "24.8%" },
+          { label: "Other", value: 43.8, color: "var(--by-line)", display: "43.8%" }
+        ]} />
+      </div>
+      <MetricCard badge="Asked for you" when="2 h ago" title="Advil share in Cocody"
+        value="8.9%" delta="−11.4%" deltaTone="down" foot="112 pharmacies · week to 24 Aug"
+        why="You asked to be told below −10%. Set 12 Aug." whyTone="broken">
+        <Sparkline height={64} values={[10.4, 10.1, 10.3, 9.6, 8.9]} stroke="var(--by-broken)" />
+      </MetricCard>
+    </div>
+  );
+</script>
+</body>
+</html>

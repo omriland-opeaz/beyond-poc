@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  html, body { margin:0; padding:0; height:100%; background:#EFEAE2; }
+  body { font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif; -webkit-font-smoothing:antialiased; color:#14161F; }
+  * { box-sizing:border-box; }
+  button { font-family:inherit; cursor:pointer; }
+  input, textarea { font-family:inherit; }
+  a { color:#4242B5; text-decoration:none; }
+  a:hover { color:#5B5BD6; }
+  ::-webkit-scrollbar { width:9px; height:9px; }
+  ::-webkit-scrollbar-thumb { background:rgba(20,22,31,.13); border-radius:9px; }
+  ::-webkit-scrollbar-track { background:transparent; }
+  @keyframes byFade { from { opacity:0; transform:translateY(5px) } to { opacity:1; transform:none } }
+  @keyframes byDrift { 0%,100% { transform:translate(0,0) } 33% { transform:translate(18px,-14px) } 66% { transform:translate(-14px,10px) } }
+  @keyframes byPulse { 0%,100% { opacity:1 } 50% { opacity:.35 } }
+</style>
+</helmet>
+<div style="display:grid;grid-template-columns:238px 1fr;height:100vh;overflow:hidden;position:relative;background:#EFEAE2;background-image:radial-gradient(circle, rgba(20,22,31,.055) 0.6px, transparent 0.6px);background-size:28px 28px;font-size:13px;line-height:1.55;color:#14161F">
+
+  <div style="position:absolute;width:520px;height:520px;border-radius:50%;filter:blur(110px);background:rgba(91,91,214,.07);top:-160px;right:-60px;pointer-events:none;animation:byDrift 26s ease-in-out infinite"></div>
+  <div style="position:absolute;width:380px;height:380px;border-radius:50%;filter:blur(110px);background:rgba(201,122,20,.05);bottom:-120px;left:16%;pointer-events:none;animation:byDrift 26s ease-in-out infinite -12s"></div>
+
+  <aside style="position:relative;z-index:5;display:flex;flex-direction:column;gap:20px;padding:20px 14px 14px;background:rgba(250,247,241,.72);backdrop-filter:blur(20px);border-right:1px solid rgba(20,22,31,.08);overflow:hidden">
+    <div style="display:flex;align-items:baseline;gap:8px;padding:2px 10px 0">
+      <span style="font-family:'Instrument Serif',Georgia,serif;font-size:25px;letter-spacing:-0.01em;line-height:1">beyond</span>
+      <span style="font-size:9.5px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#9B9AA6">Africa</span>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:3px">
+      <div style="font-size:9.5px;font-weight:600;letter-spacing:0.09em;text-transform:uppercase;color:#9B9AA6;padding:0 10px 6px">Method</div>
+      <button onClick="{{ goConnect }}" style="display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:8px 10px;border-radius:8px;border:none;font-size:13px;letter-spacing:-0.01em;background:{{ nav.connect.bg }};color:{{ nav.connect.fg }};box-shadow:{{ nav.connect.sh }};font-weight:{{ nav.connect.w }}">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 7h6l3 5h7M4 17h6l2-3"></path><circle cx="20" cy="12" r="2"></circle></svg>
+        <span style="flex:1">Connect</span>
+        <span style="font-size:10.5px;color:#9B9AA6;font-variant-numeric:tabular-nums">7</span>
+      </button>
+      <button onClick="{{ goDigest }}" style="display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:8px 10px;border-radius:8px;border:none;font-size:13px;letter-spacing:-0.01em;background:{{ nav.digest.bg }};color:{{ nav.digest.fg }};box-shadow:{{ nav.digest.sh }};font-weight:{{ nav.digest.w }}">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 5h7M4 10h5M4 15h7M4 20h4"></path><path d="M13 12h7M17 8l3 4-3 4"></path></svg>
+        <span style="flex:1">Digest</span>
+        <span style="display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:17px;padding:0 5px;border-radius:20px;background:rgba(91,91,214,.1);color:#4242B5;font-size:10px;font-weight:700;font-variant-numeric:tabular-nums">{{ queueCount }}</span>
+      </button>
+      <button onClick="{{ goCockpit }}" style="display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:8px 10px;border-radius:8px;border:none;font-size:13px;letter-spacing:-0.01em;background:{{ nav.cockpit.bg }};color:{{ nav.cockpit.fg }};box-shadow:{{ nav.cockpit.sh }};font-weight:{{ nav.cockpit.w }}">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="8"></circle><path d="M12 12l4-3M12 4v2M20 12h-2M12 20v-2M4 12h2"></path></svg>
+        <span style="flex:1">Cockpit</span>
+      </button>
+      <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;font-size:13px;color:#B4B1BB;cursor:default">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 6h16M4 12h10M4 18h6"></path><circle cx="18" cy="17" r="3"></circle></svg>
+        <span style="flex:1">Compose</span>
+        <span style="font-size:9px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#B4B1BB;border:1px dotted rgba(20,22,31,.18);border-radius:20px;padding:2px 6px">Optional</span>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:3px">
+      <div style="font-size:9.5px;font-weight:600;letter-spacing:0.09em;text-transform:uppercase;color:#9B9AA6;padding:0 10px 6px">Over the lake</div>
+      <button onClick="{{ goChat }}" style="display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:8px 10px;border-radius:8px;border:none;font-size:13px;letter-spacing:-0.01em;background:{{ nav.chat.bg }};color:{{ nav.chat.fg }};box-shadow:{{ nav.chat.sh }};font-weight:{{ nav.chat.w }}">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M21 12c0 4-4 7-9 7-1.4 0-2.8-.3-4-.8L3 20l1.3-3.6C3.5 15.2 3 13.7 3 12c0-4 4-7 9-7s9 3 9 7z"></path></svg>
+        <span style="flex:1">Ask</span>
+        <span style="font-family:ui-monospace,Menlo,monospace;font-size:9.5px;padding:2px 5px;border:1px solid rgba(20,22,31,.1);border-radius:4px;color:#9B9AA6">K</span>
+      </button>
+      <button onClick="{{ goInsights }}" style="display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:8px 10px;border-radius:8px;border:none;font-size:13px;letter-spacing:-0.01em;background:{{ nav.insights.bg }};color:{{ nav.insights.fg }};box-shadow:{{ nav.insights.sh }};font-weight:{{ nav.insights.w }}">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"></path></svg>
+        <span style="flex:1">Insights</span>
+        <span style="width:6px;height:6px;border-radius:50%;background:#C97A14;box-shadow:0 0 0 3px rgba(201,122,20,.16);animation:byPulse 2.4s ease-in-out infinite"></span>
+      </button>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:5px;flex:1 1 auto;min-height:0;overflow:hidden">
+      <div style="flex-shrink:0;font-size:9.5px;font-weight:600;letter-spacing:0.09em;text-transform:uppercase;color:#9B9AA6;padding:0 10px 2px">Saved reads</div>
+      <div style="flex:1;min-height:0;overflow:auto;display:flex;flex-direction:column;gap:1px">
+        <sc-for list="{{ saved }}" as="s" hint-placeholder-count="4">
+          <div style="display:flex;align-items:center;gap:8px;padding:5px 10px;border-radius:6px;font-size:11.5px;color:#6B7080;overflow:hidden;flex-shrink:0">
+            <span style="width:4px;height:4px;border-radius:50%;background:#C3BFB6;flex-shrink:0"></span>
+            <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ s.t }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="margin-top:auto;display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;gap:9px;padding:11px 11px;border-radius:10px;background:rgba(20,22,31,.028);border:1px solid rgba(20,22,31,.055)">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#6B7080" stroke-width="1.6" stroke-linecap="round" style="flex-shrink:0;margin-top:1px"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 018 0v4"></path></svg>
+        <div style="font-size:10.5px;line-height:1.5;color:#6B7080">_beyond reads, organizes and suggests. It never acts alone and never edits your data.</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:9px;padding-top:11px;border-top:1px solid rgba(20,22,31,.08)">
+        <div style="width:25px;height:25px;border-radius:50%;background:#14161F;color:#FFFDF9;font-size:9.5px;font-weight:700;display:grid;place-items:center">AK</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:11.5px;font-weight:600;letter-spacing:-0.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Awa Koné</div>
+          <div style="font-size:10px;color:#9B9AA6">Adexa Pharma · West Africa</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <main style="position:relative;z-index:2;display:flex;flex-direction:column;overflow:hidden">
+    <div style="flex-shrink:0;height:54px;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 34px;border-bottom:1px solid rgba(20,22,31,.08)">
+      <div style="display:flex;align-items:center;gap:9px;font-size:11.5px;color:#9B9AA6;min-width:0">
+        <span>{{ crumb }}</span>
+        <span style="color:#C3BFB6">/</span>
+        <span style="color:#3B3F4E;font-weight:600;font-size:12px;letter-spacing:-0.01em">{{ crumb2 }}</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="display:flex;align-items:center;gap:8px;padding:5px 11px;border-radius:20px;background:#FFFDF9;border:1px solid rgba(20,22,31,.09);font-size:11px;color:#3B3F4E;font-weight:500;white-space:nowrap;flex-shrink:0">
+          <span style="width:5px;height:5px;border-radius:50%;background:#2F8E68"></span>
+          Côte d'Ivoire · Oral analgesics
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#9B9AA6" stroke-width="2" stroke-linecap="round"><path d="M6 9l6 6 6-6"></path></svg>
+        </div>
+        <div style="font-size:11px;color:#9B9AA6;font-variant-numeric:tabular-nums">Panel to 31 Jul 2026</div>
+      </div>
+    </div>
+
+    <div style="flex:1;overflow:auto;position:relative">
+
+      <sc-if value="{{ isCockpit }}" hint-placeholder-val="{{ true }}">
+      <div style="max-width:1000px;margin:0 auto;padding:54px 40px 80px;animation:byFade 400ms ease-out">
+        <div style="font-size:10.5px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#9B9AA6;margin-bottom:18px">Thursday 13 August 2026 · Measured read</div>
+        <h1 style="font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:47px;line-height:1.08;letter-spacing:-0.015em;margin:0 0 18px;max-width:760px;text-wrap:pretty">The category held its volume. Your share of it <em>did not</em>.</h1>
+        <p style="font-size:14.5px;line-height:1.65;color:#3B3F4E;max-width:600px;margin:0 0 40px">Oral analgesics in Côte d'Ivoire grew 1.4% in units over the quarter. Doliv fell 2.1 points of share in the same window, and the read is publishable in six of nine territories.</p>
+
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid rgba(20,22,31,.12);border-bottom:1px solid rgba(20,22,31,.12);margin-bottom:44px">
+          <sc-for list="{{ instruments }}" as="k" hint-placeholder-count="4">
+            <div style="padding:20px 22px 20px 0;border-right:1px solid rgba(20,22,31,.07)">
+              <div style="font-size:10px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:#9B9AA6;margin-bottom:10px">{{ k.label }}</div>
+              <div style="font-family:'Instrument Serif',Georgia,serif;font-size:33px;line-height:1;letter-spacing:-0.01em;font-variant-numeric:tabular-nums">{{ k.value }}</div>
+              <div style="font-size:11px;color:#6B7080;margin-top:9px;line-height:1.45">{{ k.sub }}</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:4px">
+          <h2 style="font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:23px;letter-spacing:-0.01em;margin:0">Share of measured units, 24 months to July</h2>
+          <span style="font-size:11px;color:#9B9AA6">Sell-out · 612 pharmacies</span>
+        </div>
+        <div style="border-top:1px solid rgba(20,22,31,.12);margin-top:14px;margin-bottom:14px">
+          <div style="display:grid;grid-template-columns:1.7fr 90px 88px 108px 90px;gap:14px;padding:10px 0;border-bottom:1px solid rgba(20,22,31,.07);font-size:10px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#9B9AA6">
+            <div>Brand · laboratory</div>
+            <div style="text-align:right">Share</div>
+            <div style="text-align:right">3 mo</div>
+            <div style="text-align:right">Units</div>
+            <div style="text-align:right">Trend</div>
+          </div>
+          <sc-for list="{{ ledger }}" as="r" hint-placeholder-count="5">
+            <div style="display:grid;grid-template-columns:1.7fr 90px 88px 108px 90px;gap:14px;align-items:center;padding:15px 0;border-bottom:1px solid rgba(20,22,31,.07)">
+              <div>
+                <div style="font-size:14px;font-weight:600;letter-spacing:-0.01em;color:{{ r.nameColor }}">{{ r.brand }}</div>
+                <div style="font-size:11px;color:#9B9AA6;margin-top:2px">{{ r.lab }}</div>
+              </div>
+              <div style="text-align:right;font-family:'Instrument Serif',Georgia,serif;font-size:22px;font-variant-numeric:tabular-nums;color:{{ r.nameColor }}">{{ r.share }}</div>
+              <div style="text-align:right;font-size:12px;font-weight:600;font-variant-numeric:tabular-nums;color:{{ r.deltaColor }}">{{ r.delta }}</div>
+              <div style="text-align:right;font-size:12px;color:#3B3F4E;font-variant-numeric:tabular-nums">{{ r.units }}</div>
+              <div style="display:flex;justify-content:flex-end">
+                <svg width="74" height="22" viewBox="0 0 74 22" fill="none"><polyline points="{{ r.spark }}" stroke="{{ r.sparkColor }}" stroke-width="1.4" stroke-linecap="round" fill="none"></polyline></svg>
+              </div>
+            </div>
+          </sc-for>
+          <div style="display:grid;grid-template-columns:1.7fr 90px 88px 108px 90px;gap:14px;padding:14px 0;border-bottom:2px solid rgba(20,22,31,.5);font-size:12px;font-weight:600">
+            <div>Category, measured</div>
+            <div style="text-align:right;font-variant-numeric:tabular-nums">100%</div>
+            <div style="text-align:right;font-variant-numeric:tabular-nums;color:#2F8E68">+1.4%</div>
+            <div style="text-align:right;font-variant-numeric:tabular-nums">8.94 M</div>
+            <div></div>
+          </div>
+        </div>
+        <div style="font-size:11.5px;color:#9B9AA6;line-height:1.6;max-width:620px;margin-bottom:44px">Two brands fall below the publication threshold at territory level and are held inside Others rather than reported separately.</div>
+
+        <div style="display:grid;grid-template-columns:1.35fr 1fr;gap:30px;margin-bottom:44px">
+          <div style="background:#FFFDF9;border:1px solid rgba(20,22,31,.08);border-radius:14px;padding:22px 24px 20px;box-shadow:0 1px 2px rgba(20,22,31,.035)">
+            <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:20px">
+              <div style="font-size:13px;font-weight:600;letter-spacing:-0.01em">Monthly units, Doliv vs Paraxel</div>
+              <div style="display:flex;gap:12px;font-size:10.5px;color:#6B7080">
+                <span style="display:inline-flex;align-items:center;gap:5px"><span style="width:7px;height:7px;border-radius:2px;background:#5B5BD6"></span>Doliv</span>
+                <span style="display:inline-flex;align-items:center;gap:5px"><span style="width:7px;height:7px;border-radius:2px;background:#C97A14"></span>Paraxel</span>
+              </div>
+            </div>
+            <div style="display:flex;align-items:flex-end;gap:11px;height:168px">
+              <sc-for list="{{ bars }}" as="b" hint-placeholder-count="8">
+                <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:7px;height:100%;justify-content:flex-end">
+                  <div style="display:flex;align-items:flex-end;gap:3px;width:100%;height:100%">
+                    <div style="flex:1;border-radius:3px 3px 1px 1px;background:#5B5BD6;opacity:{{ b.op }};height:{{ b.a }}"></div>
+                    <div style="flex:1;border-radius:3px 3px 1px 1px;background:#C97A14;opacity:{{ b.op }};height:{{ b.b }}"></div>
+                  </div>
+                  <div style="font-size:9.5px;color:#9B9AA6;font-weight:500">{{ b.m }}</div>
+                </div>
+              </sc-for>
+            </div>
+            <div style="font-size:11px;color:#9B9AA6;margin-top:16px;padding-top:14px;border-top:1px solid rgba(20,22,31,.07)">The crossover holds for a third consecutive month in Abidjan.</div>
+          </div>
+
+          <div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">
+              <span style="width:6px;height:6px;border-radius:50%;background:#C97A14;box-shadow:0 0 0 3px rgba(201,122,20,.16)"></span>
+              <span style="font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#6B7080">Raised without being asked</span>
+            </div>
+            <div style="display:flex;flex-direction:column">
+              <sc-for list="{{ cockpitInsights }}" as="i" hint-placeholder-count="3">
+                <button onClick="{{ goInsights }}" style="text-align:left;background:none;border:none;border-top:1px solid rgba(20,22,31,.09);padding:16px 0;display:block;width:100%">
+                  <div style="font-size:10px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:{{ i.kickerColor }};margin-bottom:7px">{{ i.kicker }}</div>
+                  <div style="font-family:'Instrument Serif',Georgia,serif;font-size:19px;line-height:1.25;letter-spacing:-0.01em;color:#14161F;margin-bottom:6px">{{ i.head }}</div>
+                  <div style="font-size:12px;line-height:1.55;color:#6B7080">{{ i.body }}</div>
+                </button>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+
+        <sc-if value="{{ methodNotes }}" hint-placeholder-val="{{ true }}">
+          <div style="border-top:1px solid rgba(20,22,31,.12);padding-top:20px;display:grid;grid-template-columns:150px 1fr auto;gap:24px;align-items:start">
+            <div style="font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#9B9AA6;padding-top:2px">Method note</div>
+            <div style="font-size:12px;line-height:1.65;color:#6B7080;max-width:560px">Universe: 1,932 registered outlets, Côte d'Ivoire. Panel: 612 contributing pharmacies, 68% of measured category volume, weighted by district and outlet size. Sell-out only. Reference model: 872 confirmed product identities of 1,204 observed. Publication threshold: 3 contributors and 40 units per cell.</div>
+            <button style="display:inline-flex;align-items:center;gap:7px;padding:7px 13px;border-radius:8px;border:1px solid rgba(20,22,31,.12);background:#FFFDF9;font-size:11.5px;font-weight:600;color:#3B3F4E;white-space:nowrap">Audit this read
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+            </button>
+          </div>
+        </sc-if>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ isConnect }}">
+      <div style="max-width:1000px;margin:0 auto;padding:54px 40px 80px;animation:byFade 400ms ease-out">
+        <div style="font-size:10.5px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#9B9AA6;margin-bottom:18px">Connect · 7 sources · last import 04:12</div>
+        <h1 style="font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:44px;line-height:1.08;letter-spacing:-0.015em;margin:0 0 18px;max-width:740px">Adding a source is not setup. It is <em>coverage</em>.</h1>
+        <p style="font-size:14.5px;line-height:1.65;color:#3B3F4E;max-width:600px;margin:0 0 40px">Every source widens the slice of the market that can be measured, and coverage is what makes a later answer defensible. Two ways in: your own data, or ours.</p>
+
+        <div style="border-top:1px solid rgba(20,22,31,.12);border-bottom:1px solid rgba(20,22,31,.12);padding:24px 0;margin-bottom:44px">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:20px">
+            <div style="font-size:13px;font-weight:600;letter-spacing:-0.01em">What is measured today</div>
+            <div style="font-size:11px;color:#9B9AA6">Share of category volume, Côte d'Ivoire</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:18px">
+            <sc-for list="{{ coverage }}" as="c" hint-placeholder-count="3">
+              <div>
+                <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:7px">
+                  <div style="font-size:12.5px;font-weight:600;color:#14161F">{{ c.name }}<span style="font-weight:400;color:#9B9AA6;margin-left:9px">{{ c.note }}</span></div>
+                  <div style="font-size:12px;font-weight:600;font-variant-numeric:tabular-nums;color:{{ c.color }}">{{ c.pctLabel }}</div>
+                </div>
+                <div style="height:7px;border-radius:20px;background:rgba(20,22,31,.06);overflow:hidden">
+                  <div style="height:100%;border-radius:20px;background:{{ c.color }};width:{{ c.pct }}"></div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="font-size:11.5px;color:#9B9AA6;line-height:1.6;margin-top:20px;max-width:600px">Sell-out is the half of the market no incumbent reads. It is also the hardest to acquire, and it is what the panel is built to hold.</div>
+        </div>
+
+        <div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:16px">
+          <h2 style="font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:23px;letter-spacing:-0.01em;margin:0">Connected sources</h2>
+          <button style="display:inline-flex;align-items:center;gap:7px;padding:8px 14px;border-radius:8px;border:none;background:#14161F;color:#FFFDF9;font-size:11.5px;font-weight:600">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>
+            Add a source
+          </button>
+        </div>
+        <div style="border-top:1px solid rgba(20,22,31,.12);margin-bottom:44px">
+          <sc-for list="{{ sources }}" as="s" hint-placeholder-count="6">
+            <div style="display:grid;grid-template-columns:1.5fr 1.5fr 118px 128px 20px;gap:18px;align-items:center;padding:16px 0;border-bottom:1px solid rgba(20,22,31,.07)">
+              <div>
+                <div style="font-size:13.5px;font-weight:600;letter-spacing:-0.01em">{{ s.name }}</div>
+                <div style="font-size:11px;color:#9B9AA6;margin-top:2px">{{ s.kind }}</div>
+              </div>
+              <div style="font-size:12px;color:#3B3F4E;line-height:1.5">{{ s.adds }}</div>
+              <div style="font-size:11.5px;color:#6B7080;font-variant-numeric:tabular-nums">{{ s.fresh }}</div>
+              <div>
+                <span style="display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:20px;font-size:10.5px;font-weight:600;background:{{ s.pillBg }};color:{{ s.pillFg }};border:1px {{ s.pillStyle }} {{ s.pillBorder }}">{{ s.status }}</span>
+              </div>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#C3BFB6" stroke-width="1.8" stroke-linecap="round"><path d="M9 6l6 6-6 6"></path></svg>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px">
+          <div style="background:#FFFDF9;border:1px solid rgba(20,22,31,.08);border-radius:14px;padding:24px;box-shadow:0 1px 2px rgba(20,22,31,.035)">
+            <div style="font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#9B9AA6;margin-bottom:12px">Bring your own data</div>
+            <div style="font-size:13px;line-height:1.6;color:#3B3F4E;margin-bottom:18px">Upload by hand, or let _beyond fetch on a schedule.</div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <sc-for list="{{ ownWays }}" as="w" hint-placeholder-count="2">
+                <div style="display:flex;gap:11px;align-items:baseline">
+                  <span style="font-size:11px;font-weight:600;color:#5B5BD6;min-width:82px">{{ w.k }}</span>
+                  <span style="font-size:12px;color:#6B7080;line-height:1.5">{{ w.v }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="background:#FFFDF9;border:1px solid rgba(20,22,31,.08);border-radius:14px;padding:24px;box-shadow:0 1px 2px rgba(20,22,31,.035)">
+            <div style="font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#9B9AA6;margin-bottom:12px">Use our data</div>
+            <div style="font-size:13px;line-height:1.6;color:#3B3F4E;margin-bottom:18px">Panel and public sources already digested and comparable.</div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <sc-for list="{{ ourWays }}" as="w" hint-placeholder-count="3">
+                <div style="display:flex;gap:11px;align-items:baseline">
+                  <span style="font-size:11px;font-weight:600;color:#2F8E68;min-width:82px">{{ w.k }}</span>
+                  <span style="font-size:12px;color:#6B7080;line-height:1.5">{{ w.v }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ isDigest }}">
+      <div style="display:grid;grid-template-columns:minmax(0,308px) minmax(0,1fr);height:100%;overflow:hidden;animation:byFade 400ms ease-out">
+        <div style="border-right:1px solid rgba(20,22,31,.08);display:flex;flex-direction:column;overflow:hidden;background:rgba(250,247,241,.5)">
+          <div style="padding:22px 22px 16px;border-bottom:1px solid rgba(20,22,31,.08)">
+            <div style="font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#9B9AA6;margin-bottom:12px">Proposed matches</div>
+            <div style="display:flex;gap:20px">
+              <div>
+                <div style="font-family:'Instrument Serif',Georgia,serif;font-size:26px;line-height:1;font-variant-numeric:tabular-nums">{{ queueCount }}</div>
+                <div style="font-size:10.5px;color:#9B9AA6;margin-top:4px">to confirm</div>
+              </div>
+              <div>
+                <div style="font-family:'Instrument Serif',Georgia,serif;font-size:26px;line-height:1;font-variant-numeric:tabular-nums;color:#2F8E68">{{ confirmedCount }}</div>
+                <div style="font-size:10.5px;color:#9B9AA6;margin-top:4px">confirmed today</div>
+              </div>
+            </div>
+          </div>
+          <div style="flex:1;overflow:auto">
+            <sc-for list="{{ queue }}" as="m" hint-placeholder-count="5">
+              <button onClick="{{ m.pick }}" style="display:block;width:100%;text-align:left;padding:15px 22px;border:none;border-bottom:1px solid rgba(20,22,31,.06);border-left:2px solid {{ m.edge }};background:{{ m.bg }}">
+                <div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:5px">
+                  <div style="font-size:13px;font-weight:600;letter-spacing:-0.01em;color:#14161F">{{ m.name }}</div>
+                  <div style="font-size:11px;font-weight:700;font-variant-numeric:tabular-nums;color:{{ m.confColor }}">{{ m.conf }}</div>
+                </div>
+                <div style="font-size:11px;color:#6B7080;margin-bottom:8px">{{ m.molecule }}</div>
+                <div style="display:flex;align-items:center;gap:6px">
+                  <sc-for list="{{ m.dots }}" as="d" hint-placeholder-count="3">
+                    <span style="font-family:ui-monospace,Menlo,monospace;font-size:9.5px;padding:2px 6px;border-radius:4px;background:rgba(20,22,31,.05);color:#6B7080">{{ d.c }}</span>
+                  </sc-for>
+                  <span style="font-size:10px;color:#B4B1BB;margin-left:2px">{{ m.flag }}</span>
+                </div>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="overflow:auto;padding:34px 40px 40px">
+          <div style="font-size:10.5px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#9B9AA6;margin-bottom:14px">One product · {{ current.count }} identities · {{ current.sources }}</div>
+          <h1 style="font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:38px;line-height:1.1;letter-spacing:-0.015em;margin:0 0 8px">{{ current.name }}</h1>
+          <div style="font-size:13px;color:#6B7080;margin-bottom:30px">{{ current.molecule }} · {{ current.pack }}</div>
+
+          <div style="border-top:1px solid rgba(20,22,31,.12);min-width:604px">
+            <div style="display:grid;grid-template-columns:150px 118px 1fr 96px 92px;gap:16px;padding:10px 0;border-bottom:1px solid rgba(20,22,31,.07);font-size:10px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#9B9AA6">
+              <div>Source</div>
+              <div>Code</div>
+              <div>Label as written</div>
+              <div style="text-align:right">Unit XOF</div>
+              <div style="text-align:right">Rows</div>
+            </div>
+            <sc-for list="{{ current.identities }}" as="id" hint-placeholder-count="4">
+              <div style="display:grid;grid-template-columns:150px 118px 1fr 96px 92px;gap:16px;align-items:center;padding:15px 0;border-bottom:1px solid rgba(20,22,31,.07)">
+                <div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:#3B3F4E">
+                  <span style="width:5px;height:5px;border-radius:50%;background:{{ id.dot }};flex-shrink:0"></span>
+                  {{ id.source }}
+                </div>
+                <div style="font-family:ui-monospace,Menlo,monospace;font-size:11.5px;color:#14161F;background:rgba(20,22,31,.045);border-radius:5px;padding:3px 7px;display:inline-block;justify-self:start">{{ id.code }}</div>
+                <div style="font-size:12px;color:#6B7080">{{ id.label }}</div>
+                <div style="text-align:right;font-size:12px;font-variant-numeric:tabular-nums;color:#3B3F4E">{{ id.price }}</div>
+                <div style="text-align:right;font-size:12px;font-variant-numeric:tabular-nums;color:#9B9AA6">{{ id.rows }}</div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="display:flex;gap:13px;margin-top:26px;padding:20px 22px;border-radius:14px;background:rgba(91,91,214,.045);border:1px solid rgba(91,91,214,.12)">
+            <div style="width:26px;height:26px;border-radius:50%;background:#14161F;display:grid;place-items:center;flex-shrink:0">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FFFDF9" stroke-width="1.8" stroke-linecap="round"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"></path></svg>
+            </div>
+            <div style="flex:1">
+              <div style="font-size:12.5px;line-height:1.65;color:#3B3F4E;margin-bottom:12px"><b style="color:#14161F;font-weight:700">_beyond proposes one product.</b> {{ current.reasoning }}</div>
+              <div style="display:flex;flex-wrap:wrap;gap:8px">
+                <sc-for list="{{ current.evidence }}" as="e" hint-placeholder-count="3">
+                  <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:20px;background:#FFFDF9;border:1px solid rgba(20,22,31,.08);font-size:10.5px;color:#6B7080;font-weight:500">{{ e.t }}<b style="color:#14161F;font-weight:700;font-variant-numeric:tabular-nums">{{ e.v }}</b></span>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+
+          <sc-if value="{{ current.hasConflict }}">
+            <div style="display:flex;gap:11px;align-items:baseline;margin-top:14px;padding:16px 20px;border-radius:14px;background:rgba(201,122,20,.06);border:1px solid rgba(201,122,20,.16)">
+              <span style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#9A5C0F;white-space:nowrap">Conflict</span>
+              <span style="font-size:12.5px;line-height:1.6;color:#3B3F4E">{{ current.conflict }}</span>
+            </div>
+          </sc-if>
+
+          <div style="display:flex;align-items:center;gap:10px;margin-top:26px;padding-top:22px;border-top:1px solid rgba(20,22,31,.09)">
+            <button onClick="{{ confirm }}" style="display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:9px;border:none;background:#14161F;color:#FFFDF9;font-size:12.5px;font-weight:600">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 13l4 4 10-10"></path></svg>
+              Confirm the match
+            </button>
+            <button onClick="{{ reject }}" style="padding:10px 16px;border-radius:9px;border:1px solid rgba(20,22,31,.12);background:#FFFDF9;font-size:12.5px;font-weight:600;color:#3B3F4E">Not the same product</button>
+            <button onClick="{{ reject }}" style="padding:10px 16px;border-radius:9px;border:1px solid rgba(20,22,31,.12);background:#FFFDF9;font-size:12.5px;font-weight:600;color:#3B3F4E">Split into two</button>
+            <div style="flex:1"></div>
+            <div style="font-size:11px;color:#9B9AA6;font-family:ui-monospace,Menlo,monospace">{{ current.kbd }}</div>
+          </div>
+          <div style="font-size:11.5px;color:#9B9AA6;line-height:1.6;margin-top:16px;max-width:600px">Source rows above are read-only. Confirming writes to the reference model and never back to your data.</div>
+
+        <div style="margin-top:36px;padding-top:26px;border-top:1px solid rgba(20,22,31,.12);display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:38px;align-items:start">
+          <div>
+          <div style="font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#9B9AA6;margin-bottom:16px">Reference model</div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;padding-bottom:20px;border-bottom:1px solid rgba(20,22,31,.09)">
+            <sc-for list="{{ modelStats }}" as="s" hint-placeholder-count="3">
+              <div>
+                <div style="font-family:'Instrument Serif',Georgia,serif;font-size:27px;line-height:1;font-variant-numeric:tabular-nums">{{ s.v }}</div>
+                <div style="font-size:11px;color:#6B7080;margin-top:5px;line-height:1.45">{{ s.l }}</div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="font-size:12.5px;line-height:1.65;color:#6B7080;padding:18px 0 0;max-width:460px">Every confirmation accumulates. The reference model and its history are the part of _beyond that cannot be bought.</div>
+          </div>
+          <div>
+          <div style="font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#9B9AA6;margin:0 0 14px">Recent confirmations</div>
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <sc-for list="{{ auditTrail }}" as="a" hint-placeholder-count="4">
+              <div style="display:flex;gap:9px">
+                <div style="width:21px;height:21px;border-radius:50%;background:rgba(20,22,31,.07);color:#3B3F4E;font-size:8.5px;font-weight:700;display:grid;place-items:center;flex-shrink:0">{{ a.who }}</div>
+                <div style="min-width:0">
+                  <div style="font-size:11.5px;color:#3B3F4E;line-height:1.45">{{ a.what }}</div>
+                  <div style="font-size:10px;color:#B4B1BB;margin-top:2px">{{ a.when }}</div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+          </div>
+        </div>
+        </div>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ isChat }}">
+      <div style="display:flex;flex-direction:column;height:100%;animation:byFade 400ms ease-out">
+        <div style="flex:1;overflow:auto">
+          <div style="max-width:820px;margin:0 auto;padding:44px 40px 30px">
+            <div style="display:flex;justify-content:flex-end;margin-bottom:30px">
+              <div style="max-width:520px;background:#FFFDF9;border:1px solid rgba(20,22,31,.09);border-radius:14px 14px 4px 14px;padding:15px 19px;font-size:14px;line-height:1.55;box-shadow:0 1px 2px rgba(20,22,31,.04)">Where did Doliv lose share last quarter, and to whom?</div>
+            </div>
+
+            <div style="display:flex;gap:14px;margin-bottom:22px">
+              <div style="width:26px;height:26px;border-radius:50%;background:#14161F;display:grid;place-items:center;flex-shrink:0;margin-top:2px">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FFFDF9" stroke-width="1.8" stroke-linecap="round"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"></path></svg>
+              </div>
+              <div style="flex:1;min-width:0">
+                <sc-if value="{{ showTrace }}" hint-placeholder-val="{{ true }}">
+                <div style="display:flex;flex-direction:column;gap:5px;margin-bottom:20px">
+                  <sc-for list="{{ trace }}" as="t" hint-placeholder-count="4">
+                    <div style="display:flex;align-items:center;gap:9px;font-size:11px;color:#9B9AA6;font-family:ui-monospace,Menlo,monospace">
+                      <span style="width:4px;height:4px;border-radius:50%;background:#2F8E68;flex-shrink:0"></span>
+                      {{ t.l }}
+                    </div>
+                  </sc-for>
+                </div>
+                </sc-if>
+
+                <p style="font-size:15px;line-height:1.7;color:#14161F;margin:0 0 12px;max-width:640px">Doliv lost <b style="font-weight:700">2.1 points</b> of category share between April and July. Three quarters of that loss sits in Abidjan, and most of it moved to one competitor.</p>
+                <p style="font-size:14px;line-height:1.7;color:#3B3F4E;margin:0 0 26px;max-width:640px">Cocody and Yopougon account for 1.6 of the 2.1 points. Paraxel took 1.3 of those, entirely in the 1 g sachet format, which entered 214 of the 612 panel pharmacies over the same window. Outside Abidjan the share is flat.</p>
+
+                <div style="background:#FFFDF9;border:1px solid rgba(20,22,31,.08);border-radius:14px;box-shadow:0 1px 2px rgba(20,22,31,.035);margin-bottom:18px">
+                  <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:16px 22px;border-bottom:1px solid rgba(20,22,31,.07)">
+                    <div>
+                      <div style="font-size:12.5px;font-weight:600;letter-spacing:-0.01em">Share points lost, by district</div>
+                      <div style="font-size:10.5px;color:#9B9AA6;margin-top:2px">Apr to Jul 2026 · sell-out, 612 pharmacies</div>
+                    </div>
+                    <div style="display:flex;gap:6px">
+                      <button style="padding:5px 11px;border-radius:7px;border:1px solid rgba(20,22,31,.11);background:#FFFDF9;font-size:11px;font-weight:600;color:#3B3F4E">Save</button>
+                      <button style="padding:5px 11px;border-radius:7px;border:1px solid rgba(20,22,31,.11);background:#FFFDF9;font-size:11px;font-weight:600;color:#3B3F4E">Export</button>
+                    </div>
+                  </div>
+                  <div style="padding:22px">
+                    <div style="display:flex;flex-direction:column;gap:14px">
+                      <sc-for list="{{ districts }}" as="d" hint-placeholder-count="5">
+                        <div style="display:grid;grid-template-columns:112px 1fr 62px;gap:14px;align-items:center">
+                          <div style="font-size:12px;color:#3B3F4E;font-weight:500">{{ d.name }}</div>
+                          <div style="height:19px;background:rgba(20,22,31,.045);border-radius:4px;overflow:hidden;position:relative">
+                            <div style="height:100%;background:{{ d.color }};width:{{ d.w }};border-radius:4px"></div>
+                          </div>
+                          <div style="font-size:12px;font-weight:600;text-align:right;font-variant-numeric:tabular-nums;color:{{ d.color }}">{{ d.v }}</div>
+                        </div>
+                      </sc-for>
+                    </div>
+                    <div style="display:flex;gap:16px;margin-top:20px;padding-top:16px;border-top:1px solid rgba(20,22,31,.07);font-size:10.5px;color:#6B7080">
+                      <span style="display:inline-flex;align-items:center;gap:6px"><span style="width:7px;height:7px;border-radius:2px;background:#C0473F"></span>Lost to Paraxel</span>
+                      <span style="display:inline-flex;align-items:center;gap:6px"><span style="width:7px;height:7px;border-radius:2px;background:#C97A14"></span>Lost to others</span>
+                      <span style="display:inline-flex;align-items:center;gap:6px"><span style="width:7px;height:7px;border-radius:2px;background:#2F8E68"></span>Gained</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div style="display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin-bottom:20px">
+                  <span style="font-size:10px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#9B9AA6;margin-right:4px">Read from</span>
+                  <sc-for list="{{ chatSources }}" as="s" hint-placeholder-count="3">
+                    <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:20px;background:#FFFDF9;border:1px solid rgba(20,22,31,.09);font-size:10.5px;color:#6B7080;font-weight:500">
+                      <span style="width:5px;height:5px;border-radius:50%;background:{{ s.dot }}"></span>{{ s.n }}
+                    </span>
+                  </sc-for>
+                </div>
+
+                <sc-if value="{{ methodNotes }}" hint-placeholder-val="{{ true }}">
+                  <div style="display:grid;grid-template-columns:96px 1fr;gap:18px;padding:16px 0;border-top:1px solid rgba(20,22,31,.09);border-bottom:1px solid rgba(20,22,31,.09);margin-bottom:22px">
+                    <div style="font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#9B9AA6">Method</div>
+                    <div style="font-size:11.5px;line-height:1.6;color:#6B7080">Share computed on confirmed identities only. Cocody and Yopougon each clear the threshold of 3 contributors and 40 units. Treichville is reported as directional: 2 contributors.</div>
+                  </div>
+                </sc-if>
+
+                <div style="display:flex;flex-wrap:wrap;gap:8px">
+                  <sc-for list="{{ followUps }}" as="f" hint-placeholder-count="3">
+                    <button style="padding:8px 14px;border-radius:20px;border:1px solid rgba(20,22,31,.11);background:#FFFDF9;font-size:12px;font-weight:500;color:#3B3F4E">{{ f.t }}</button>
+                  </sc-for>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="flex-shrink:0;padding:20px 40px 26px;background:linear-gradient(to top, #EFEAE2 65%, rgba(239,234,226,0))">
+          <div style="max-width:820px;margin:0 auto;position:relative">
+            <input placeholder="Ask about the measured market" style="width:100%;background:#FFFDF9;border:1.5px solid rgba(20,22,31,.1);border-radius:14px;padding:15px 58px 15px 19px;font-size:13.5px;color:#14161F;outline:none;box-shadow:0 4px 14px rgba(20,22,31,.05)">
+            <button style="position:absolute;right:8px;top:50%;transform:translateY(-50%);width:35px;height:35px;border-radius:10px;background:#14161F;border:none;display:grid;place-items:center">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFFDF9" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+            </button>
+          </div>
+          <div style="max-width:820px;margin:9px auto 0;font-size:10.5px;color:#9B9AA6;text-align:center">Answers are read from the lake. _beyond does not write to your sources.</div>
+        </div>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ isInsights }}">
+      <div style="max-width:920px;margin:0 auto;padding:54px 40px 80px;animation:byFade 400ms ease-out">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px">
+          <span style="width:6px;height:6px;border-radius:50%;background:#C97A14;box-shadow:0 0 0 3px rgba(201,122,20,.16);animation:byPulse 2.4s ease-in-out infinite"></span>
+          <span style="font-size:10.5px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#9B9AA6">Actionable insights · nobody asked for these</span>
+        </div>
+        <h1 style="font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:44px;line-height:1.08;letter-spacing:-0.015em;margin:0 0 18px;max-width:700px">_beyond read the whole lake overnight. <em>Nine</em> things moved.</h1>
+        <p style="font-size:14.5px;line-height:1.65;color:#3B3F4E;max-width:600px;margin:0 0 40px">Three of them change a number you report. Four are questions worth asking before the quarter closes. Two are actions you can take this week.</p>
+
+        <sc-for list="{{ insightGroups }}" as="g" hint-placeholder-count="3">
+          <div style="margin-bottom:46px">
+            <div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding-bottom:12px;border-bottom:2px solid rgba(20,22,31,.5);margin-bottom:4px">
+              <h2 style="font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:24px;letter-spacing:-0.01em;margin:0">{{ g.title }}</h2>
+              <span style="font-size:11px;color:#9B9AA6">{{ g.note }}</span>
+            </div>
+            <sc-for list="{{ g.items }}" as="i" hint-placeholder-count="3">
+              <div style="display:grid;grid-template-columns:1fr 152px;gap:28px;padding:22px 0;border-bottom:1px solid rgba(20,22,31,.08);align-items:start">
+                <div>
+                  <div style="display:flex;align-items:center;gap:10px;margin-bottom:9px">
+                    <span style="font-size:10px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:{{ i.kickerColor }}">{{ i.kicker }}</span>
+                    <span style="font-size:10.5px;color:#B4B1BB">{{ i.when }}</span>
+                  </div>
+                  <div style="font-family:'Instrument Serif',Georgia,serif;font-size:22px;line-height:1.25;letter-spacing:-0.01em;margin-bottom:9px;max-width:520px">{{ i.head }}</div>
+                  <div style="font-size:13px;line-height:1.65;color:#6B7080;max-width:540px">{{ i.body }}</div>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:10px;align-items:flex-start;padding-top:2px">
+                  <div style="font-size:11px;color:#9B9AA6;line-height:1.45">{{ i.basis }}</div>
+                  <button onClick="{{ goChat }}" style="display:inline-flex;align-items:center;gap:7px;padding:7px 13px;border-radius:8px;border:1px solid rgba(20,22,31,.12);background:#FFFDF9;font-size:11.5px;font-weight:600;color:#3B3F4E;white-space:nowrap">{{ i.cta }}
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+                  </button>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-for>
+
+        <div style="display:flex;gap:13px;padding:20px 24px;border-radius:14px;background:rgba(20,22,31,.028);border:1px solid rgba(20,22,31,.06)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6B7080" stroke-width="1.6" stroke-linecap="round" style="flex-shrink:0;margin-top:2px"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 018 0v4"></path></svg>
+          <div style="font-size:12px;line-height:1.65;color:#6B7080">Insights are proposals. _beyond can prepare the plan, the export or the brief, and it stops there. Nothing leaves this screen and nothing changes in a source without you.</div>
+        </div>
+      </div>
+      </sc-if>
+
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;startView&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;cockpit&quot;,&quot;connect&quot;,&quot;digest&quot;,&quot;chat&quot;,&quot;insights&quot;],&quot;default&quot;:&quot;cockpit&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Demo&quot;},&quot;methodNotes&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Method&quot;},&quot;showTrace&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Method&quot;}}">
+class Component extends DCLogic {
+  state = { view: null, mi: 0, done: 0, rejected: [] };
+
+  get view() { return this.state.view || this.props.startView || "cockpit"; }
+
+  ns(id) {
+    const a = this.view === id;
+    return a
+      ? { bg: "#FFFDF9", fg: "#14161F", sh: "0 1px 2px rgba(20,22,31,.05), 0 0 0 1px rgba(20,22,31,.07)", w: "600" }
+      : { bg: "transparent", fg: "#3B3F4E", sh: "none", w: "500" };
+  }
+
+  matches() {
+    return [
+      {
+        name: "Doliv 500 mg · 20 tabs",
+        molecule: "Paracetamol 500 mg",
+        pack: "Blister, 20 tablets",
+        conf: "0.94",
+        flag: "",
+        sources: "4 sources",
+        kbd: "Enter to confirm",
+        reasoning: "Same molecule, same dose, same pack size across four sources. The label distance is high, the unit price sits in one band, and the four series move together month over month.",
+        evidence: [
+          { t: "Label match ", v: "0.91" },
+          { t: "Price band ", v: "±3.4%" },
+          { t: "Series correlation ", v: "0.96" },
+          { t: "Observed since ", v: "Mar 2024" }
+        ],
+        identities: [
+          { source: "Kos sell-out", code: "841022", label: "DOLIV 500 CPR 20", price: "1 250", rows: "48 210", dot: "#5B5BD6" },
+          { source: "Adexa sell-in", code: "PRD-00841", label: "Doliv 500 mg comprimé, boîte de 20", price: "1 210", rows: "9 044", dot: "#2F8E68" },
+          { source: "Sivop wholesale", code: "P.841 / CI", label: "DOLIV CPR500 B20", price: "1 265", rows: "21 887", dot: "#C97A14" },
+          { source: "DPM price list", code: "8410", label: "Doliv 500mg cp b/20", price: "1 250", rows: "12", dot: "#9B9AA6" }
+        ]
+      },
+      {
+        name: "Paraxel 1 g · 8 sachets",
+        molecule: "Paracetamol 1 g, powder",
+        pack: "Sachets, 8 doses",
+        conf: "0.88",
+        flag: "",
+        sources: "3 sources",
+        kbd: "Enter to confirm",
+        reasoning: "Three sources agree on molecule and dose. The wholesale label omits the format, so the match rests on pack size and on a price band that has held for eleven months.",
+        evidence: [
+          { t: "Label match ", v: "0.78" },
+          { t: "Price band ", v: "±5.1%" },
+          { t: "Series correlation ", v: "0.89" },
+          { t: "Observed since ", v: "Sep 2024" }
+        ],
+        identities: [
+          { source: "Kos sell-out", code: "PXL-1G-8", label: "PARAXEL 1G SACH 8", price: "1 900", rows: "31 604", dot: "#5B5BD6" },
+          { source: "Sivop wholesale", code: "P.2207", label: "PARAXEL 1G B8", price: "1 845", rows: "14 902", dot: "#C97A14" },
+          { source: "Laborex feed", code: "22071", label: "Paraxel 1g pdre or sach x8", price: "1 920", rows: "8 331", dot: "#4242B5" }
+        ]
+      },
+      {
+        name: "Kea Para 500 mg · 100 tabs",
+        molecule: "Paracetamol 500 mg",
+        pack: "Jar, 100 tablets",
+        conf: "0.71",
+        flag: "pack differs",
+        sources: "3 sources",
+        kbd: "Enter to confirm",
+        hasConflict: true,
+        conflict: "One source reports a 100 tablet jar, another a 10 × 10 blister carton under the same code. These are different presentations and probably different products. Splitting is the safer read.",
+        reasoning: "Molecule and dose agree. Pack size does not: two sources carry 100 units, one carries 1 000. Confidence is held below 0.75 for that reason.",
+        evidence: [
+          { t: "Label match ", v: "0.83" },
+          { t: "Price band ", v: "±41%" },
+          { t: "Series correlation ", v: "0.44" },
+          { t: "Observed since ", v: "Jan 2025" }
+        ],
+        identities: [
+          { source: "Kos sell-out", code: "KEA-500-100", label: "KEA PARA 500 FL100", price: "3 400", rows: "6 118", dot: "#5B5BD6" },
+          { source: "Sivop wholesale", code: "P.9931", label: "KEA PARA 500 B100", price: "3 250", rows: "4 087", dot: "#C97A14" },
+          { source: "Hospital tender", code: "KP500/1000", label: "Kea Para 500mg carton 10x100", price: "29 800", rows: "38", dot: "#9B9AA6" }
+        ]
+      },
+      {
+        name: "Doliv Junior sirop · 120 ml",
+        molecule: "Paracetamol 120 mg / 5 ml",
+        pack: "Bottle, 120 ml",
+        conf: "0.91",
+        flag: "",
+        sources: "3 sources",
+        kbd: "Enter to confirm",
+        reasoning: "Consistent molecule, concentration and volume. The sell-in label spells the strength per 5 ml, the sell-out label does not, which is the only difference.",
+        evidence: [
+          { t: "Label match ", v: "0.86" },
+          { t: "Price band ", v: "±2.2%" },
+          { t: "Series correlation ", v: "0.93" },
+          { t: "Observed since ", v: "Mar 2024" }
+        ],
+        identities: [
+          { source: "Kos sell-out", code: "841551", label: "DOLIV JUNIOR SIROP 120ML", price: "1 750", rows: "18 442", dot: "#5B5BD6" },
+          { source: "Adexa sell-in", code: "PRD-00855", label: "Doliv Junior 120 mg/5 ml, flacon 120 ml", price: "1 690", rows: "3 977", dot: "#2F8E68" },
+          { source: "Sivop wholesale", code: "P.855 / CI", label: "DOLIV JR SIR 120", price: "1 780", rows: "10 220", dot: "#C97A14" }
+        ]
+      },
+      {
+        name: "Cetirizine Kea 10 mg · 10 tabs",
+        molecule: "Cetirizine 10 mg",
+        pack: "Blister, 10 tablets",
+        conf: "0.63",
+        flag: "outside category",
+        sources: "2 sources",
+        kbd: "Enter to confirm",
+        hasConflict: true,
+        conflict: "Two sources only, and one of them is a single tender line. Below three contributors this match cannot support a published cell even once confirmed.",
+        reasoning: "Molecule and dose agree, but the evidence is thin: two sources, no overlapping price history, and a series too short to correlate.",
+        evidence: [
+          { t: "Label match ", v: "0.74" },
+          { t: "Price band ", v: "n/a" },
+          { t: "Series correlation ", v: "n/a" },
+          { t: "Observed since ", v: "Apr 2026" }
+        ],
+        identities: [
+          { source: "Kos sell-out", code: "CTZ-10-10", label: "CETIRIZINE KEA 10MG B10", price: "900", rows: "1 204", dot: "#5B5BD6" },
+          { source: "Hospital tender", code: "CZ10/KEA", label: "Cetirizine 10mg cp (Kea Generics)", price: "740", rows: "9", dot: "#9B9AA6" }
+        ]
+      }
+    ];
+  }
+
+  renderVals() {
+    const v = this.view;
+    const all = this.matches();
+    const live = all.filter((m, i) => this.state.rejected.indexOf(i) < 0);
+    const idx = Math.min(this.state.mi, Math.max(live.length - 1, 0));
+    const cur = live[idx] || all[0];
+    const confColor = c => (parseFloat(c) >= 0.85 ? "#2F8E68" : parseFloat(c) >= 0.72 ? "#C97A14" : "#C0473F");
+
+    const crumbs = {
+      cockpit: ["Cockpit", "Côte d'Ivoire · oral analgesics"],
+      connect: ["Connect", "Sources and coverage"],
+      digest: ["Digest", "Reference model · proposed matches"],
+      chat: ["Ask", "Share loss, Q2 2026"],
+      insights: ["Insights", "Overnight read · 9 movements"]
+    }[v];
+
+    return {
+      isCockpit: v === "cockpit", isConnect: v === "connect", isDigest: v === "digest",
+      isChat: v === "chat", isInsights: v === "insights",
+      crumb: crumbs[0], crumb2: crumbs[1],
+      methodNotes: this.props.methodNotes !== false,
+      showTrace: this.props.showTrace !== false,
+      nav: { connect: this.ns("connect"), digest: this.ns("digest"), cockpit: this.ns("cockpit"), chat: this.ns("chat"), insights: this.ns("insights") },
+      goCockpit: () => this.setState({ view: "cockpit" }),
+      goConnect: () => this.setState({ view: "connect" }),
+      goDigest: () => this.setState({ view: "digest" }),
+      goChat: () => this.setState({ view: "chat" }),
+      goInsights: () => this.setState({ view: "insights" }),
+
+      saved: [
+        { t: "Doliv share, 24 months" },
+        { t: "Abidjan district read" },
+        { t: "Paraxel 1 g entry map" },
+        { t: "Panel coverage, July" }
+      ],
+
+      instruments: [
+        { label: "Measured sell-out", value: "8.94 M", sub: "units, 24 months to July" },
+        { label: "Panel coverage", value: "612", sub: "of 1,932 outlets · 68% of volume" },
+        { label: "Reference model", value: "72%", sub: "872 of 1,204 identities confirmed" },
+        { label: "Publishable", value: "6 / 9", sub: "territories above threshold" }
+      ],
+      ledger: [
+        { brand: "Doliv", lab: "Adexa Pharma", share: "31.4%", delta: "−2.1 pts", units: "2.81 M", nameColor: "#14161F", deltaColor: "#C0473F", spark: "0,4 12,5 25,7 37,9 49,12 61,16 73,19", sparkColor: "#C0473F" },
+        { brand: "Paraxel", lab: "Sahel Laboratoires", share: "23.8%", delta: "+3.4 pts", units: "2.13 M", nameColor: "#14161F", deltaColor: "#2F8E68", spark: "0,18 12,16 25,15 37,11 49,8 61,5 73,2", sparkColor: "#2F8E68" },
+        { brand: "Kea Para", lab: "Kea Generics", share: "15.2%", delta: "+0.6 pts", units: "1.36 M", nameColor: "#14161F", deltaColor: "#2F8E68", spark: "0,13 12,12 25,13 37,11 49,11 61,10 73,9", sparkColor: "#9B9AA6" },
+        { brand: "Algifen", lab: "Vitalis CI", share: "9.7%", delta: "−0.4 pts", units: "0.87 M", nameColor: "#14161F", deltaColor: "#6B7080", spark: "0,10 12,11 25,10 37,12 49,11 61,12 73,13", sparkColor: "#9B9AA6" },
+        { brand: "Others, 41 brands", lab: "Below single-brand threshold", share: "19.9%", delta: "−1.5 pts", units: "1.77 M", nameColor: "#6B7080", deltaColor: "#6B7080", spark: "0,9 12,10 25,9 37,10 49,11 61,11 73,12", sparkColor: "#C3BFB6" }
+      ],
+      bars: [
+        { m: "Dec", a: "58%", b: "31%", op: "1" },
+        { m: "Jan", a: "62%", b: "34%", op: "1" },
+        { m: "Feb", a: "60%", b: "38%", op: "1" },
+        { m: "Mar", a: "64%", b: "43%", op: "1" },
+        { m: "Apr", a: "61%", b: "49%", op: "1" },
+        { m: "May", a: "55%", b: "57%", op: "1" },
+        { m: "Jun", a: "52%", b: "63%", op: "1" },
+        { m: "Jul", a: "50%", b: "68%", op: "1" }
+      ],
+      cockpitInsights: [
+        { kicker: "Change in a reported number", kickerColor: "#C0473F", head: "Paraxel passed Doliv in Cocody for a third month.", body: "The crossover is no longer a single month of noise. It clears the threshold in both districts." },
+        { kicker: "Question worth asking", kickerColor: "#9A5C0F", head: "The 1 g sachet format has no equivalent in your range.", body: "214 of 612 panel pharmacies now stock it. None of them stocked it in January." },
+        { kicker: "Coverage", kickerColor: "#4242B5", head: "Bouaké fell below the publication threshold in July.", body: "Two contributors stopped reporting. The territory drops out of the read until one returns." }
+      ],
+
+      coverage: [
+        { name: "Sell-in, wholesaler flows", note: "3 sources", pct: "74%", pctLabel: "74%", color: "#2F8E68" },
+        { name: "Sell-out, pharmacy dispensing", note: "1 panel, 612 outlets", pct: "68%", pctLabel: "68%", color: "#5B5BD6" },
+        { name: "Hospital and tender channel", note: "not connected", pct: "9%", pctLabel: "9%", color: "#C97A14" }
+      ],
+      sources: [
+        { name: "Kos panel", kind: "Sell-out · 612 pharmacies", adds: "24 months of dispensing, the only sell-out read in the country", fresh: "2 hours ago", status: "Contributing", pillBg: "rgba(47,142,104,.1)", pillFg: "#1F6E4F", pillStyle: "solid", pillBorder: "rgba(47,142,104,.18)" },
+        { name: "Sivop wholesale", kind: "Sell-in · monthly extract", adds: "Wholesaler flows, 61% of national volume", fresh: "4 days ago", status: "Contributing", pillBg: "rgba(47,142,104,.1)", pillFg: "#1F6E4F", pillStyle: "solid", pillBorder: "rgba(47,142,104,.18)" },
+        { name: "Adexa internal", kind: "Your data · SFTP nightly", adds: "Your own sell-in, shipments and price list", fresh: "04:12 today", status: "Contributing", pillBg: "rgba(47,142,104,.1)", pillFg: "#1F6E4F", pillStyle: "solid", pillBorder: "rgba(47,142,104,.18)" },
+        { name: "Laborex feed", kind: "Sell-in · API", adds: "Second wholesaler, overlaps Sivop in Abidjan", fresh: "yesterday", status: "Contributing", pillBg: "rgba(47,142,104,.1)", pillFg: "#1F6E4F", pillStyle: "solid", pillBorder: "rgba(47,142,104,.18)" },
+        { name: "DPM price list", kind: "Public · PDF, quarterly", adds: "Regulated prices and marketing authorisations", fresh: "Jul 2026", status: "Read only", pillBg: "rgba(20,22,31,.04)", pillFg: "#6B7080", pillStyle: "solid", pillBorder: "rgba(20,22,31,.09)" },
+        { name: "INS demography", kind: "Public · open data", adds: "Population and outlet density per district", fresh: "2025 census", status: "Read only", pillBg: "rgba(20,22,31,.04)", pillFg: "#6B7080", pillStyle: "solid", pillBorder: "rgba(20,22,31,.09)" },
+        { name: "Hospital tenders", kind: "Sell-in · manual upload", adds: "Would open the channel nobody currently measures", fresh: "3 files, Apr 2026", status: "Requested", pillBg: "transparent", pillFg: "#9A5C0F", pillStyle: "dotted", pillBorder: "rgba(201,122,20,.4)" }
+      ],
+      ownWays: [
+        { k: "By hand", v: "PDF, CSV, Excel, Word, images" },
+        { k: "On a schedule", v: "Email inbox, SFTP, API, MCP servers" },
+        { k: "On your behalf", v: "Credentialed export from a platform you already pay for" }
+      ],
+      ourWays: [
+        { k: "Panel", v: "Sell-out from contributing pharmacies, already digested" },
+        { k: "Public", v: "Regulated prices, authorisations, demography, health statistics" },
+        { k: "Partner", v: "Execution data from Opeaz, on contributor terms" }
+      ],
+
+      queueCount: live.length,
+      confirmedCount: 12 + this.state.done,
+      queue: live.map((m, i) => ({
+        name: m.name, molecule: m.molecule, conf: m.conf, flag: m.flag,
+        confColor: confColor(m.conf),
+        bg: i === idx ? "#FFFDF9" : "transparent",
+        edge: i === idx ? "#14161F" : "transparent",
+        dots: m.identities.slice(0, 3).map(x => ({ c: x.code })),
+        pick: () => this.setState({ mi: i })
+      })),
+      current: {
+        name: cur.name, molecule: cur.molecule, pack: cur.pack, sources: cur.sources,
+        count: cur.identities.length, identities: cur.identities,
+        reasoning: cur.reasoning, evidence: cur.evidence,
+        hasConflict: !!cur.hasConflict, conflict: cur.conflict || "", kbd: cur.kbd
+      },
+      confirm: () => this.setState(s => {
+        const alive = all.filter((m, i) => s.rejected.indexOf(i) < 0);
+        const real = all.indexOf(alive[Math.min(s.mi, alive.length - 1)]);
+        return { rejected: s.rejected.concat([real]), done: s.done + 1, mi: 0 };
+      }),
+      reject: () => this.setState(s => {
+        const alive = all.filter((m, i) => s.rejected.indexOf(i) < 0);
+        const real = all.indexOf(alive[Math.min(s.mi, alive.length - 1)]);
+        return { rejected: s.rejected.concat([real]), mi: 0 };
+      }),
+      modelStats: [
+        { v: "14 208", l: "confirmations since March 2024" },
+        { v: "1 204", l: "distinct identities observed" },
+        { v: "872", l: "resolved into 331 products" }
+      ],
+      auditTrail: [
+        { who: "AK", what: "Confirmed Algifen 500 mg · 16 tabs", when: "18 minutes ago" },
+        { who: "MT", what: "Split Kea Para carton from jar", when: "yesterday, 16:40" },
+        { who: "AK", what: "Rejected Paraxel 500 mg proposal", when: "yesterday, 11:02" },
+        { who: "BD", what: "Confirmed Doliv 1 g · 8 sachets", when: "11 Aug, 09:18" }
+      ],
+
+      trace: [
+        { l: "read question · share loss, one brand, one quarter" },
+        { l: "resolved Doliv to 4 confirmed identities" },
+        { l: "queried lake · 612 outlets × 4 months" },
+        { l: "checked threshold per district · 8 of 9 pass" }
+      ],
+      districts: [
+        { name: "Cocody", v: "−0.9", w: "82%", color: "#C0473F" },
+        { name: "Yopougon", v: "−0.7", w: "64%", color: "#C0473F" },
+        { name: "Plateau", v: "−0.3", w: "28%", color: "#C97A14" },
+        { name: "Treichville", v: "−0.2", w: "18%", color: "#C97A14" },
+        { name: "Bouaké", v: "+0.1", w: "9%", color: "#2F8E68" }
+      ],
+      chatSources: [
+        { n: "Kos panel · 612 outlets", dot: "#5B5BD6" },
+        { n: "Sivop wholesale", dot: "#C97A14" },
+        { n: "Adexa internal", dot: "#2F8E68" },
+        { n: "Reference model · 4 identities", dot: "#14161F" }
+      ],
+      followUps: [
+        { t: "Which pharmacies stopped stocking Doliv?" },
+        { t: "Show the 1 g sachet entry month by month" },
+        { t: "Is the Cocody read publishable?" },
+        { t: "Compare with sell-in over the same window" }
+      ],
+
+      insightGroups: [
+        {
+          title: "Changes in a number you report",
+          note: "3 movements · above threshold",
+          items: [
+            { kicker: "Share", kickerColor: "#C0473F", when: "overnight", head: "Paraxel passed Doliv in Cocody, and it held for a third month.", body: "23.1% against 22.4% in July. Two consecutive months read as noise. Three is a position, and it is the district that carries the most volume in the panel.", basis: "4 sources · 61 outlets · p < 0.05", cta: "Open the read" },
+            { kicker: "Coverage", kickerColor: "#4242B5", when: "2 days ago", head: "Bouaké dropped below the publication threshold.", body: "Two contributors stopped sending in July. The territory now reports 2 contributors against a threshold of 3, so it leaves the published read rather than being estimated.", basis: "Threshold rule · panel", cta: "See the panel" },
+            { kicker: "Reference model", kickerColor: "#9A5C0F", when: "yesterday", head: "A new pack of Paraxel entered the lake under three codes at once.", body: "The 1 g sachet arrived from three sources in the same week, which is unusual and suggests a coordinated launch rather than a data artefact.", basis: "3 proposed matches", cta: "Confirm in Digest" }
+          ]
+        },
+        {
+          title: "Questions worth asking",
+          note: "4 raised · none asked yet",
+          items: [
+            { kicker: "Format", kickerColor: "#9A5C0F", when: "this week", head: "You have no equivalent to the format that is taking your share.", body: "The 1 g sachet moved from 0 to 214 of 612 panel pharmacies since January. Your range stops at the 500 mg blister.", basis: "Sell-out · 7 months", cta: "Ask about it" },
+            { kicker: "Price", kickerColor: "#9A5C0F", when: "this week", head: "Your unit price held while two competitors moved twice.", body: "Doliv has stayed at 1,250 XOF for eleven months. Paraxel and Kea Para each repriced twice in that window, both downward in Abidjan only.", basis: "4 sources · price history", cta: "Ask about it" },
+            { kicker: "Distribution", kickerColor: "#9A5C0F", when: "5 days ago", head: "62 panel pharmacies have not received a Doliv delivery in four months.", body: "They still dispense the category. The gap is between wholesaler flows and outlet, not between outlet and patient.", basis: "Sell-in against sell-out", cta: "Ask about it" }
+          ]
+        },
+        {
+          title: "Actions you could take this week",
+          note: "2 prepared · nothing sent",
+          items: [
+            { kicker: "Prepared", kickerColor: "#1F6E4F", when: "ready", head: "A sourced read of the Cocody loss, with the method note attached.", body: "Four pages, every number traced to a source and a threshold. Prepared for the quarterly review, not sent anywhere.", basis: "Draft · awaiting you", cta: "Review it" },
+            { kicker: "Prepared", kickerColor: "#1F6E4F", when: "ready", head: "A request to the two Bouaké contributors that stopped reporting.", body: "_beyond can draft it with the read-back they are owed for the last two months. You decide whether it goes.", basis: "Draft · awaiting you", cta: "Review it" }
+          ]
+        }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

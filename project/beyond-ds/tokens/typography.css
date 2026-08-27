@@ -1,0 +1,45 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap");
+
+/* Space Grotesk is the only family: headings, body, numerals, labels.
+   The family stops at 700. Weight 800 is the display convention for headings —
+   the browser synthesises it. The wordmark itself is always 700, never 800. */
+
+:root {
+  --by-font-sans: "Space Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --by-font-display: var(--by-font-sans);
+
+  /* Size scale, in the values the product actually uses. */
+  --by-text-hero: 56px;
+  --by-text-numeral: 96px;
+  --by-text-screen-title: 30px;
+  --by-text-answer: 24px;
+  --by-text-card-title: 20px;
+  --by-text-claim: 16.5px;
+  --by-text-lead: 16px;
+  --by-text-body: 13.5px;
+  --by-text-body-sm: 12.5px;
+  --by-text-meta: 11px;
+  --by-text-kicker: 10px;
+  --by-text-caption: 10.5px;
+
+  --by-weight-regular: 400;
+  --by-weight-medium: 500;
+  --by-weight-semibold: 600;
+  --by-weight-bold: 700;
+  --by-weight-display: 800;
+
+  --by-tracking-hero: -0.035em;
+  --by-tracking-title: -0.025em;
+  --by-tracking-wordmark: -0.02em;
+  --by-tracking-kicker: 0.12em;
+  --by-tracking-kicker-tight: 0.1em;
+
+  --by-leading-hero: 1.03;
+  --by-leading-numeral: 0.85;
+  --by-leading-title: 1.2;
+  --by-leading-body: 1.65;
+  --by-leading-ui: 1.55;
+
+  /* Every figure, date and confidence is tabular. */
+  --by-numeric: tabular-nums;
+}

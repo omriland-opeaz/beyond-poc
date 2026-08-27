@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" role="img" aria-label="_beyond">
+  <defs><clipPath id="byMarkClipCream"><rect width="100" height="100" rx="29" ry="29"></rect></clipPath></defs>
+  <g clip-path="url(#byMarkClipCream)">
+    <rect width="100" height="100" rx="29" ry="29" fill="#C8F068"></rect>
+    <circle cx="85.4" cy="85.4" r="39.5" fill="#F7F7EF"></circle>
+  </g>
+</svg>

@@ -1,0 +1,55 @@
+<!-- @dsCard group="Platform" viewport="1280x720" name="The platform" subtitle="Ask, conversation, cockpit and connect — click through" -->
+<!-- @startingPoint section="Platform" subtitle="The _beyond web app, four screens" viewport="1280x800" -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>_beyond · platform</title>
+<link rel="stylesheet" href="../../../styles.css">
+<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="../../../_ds_bundle.js"></script>
+<style>
+  html, body { margin:0; padding:0; height:100%; background:var(--by-paper); }
+  body { font-family:var(--by-font-sans); color:var(--by-ink); -webkit-font-smoothing:antialiased; }
+  * { box-sizing:border-box; }
+  button { font-family:inherit; cursor:pointer; }
+  input { font-family:inherit; }
+  a { color:var(--by-text-link); text-decoration:none; }
+  a:hover { color:var(--by-text-link-hover); }
+  ::selection { background:var(--by-lime); color:var(--by-ink); }
+  :focus-visible { outline:2px solid var(--by-ink); outline-offset:2px; border-radius:4px; }
+  ::-webkit-scrollbar { width:9px; height:9px; }
+  ::-webkit-scrollbar-thumb { background:rgba(20,23,15,.16); border-radius:9px; }
+  ::-webkit-scrollbar-track { background:transparent; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" data-type="module">
+  const NS = Object.values(window).find(v => v && typeof v === "object" && v.Shell && v.Cockpit) || window;
+  const { Shell, Ask, Conversation, Cockpit, Connect } = NS;
+
+  function App() {
+    const [view, setView] = React.useState("cockpit");
+    const [thread, setThread] = React.useState("share");
+    const [step, setStep] = React.useState(0);
+    const [question, setQuestion] = React.useState("Why did Doliv lose share?");
+    const crumb = { ask: "Ask", chat: question, cockpit: "Cockpit", connect: "Settings · Connect" }[view];
+    const ask = q => { if (!q || !q.trim()) return; setQuestion(q); setStep(1); setView("chat"); setThread(null); };
+    return (
+      <Shell view={view} onView={setView} thread={thread} onThread={id => { setThread(id); setStep(0); setQuestion(
+        { share: "Why did Doliv lose share?", cocody: "Cocody is falling faster than the market",
+          cover: "Stock cover by wholesaler", pack: "Which pack format is growing?" }[id]); }} crumb={crumb}>
+        {view === "ask" && <Ask onAsk={ask} />}
+        {view === "chat" && <Conversation question={question} step={step} onStep={setStep} onAsk={ask} />}
+        {view === "cockpit" && <Cockpit onOpen={() => { setThread("cocody"); setQuestion("Cocody is falling faster than the market"); setStep(1); setView("chat"); }} />}
+        {view === "connect" && <Connect />}
+      </Shell>
+    );
+  }
+  ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>

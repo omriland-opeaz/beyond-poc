@@ -1,0 +1,32 @@
+<!-- @dsCard group="Type" viewport="700x150" name="Setting the wordmark" subtitle="Lowercase, leading underscore, weight 700 — never 800" -->
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>Wordmark</title>
+<link rel="stylesheet" href="../../styles.css">
+<style>
+  body { margin:0; padding:16px 18px; background:var(--by-cream); color:var(--by-ink);
+         font-family:var(--by-font-sans); -webkit-font-smoothing:antialiased; }
+  .grid { display:flex; gap:10px; flex-wrap:wrap; }
+  .sw { display:flex; flex-direction:column; gap:6px; min-width:0; }
+  .chip { height:56px; border-radius:8px; }
+  .n { font-size:11px; font-weight:700; letter-spacing:-0.01em; }
+  .h { font-size:10px; color:var(--by-grey); font-variant-numeric:tabular-nums; }
+  .u { font-size:9.5px; color:var(--by-grey-light); line-height:1.4; }
+  .row { display:flex; align-items:baseline; gap:14px; padding:6px 0; border-bottom:1px solid var(--by-line); }
+  .lab { font-size:9.5px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--by-grey); }
+</style></head><body>
+<div style="display:flex;align-items:center;gap:36px;flex-wrap:wrap">
+  <div>
+    <div class="lab">Correct</div>
+    <div style="font-size:30px;font-weight:700;letter-spacing:-0.02em;margin-top:6px">_beyond</div>
+  </div>
+  <div style="opacity:.45">
+    <div class="lab">Wrong</div>
+    <div style="display:flex;gap:18px;margin-top:6px;font-size:22px">
+      <span style="font-weight:800;letter-spacing:-0.02em">_beyond</span>
+      <span style="font-weight:700">_beyond</span>
+      <span style="font-weight:700;text-transform:uppercase">_beyond</span>
+    </div>
+  </div>
+</div>
+<div class="u" style="margin-top:14px">Inside running copy the wordmark keeps its family, weight and tracking; only the colour adapts to the background.</div>
+</body></html>

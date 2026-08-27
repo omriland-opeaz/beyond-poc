@@ -1,0 +1,234 @@
+/* ============================================================
+   Opeaz Design System - Tokens
+   Source: Visuels Marketing.fig · BrandBook + 85 Style Guide
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700&display=swap');
+
+:root {
+  /* ---------- COLOR - primary ---------- */
+  --opeaz-blue: #176AE5;          /* Bleu électrique, brand primary */
+  --opeaz-blue-600: #1559BF;      /* hover/pressed */
+  --opeaz-blue-700: #0D3B7F;      /* dark accent / shadow text */
+  --opeaz-blue-500: #2563EB;      /* app-surface blue */
+  --opeaz-blue-300: #8BB4F2;      /* secondary sky */
+  --opeaz-blue-100: #E8F0FC;      /* surface tint, page backgrounds */
+
+  --opeaz-ink: #2F2F30;           /* text/head (Noir) */
+  --opeaz-ink-600: #334155;       /* slate body */
+  --opeaz-cream: #F9EFE4;         /* paper / signifiant bg */
+  --opeaz-white: #FFFFFF;
+
+  /* ---------- COLOR - audience ----------
+     CANONICAL - ABSOLUTE, do not deviate:
+       Pharmacie / Général  → Blue   (alias to primary)
+       Groupement           → Orange
+       Laboratoire          → Green                          */
+  --opeaz-pharma:       var(--opeaz-blue);   /* Pharmacie / Général → bleu */
+  --opeaz-pharma-soft:  var(--opeaz-blue-100);
+  --opeaz-pharma-deep:  var(--opeaz-blue-700);
+  --opeaz-groupement:       #F67748;         /* Groupement → orange */
+  --opeaz-groupement-soft:  #FBBBA3;
+  --opeaz-groupement-deep:  #90462A;
+  --opeaz-labo:         #1B998B;             /* Laboratoire → vert */
+  --opeaz-labo-mint:    #02BF9F;
+  --opeaz-labo-deep:    #1A7D72;
+
+  /* ---------- COLOR - semantic ---------- */
+  --fg-1: var(--opeaz-ink);
+  --fg-2: var(--opeaz-ink-600);
+  --fg-muted: #6B7280;
+  --fg-on-blue: var(--opeaz-white);
+  --bg-page: var(--opeaz-blue-100);
+  --bg-surface: var(--opeaz-white);
+  --bg-signifiant: var(--opeaz-cream);
+  --bg-dark: var(--opeaz-ink);
+  --bg-brand: var(--opeaz-blue);
+  --border-subtle: rgba(145, 158, 171, 0.24);
+  --border-strong: rgba(47, 47, 48, 0.2);
+
+  /* ---------- TYPE - families ---------- */
+  --font-display: 'Inter', system-ui, sans-serif;
+  --font-body:    'Inter', system-ui, sans-serif;
+  --font-ui:      'Inter', system-ui, sans-serif;
+  --font-mono:    ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* ---------- TYPE - scale ---------- */
+  --fs-display: 100px;
+  --fs-h1: 64px;
+  --fs-h2: 56px;
+  --fs-h3: 45px;
+  --fs-h4: 36px;
+  --fs-h5: 28px;
+  --fs-h6: 20px;
+  --fs-lg: 18px;
+  --fs-md: 16px;
+  --fs-sm: 14px;
+  --fs-xs: 12px;
+
+  --lh-display: 1.0;    /* @kind font */
+  --lh-heading: 1.05;   /* @kind font */
+  --lh-body: 1.5;       /* @kind font */
+
+  /* ---------- SPACING ---------- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 30px;
+  --space-8: 40px;
+  --space-10: 60px;
+  --space-12: 80px;
+
+  --container-desktop: 1400px;
+  --container-app: 1440px;
+  --container-slide-w: 1920px;
+  --container-slide-h: 1080px;
+
+  /* ---------- RADII ---------- */
+  --radius-sm: 5px;
+  --radius-md: 10px;
+  --radius-lg: 15px;   /* cards / containers */
+
+  /* ---------- SHADOWS (Opeaz signature soft double) ---------- */
+  --shadow-sm: 0px 4px 8px -2px rgba(145, 158, 171, 0.08), 0px 0px 2px 0px rgba(145, 158, 171, 0.2);
+  --shadow-md: 0px 12px 24px -4px rgba(145, 158, 171, 0.12), 0px 0px 2px 0px rgba(145, 158, 171, 0.25);
+  --shadow-lg: 0px 24px 48px -12px rgba(13, 59, 127, 0.18), 0px 0px 4px 0px rgba(145, 158, 171, 0.25);
+  --shadow-hero: 0px 25px 50px -12px rgba(13, 59, 127, 0.25);
+
+  /* ---------- MOTION ---------- */
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);   /* @kind other */
+  --ease-out: cubic-bezier(0.0, 0, 0.2, 1);        /* @kind other */
+  --dur-fast: 150ms;                               /* @kind other */
+  --dur-med: 220ms;                                /* @kind other */
+  --dur-slow: 320ms;                               /* @kind other */
+}
+
+/* ============================================================
+   Base semantic elements
+   ============================================================ */
+html, body {
+  font-family: var(--font-body);
+  color: var(--fg-1);
+  background: var(--bg-surface);
+  font-size: var(--fs-md);
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, .h1 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--fs-h1);
+  line-height: var(--lh-heading);
+  color: var(--fg-1);
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+h2, .h2 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--fs-h2);
+  line-height: var(--lh-heading);
+  color: var(--fg-1);
+  margin: 0;
+}
+h3, .h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--fs-h3);
+  line-height: var(--lh-heading);
+  margin: 0;
+}
+h4, .h4 { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-h4); line-height: 1.1; margin: 0; }
+h5, .h5 { font-family: var(--font-display); font-weight: 600; font-size: var(--fs-h5); line-height: 1.15; margin: 0; }
+h6, .h6 { font-family: var(--font-display); font-weight: 600; font-size: var(--fs-h6); line-height: 1.2; margin: 0; letter-spacing: 0.02em; text-transform: uppercase; }
+
+p, .body {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: var(--fs-md);
+  line-height: 24px;
+  color: var(--fg-1);
+  text-wrap: pretty;
+}
+.body-lg { font-size: var(--fs-lg); line-height: 28px; }
+.body-sm { font-size: var(--fs-sm); line-height: 20px; }
+.caption { font-size: var(--fs-xs); line-height: 16px; color: var(--fg-muted); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; }
+
+.kpi {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 72px;
+  line-height: 1;
+  color: var(--opeaz-blue);
+  letter-spacing: -0.02em;
+}
+
+.ui-label {
+  font-family: var(--font-display);
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: 0.05em;
+}
+
+/* ============================================================
+   Utility classes - signature marketing surfaces
+   ============================================================ */
+.bg-opeaz-grid {
+  background-color: var(--opeaz-blue);
+  background-image:
+    radial-gradient(rgba(255,255,255,0.18) 1px, transparent 1.5px);
+  background-size: 18px 18px;
+  color: var(--opeaz-white);
+}
+.bg-opeaz-grid-soft {
+  background-color: var(--opeaz-cream);
+  background-image:
+    radial-gradient(rgba(23,106,229,0.18) 1px, transparent 1.5px);
+  background-size: 18px 18px;
+}
+.bg-opeaz-gradient {
+  background: linear-gradient(180deg, var(--opeaz-blue-500) 0%, var(--opeaz-blue-300) 100%);
+  color: var(--opeaz-white);
+}
+
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 44px; padding: 0 22px;
+  border-radius: var(--radius-md);
+  font-family: var(--font-display);
+  font-size: 16px; letter-spacing: 0;
+  border: 2px solid rgba(23,106,229,0.2);
+  background: transparent;
+  color: var(--opeaz-ink);
+  cursor: pointer;
+  transition: all var(--dur-med) var(--ease-standard);
+}
+.btn:hover { background: rgba(23,106,229,0.08); }
+.btn-primary {
+  background: var(--opeaz-blue); color: var(--opeaz-white);
+  border-color: var(--opeaz-blue);
+}
+.btn-primary:hover { background: var(--opeaz-blue-600); }
+.btn:active { transform: scale(0.98); }
+
+.card {
+  background: var(--bg-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 24px;
+}
+
+.chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 10px; border-radius: 999px;
+  font-size: 12px; font-weight: 600;
+  background: var(--opeaz-blue-100);
+  color: var(--opeaz-blue);
+}
+.chip-pharma { background: var(--opeaz-blue-100); color: var(--opeaz-blue-700); }
+.chip-group  { background: rgba(246,119,72,0.16); color: var(--opeaz-groupement-deep); }
+.chip-labo   { background: rgba(27,153,139,0.14); color: var(--opeaz-labo-deep); }

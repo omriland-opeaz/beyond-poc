@@ -1,0 +1,23 @@
+<!-- @dsCard group="Colors" viewport="700x140" name="Text colours" subtitle="Three greys and their exact jobs" -->
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>Text</title>
+<link rel="stylesheet" href="../../styles.css">
+<style>
+  body { margin:0; padding:16px 18px; background:var(--by-cream); color:var(--by-ink);
+         font-family:var(--by-font-sans); -webkit-font-smoothing:antialiased; }
+  .grid { display:flex; gap:10px; flex-wrap:wrap; }
+  .sw { display:flex; flex-direction:column; gap:6px; min-width:0; }
+  .chip { height:56px; border-radius:8px; }
+  .n { font-size:11px; font-weight:700; letter-spacing:-0.01em; }
+  .h { font-size:10px; color:var(--by-grey); font-variant-numeric:tabular-nums; }
+  .u { font-size:9.5px; color:var(--by-grey-light); line-height:1.4; }
+  .row { display:flex; align-items:baseline; gap:14px; padding:6px 0; border-bottom:1px solid var(--by-line); }
+  .lab { font-size:9.5px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--by-grey); }
+</style></head><body>
+<div style="display:flex;flex-direction:column;gap:2px">
+  <div class="row"><span style="width:130px;font-size:15px;font-weight:600;color:#14170F">Ink #14170F</span><span class="u" style="font-size:11px">Body, titles, numbers. Everything that carries meaning.</span></div>
+  <div class="row"><span style="width:130px;font-size:15px;font-weight:600;color:#6B6B61">Grey #6B6B61</span><span class="u" style="font-size:11px">Secondary body, reasoning under a claim, method notes.</span></div>
+  <div class="row"><span style="width:130px;font-size:15px;font-weight:600;color:#A3A399">Light #A3A399</span><span class="u" style="font-size:11px">Captions, timestamps, sidebar date headers. Never a full sentence.</span></div>
+  <div class="row" style="border:none"><span style="width:130px;font-size:15px;font-weight:600;color:#5F7A12">Link #5F7A12</span><span class="u" style="font-size:11px">Links and the accent half of an answer headline. Hover goes to ink.</span></div>
+</div>
+</body></html>

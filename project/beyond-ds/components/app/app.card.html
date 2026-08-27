@@ -1,0 +1,59 @@
+<!-- @dsCard group="Components" viewport="700x400" name="App" subtitle="Nav, threads, alerts, answers, approvals, sources, memory" -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../../styles.css">
+<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="../../../_ds_bundle.js"></script>
+<style>body { margin:0; padding:16px 18px; background:var(--by-cream); font-family:var(--by-font-sans); color:var(--by-ink); }</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+  const NS = Object.values(window).find(v => v && typeof v === "object" && v.NavRow && v.ApprovalRow) || window;
+  const { NavRow, ThreadRow, AlertBanner, AnswerBlock, ChallengeCard, ApprovalRow, SourceTile, LibraryCard, DropZone, MemoryRow, Button, RankRows } = NS;
+  ReactDOM.createRoot(document.getElementById("root")).render(
+    <div style={{ display: "grid", gridTemplateColumns: "210px 1fr", gap: 18, alignItems: "start" }}>
+      <div style={{ background: "var(--by-paper)", border: "1px solid var(--by-line)", borderRadius: 10, padding: "10px 0" }}>
+        <ThreadRow question="Why did Doliv lose share?" meta="today · 14:02" active />
+        <ThreadRow question="Cocody is falling faster" meta="asked for you · 2 h ago" askedByBeyond />
+        <ThreadRow question="Stock cover by wholesaler" meta="yesterday" />
+        <div style={{ height: 8, borderBottom: "1px solid var(--by-line)", marginBottom: 8 }} />
+        <NavRow label="Cockpit" badge="1" badgeColor="var(--by-broken)" active />
+        <NavRow label="Settings" badge={6} />
+        <div style={{ padding: "10px 14px 0" }}>
+          <SourceTile initials="TP" name="Tedis Pharma" foot="sell-in · 14 min ago" state="live" />
+        </div>
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+        <AlertBanner kicker="Alert fired · 2 h ago" claim="Advil share in Cocody fell 11.4 % week on week." note="you asked to be told below −10 % · set 12 Aug" />
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, alignItems: "start" }}>
+          <ChallengeCard kicker="_beyond disagrees with the question"
+            head="You asked a national question. The answer is not national."
+            body="City size has never been one of your cuts, and on this brand it is the cut that moves."
+            primary={<Button size="md">Split it by city size</Button>}
+            secondary={<Button size="md" variant="secondary">Keep it national</Button>}
+            note="you decide, not _beyond" />
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            <LibraryCard name="Google Drive" sub="General" trusted mode="read-only · nightly"
+              description="A folder of spreadsheets and PDFs, read as they land."
+              action={<Button variant="secondary" size="sm">+ Connect</Button>} />
+            <MemoryRow head="You are measured on share, not volume." note="from six questions since June" when="12 Aug" />
+          </div>
+        </div>
+        <div style={{ background: "var(--by-paper)", border: "1px solid var(--by-line)", borderRadius: 12, padding: "4px 18px 14px" }}>
+          <ApprovalRow kind="Currency" confidence="79%"
+            head="Three June invoices look like euros, not XOF."
+            why="The amounts are 650× smaller than every other June row from this wholesaler."
+            evidence={[{ label: "Source", value: "Tedis · sell-in June.xlsx" }, { label: "Rows", value: "3 of 1 214" }, { label: "If applied", value: "June sell-in +2.4%" }]}
+            actions={<><Button shape="square">Approve</Button><Button shape="square" variant="secondary">Leave as XOF</Button></>} />
+        </div>
+      </div>
+    </div>
+  );
+</script>
+</body>
+</html>

@@ -1,0 +1,1793 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="../_ds/opeaz-prez-system-9fec19b9-05c7-475f-aff2-e57cb82abd08/colors_and_type.css">
+<script src="../_ds/opeaz-prez-system-9fec19b9-05c7-475f-aff2-e57cb82abd08/_ds_bundle.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+  html, body { margin:0; padding:0; height:100%; background:#FFFFFF; }
+  body { font-family:'Space Grotesk','Inter',-apple-system,sans-serif; -webkit-font-smoothing:antialiased; color:#14170F; }
+  * { box-sizing:border-box; }
+  button { font-family:inherit; cursor:pointer; }
+  input { font-family:inherit; }
+  a { color:#5F7A12; text-decoration:none; }
+  a:hover { color:#14170F; }
+  ::-webkit-scrollbar { width:9px; height:9px; }
+  ::-webkit-scrollbar-thumb { background:rgba(20,23,15,.16); border-radius:9px; }
+  ::-webkit-scrollbar-thumb:hover { background:rgba(20,23,15,.28); }
+  ::-webkit-scrollbar-track { background:transparent; }
+  /* Browser surfaces belong to the palette too. */
+  ::selection { background:#C8F068; color:#14170F; }
+  :focus-visible { outline:2px solid #14170F; outline-offset:2px; border-radius:4px; }
+  :focus:not(:focus-visible) { outline:none; }
+  input, textarea { caret-color:#5F7A12; }
+  summary::-webkit-details-marker { display:none; }
+  @keyframes byFade { from { opacity:0; transform:translateY(5px) } to { opacity:1; transform:none } }
+  @keyframes byPulse { 0%,100% { opacity:1 } 50% { opacity:.3 } }
+  @keyframes byFlow { to { stroke-dashoffset: -27; } }
+  @keyframes byPulseTxt { 0%,100%{opacity:.55} 50%{opacity:1} }
+@keyframes byRing { 0% { transform:scale(.8); opacity:.5 } 100% { transform:scale(1.5); opacity:0 } }
+@keyframes byDrift { 0% { transform:translateX(0) } 50% { transform:translateX(-14px) } 100% { transform:translateX(0) } }
+@keyframes byBob { 0% { transform:translateY(0) } 50% { transform:translateY(-3px) } 100% { transform:translateY(0) } }
+@keyframes byInk { 0% { stroke-dashoffset:0 } 50% { stroke-dashoffset:-7 } 100% { stroke-dashoffset:0 } }
+@keyframes byRise { from { opacity:0; transform:translateY(14px) } to { opacity:1; transform:none } }
+@keyframes byRockHover { 0%,100% { transform:translateY(0) rotate(-4deg) } 50% { transform:translateY(-9px) rotate(1deg) } }
+@keyframes byRockFall { 0% { transform:translateY(0) rotate(-4deg); opacity:1 } 9% { transform:translateY(-12px) rotate(-9deg); opacity:1 } 23% { transform:translateY(-6px) rotate(-6deg); opacity:1 } 39% { transform:translateY(12px) rotate(0deg); opacity:1 } 56% { transform:translateY(38px) rotate(6deg); opacity:1 } 69% { transform:translateY(62px) rotate(11deg); opacity:1 } 80% { transform:translateY(89px) rotate(16deg); opacity:1 } 90% { transform:translateY(112px) rotate(19deg); opacity:.65 } 100% { transform:translateY(140px) rotate(23deg); opacity:0 } }
+@keyframes byCrown { 0% { transform:scale(.7,.15); opacity:0 } 20% { opacity:1 } 50% { transform:scale(1.05,1.1); opacity:.95 } 100% { transform:scale(1.22,.35); opacity:0 } }
+@keyframes byDropA { 0% { transform:translate(0,0); opacity:0 } 12% { opacity:1 } 55% { transform:translate(-22px,-30px); opacity:1 } 100% { transform:translate(-38px,-2px); opacity:0 } }
+@keyframes byDropB { 0% { transform:translate(0,0); opacity:0 } 12% { opacity:1 } 52% { transform:translate(20px,-34px); opacity:1 } 100% { transform:translate(34px,-6px); opacity:0 } }
+@keyframes byDropC { 0% { transform:translate(0,0); opacity:0 } 14% { opacity:1 } 50% { transform:translate(4px,-42px); opacity:1 } 100% { transform:translate(10px,2px); opacity:0 } }
+@keyframes byRipple { 0% { transform:scale(.22); opacity:0 } 7% { opacity:.95 } 70% { opacity:.32 } 100% { transform:scale(1.4); opacity:0 } }
+@keyframes byDraw { to { stroke-dashoffset:0 } }
+
+/* --- Intro motion ------------------------------------------------------------
+   The focal moment is the basin filling: the three step panels are not faded in,
+   they are revealed by a waterline that crosses the row left to right. The fill
+   edge is a hand-shaped bezier, and a second mask strokes the same path so the
+   crest line rides exactly on it -- water edge on lime, lime edge on water and
+   on ink. Everything else on this screen stays quiet so the level is the only
+   thing moving.                                                              */
+@keyframes byFadeIn { from { opacity:0 } to { opacity:1 } }
+/* The strike through "place" is drawn rather than switched on. */
+@keyframes byPen { from { clip-path:inset(0 100% 0 0) } to { clip-path:inset(0 -8% 0 0) } }
+@keyframes byBasinDrain {
+  from { -webkit-mask-position:50% 0%;   mask-position:50% 0% }
+  to   { -webkit-mask-position:50% 100%; mask-position:50% 100% }
+}
+@keyframes byBasinCrest {
+  0%   { -webkit-mask-position:50% 0%;   mask-position:50% 0%;   opacity:0 }
+  16%  { opacity:1 }
+  76%  { opacity:1 }
+  100% { -webkit-mask-position:50% 100%; mask-position:50% 100%; opacity:0 }
+}
+.by-basin { position:relative; display:grid; overflow:hidden; border-radius:18px; min-height:330px }
+.by-veil, .by-crest {
+  position:absolute; inset:0; pointer-events:none;
+  -webkit-mask-size:100% 212%;   mask-size:100% 212%;
+  -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
+  -webkit-mask-position:50% 0%;  mask-position:50% 0%;
+  animation:byBasinDrain 660ms cubic-bezier(.16,1,.3,1) both;
+}
+.by-veil  { background:#F7F7EF; -webkit-mask-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMjEyIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIj48cGF0aCBkPSJNMCwwIEgxMDAgVjEwMyBDOTAsMTA4IDgwLDk5IDcwLDEwNCBDNTgsMTExIDQ2LDk5IDM0LDEwNSBDMjIsMTEyIDEyLDEwMCAwLDEwNiBaIiBmaWxsPSIjZmZmIi8+PC9zdmc+"); mask-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMjEyIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIj48cGF0aCBkPSJNMCwwIEgxMDAgVjEwMyBDOTAsMTA4IDgwLDk5IDcwLDEwNCBDNTgsMTExIDQ2LDk5IDM0LDEwNSBDMjIsMTEyIDEyLDEwMCAwLDEwNiBaIiBmaWxsPSIjZmZmIi8+PC9zdmc+") }
+.by-crest { opacity:0; -webkit-mask-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMjEyIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIj48cGF0aCBkPSJNMCwxMDYgQzEyLDEwMCAyMiwxMTIgMzQsMTA1IEM0Niw5OSA1OCwxMTEgNzAsMTA0IEM4MCw5OSA5MCwxMDggMTAwLDEwMyIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjEuMSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+"); mask-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMjEyIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIj48cGF0aCBkPSJNMCwxMDYgQzEyLDEwMCAyMiwxMTIgMzQsMTA1IEM0Niw5OSA1OCwxMTEgNzAsMTA0IEM4MCw5OSA5MCwxMDggMTAwLDEwMyIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjEuMSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+"); animation-name:byBasinCrest }
+.by-crest-water { background:#5B9BD9 }
+.by-crest-lime  { background:#C8F068 }
+.by-d1 { animation-delay:620ms }
+.by-d2 { animation-delay:820ms }
+.by-d3 { animation-delay:1020ms }
+/* Feedback on the one action this screen offers. */
+.by-cta { transition:background 150ms ease, transform 160ms cubic-bezier(.16,1,.3,1) }
+.by-cta:hover { background:#B6E44E !important; transform:translateY(-1px) }
+.by-cta:active { transform:translateY(0); transition-duration:90ms }
+.by-cta .by-arrow { display:inline-block; transition:transform 190ms cubic-bezier(.16,1,.3,1) }
+.by-cta:hover .by-arrow { transform:translateX(4px) }
+/* Reduced motion: nothing loops, nothing travels. Durations collapse rather than
+   being removed, so animations that hold an end state (the drawn circle on
+   "Filed.", the rock's fall-out) still land on it instead of freezing at frame 0. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration:.001ms !important;
+    animation-iteration-count:1 !important;
+    animation-delay:0ms !important;
+    transition-duration:.001ms !important;
+  }
+  /* The basin still ends full; it simply is not poured. */
+  .by-veil, .by-crest { display:none }
+}
+</style>
+
+<style>
+  /* v3: the ask screen is the front door. Nothing on it competes with the box. */
+  .by-box { transition:border-color 160ms ease, box-shadow 160ms ease }
+  .by-box:focus-within { border-color:#14170F; box-shadow:0 0 0 4px rgba(200,240,104,.45) }
+  .by-row:hover { background:#F1F1E6 }
+  @keyframes byStep { 0%,100% { opacity:.45 } 50% { opacity:1 } }
+</style>
+</helmet>
+<sc-if value="{{ isIntro }}" hint-placeholder-val="{{ true }}">
+<div style="height:100vh;overflow:auto;background:#F7F7EF;color:#14170F">
+  <div style="max-width:1180px;margin:0 auto;padding:34px 48px 56px;display:flex;flex-direction:column;min-height:100vh">
+
+    <div style="display:flex;align-items:center;gap:12px;animation:byFadeIn 420ms ease-out both">
+      <span style="width:24px;height:24px;border-radius:7px;background:#C8F068;overflow:hidden;position:relative;flex-shrink:0"><span style="position:absolute;right:-6px;bottom:-6px;width:19px;height:19px;border-radius:50%;background:#14170F"></span></span>
+      <span style="font-size:17px;font-family:'Space Grotesk',sans-serif;font-weight:700;letter-spacing:-0.02em">_beyond</span>
+      <span style="display:flex;align-items:center;gap:7px;padding-left:13px;margin-left:2px;border-left:1px solid #D3D3C4">
+        <span style="font-size:10.5px;font-weight:500;color:#6B6B61;letter-spacing:0.02em">by</span>
+        <span style="width:48px;height:12.5px;background:#14170F;-webkit-mask:url(../beyond-ds/assets/opeaz-wordmark.svg) no-repeat left center/contain;mask:url(../beyond-ds/assets/opeaz-wordmark.svg) no-repeat left center/contain" role="img" aria-label="Opeaz"></span>
+      </span>
+      
+    </div>
+
+    <div style="margin-top:64px;max-width:820px;animation:byFadeIn 480ms ease-out 60ms both">
+      
+      
+      <h1 style="font-size:56px;font-weight:800;letter-spacing:-0.035em;line-height:1.03;margin:18px 0 0;text-wrap:balance">Everything you want<br>to know <span style="color:#B9E353">in one</span> <span style="position:relative;display:inline-block;color:rgba(20,23,15,.45)">place<svg viewBox="0 0 120 24" preserveAspectRatio="none" style="position:absolute;left:-5%;top:46%;width:110%;height:20px;overflow:visible;pointer-events:none;animation:byPen 620ms cubic-bezier(.16,1,.3,1) 430ms both"><path d="M2,14 C22,7 44,17 64,10 C82,4 100,13 118,8" fill="none" stroke="#A5CE3C" stroke-width="3.2" stroke-linecap="round" stroke-dasharray="132 8" style="animation:byInk 6s ease-in-out 1120ms infinite"></path></svg></span> <span style="color:#B9E353">lake.</span></h1><p style="font-size:16px;line-height:1.65;color:#6B6B61;margin:18px 0 0;max-width:620px">Connect whatever you have. <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;letter-spacing:-0.02em;color:#14170F">_beyond</span> reads it, makes the numbers comparable, and hands you a cockpit you can question. It never writes back to a source.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:46px">
+
+      <div class="by-basin">
+        <div style="position:relative;overflow:hidden;border-radius:18px;background:#C8F068;padding:26px 26px 24px;min-height:330px;display:flex;flex-direction:column">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between">
+          <span style="font-size:96px;font-weight:800;letter-spacing:-0.05em;line-height:.85;font-variant-numeric:tabular-nums">01</span>
+          <span style="font-size:10px;font-weight:700;letter-spacing:0.12em;padding:5px 11px;border-radius:100px;border:1px solid rgba(20,23,15,.28)">CONNECT</span>
+        </div>
+        <div style="margin-top:auto">
+          <div style="font-size:20px;font-weight:800;letter-spacing:-0.02em;line-height:1.2">Plug in anything. Really, anything.</div>
+          <p style="font-size:13px;line-height:1.6;color:rgba(20,23,15,.72);margin:9px 0 0">Partner portals, wholesaler feeds, an SFTP folder, your mailbox, a spreadsheet nobody has cleaned, a photo of a delivery note. Nothing is too messy to hand over.</p>
+        </div>
+        </div>
+        <div class="by-veil by-d1" aria-hidden="true"></div>
+        <div class="by-crest by-crest-water by-d1" aria-hidden="true"></div>
+      </div>
+
+      <div class="by-basin">
+        <div data-comment-anchor="347f66cbb9-div" style="position:relative;overflow:hidden;border-radius:18px;background:linear-gradient(160deg,#9FD1F2,#5B9BD9);color:#0B2233;padding:26px 26px 24px;min-height:330px;display:flex;flex-direction:column">
+        <svg viewBox="0 0 300 120" preserveAspectRatio="none" style="position:absolute;left:0;right:0;bottom:96px;width:100%;height:120px;opacity:.5;animation:byBob 9s ease-in-out infinite">
+          <g fill="none" stroke="rgba(255,255,255,.7)" stroke-width="1.6" stroke-linecap="round">
+            <path d="M18,26 q14,-10 28,0 t28,0" style="animation:byDrift 11s ease-in-out infinite"></path>
+            <path d="M120,64 q14,-10 28,0 t28,0" style="animation:byDrift 14s ease-in-out infinite -3s"></path>
+            <path d="M42,92 q14,-10 28,0 t28,0" style="animation:byDrift 13s ease-in-out infinite -6s"></path>
+            <path d="M196,22 q14,-10 28,0 t28,0" style="animation:byDrift 15s ease-in-out infinite -2s"></path>
+            <path d="M212,96 q14,-10 28,0 t28,0" style="animation:byDrift 12s ease-in-out infinite -8s"></path>
+          </g>
+        </svg>
+        <div style="position:relative;display:flex;align-items:flex-start;justify-content:space-between">
+          <span style="font-size:96px;font-weight:800;letter-spacing:-0.05em;line-height:.85;font-variant-numeric:tabular-nums;color:#FFFFFF">02</span>
+          <span style="font-size:10px;font-weight:700;letter-spacing:0.12em;padding:5px 11px;border-radius:100px;border:1px solid rgba(255,255,255,.65);color:#FFFFFF">DIGEST</span>
+        </div>
+        <div style="position:relative;margin-top:auto">
+          <div style="font-size:20px;font-weight:800;letter-spacing:-0.02em;line-height:1.2">We digest it until it compares.</div>
+          <p style="font-size:13px;line-height:1.6;color:rgba(11,34,51,.82);margin:9px 0 0">Four names for one product become one product. Euros become XOF, Paris time becomes Abidjan time. It all lands in <b style="color:#FFFFFF;font-weight:700">your own lake</b>, one private body of data that only you read from.</p>
+        </div>
+        </div>
+        <div class="by-veil by-d2" aria-hidden="true"></div>
+        <div class="by-crest by-crest-lime by-d2" aria-hidden="true"></div>
+      </div>
+
+      <div class="by-basin">
+        <div style="position:relative;overflow:hidden;border-radius:18px;background:#14170F;color:#F7F7EF;padding:26px 26px 24px;min-height:330px;display:flex;flex-direction:column">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between">
+          <span style="font-size:96px;font-weight:800;letter-spacing:-0.05em;line-height:.85;font-variant-numeric:tabular-nums;color:#C8F068">03</span>
+          <span style="font-size:10px;font-weight:700;letter-spacing:0.12em;padding:5px 11px;border-radius:100px;border:1px solid rgba(247,247,239,.35)">COCKPIT</span>
+        </div>
+        <div style="margin-top:auto">
+          <div style="font-size:20px;font-weight:800;letter-spacing:-0.02em;line-height:1.2">Ask anything. Watch what matters.</div>
+          <p style="font-size:13px;line-height:1.6;color:rgba(247,247,239,.7);margin:9px 0 0">Ask a question in plain language and get the answer with its sources and its method. Keep the ones worth following, and <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;letter-spacing:-0.02em;color:#F7F7EF">_beyond</span> refreshes them on every import.</p>
+        </div>
+        </div>
+        <div class="by-veil by-d3" aria-hidden="true"></div>
+        <div class="by-crest by-crest-lime by-d3" aria-hidden="true"></div>
+      </div>
+
+    </div>
+
+    <div style="display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin-top:38px;padding-top:24px;border-top:1px solid #E5E5DA;animation:byRise 520ms cubic-bezier(.16,1,.3,1) 1600ms both">
+      <button onClick="{{ goHome }}" class="by-cta" style="padding:14px 26px;border-radius:100px;border:none;background:#C8F068;color:#14170F;font-size:14px;font-weight:800;letter-spacing:-0.01em" style-hover="background:#B6E44E">Ask your first question <span class="by-arrow">→</span></button>
+      <span style="margin-left:auto;font-size:11px;color:#6B6B61;max-width:340px;text-align:right;text-wrap:pretty"><span style="font-family: &quot;Space Grotesk&quot;, sans-serif; font-weight: 700; letter-spacing: -0.02em; color: rgb(20, 23, 15);">_beyond </span>is a registered trademark of Opeaz LTD<br></span>
+    </div>
+
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isApp }}">
+<div style="display:grid;grid-template-columns:250px 1fr;height:100vh;overflow:hidden;background:#FFFFFF;font-size:13px;line-height:1.55">
+
+  <aside style="display:flex;flex-direction:column;gap:18px;padding:24px 0 16px;background:#F7F7EF;border-right:1px solid #E5E5DA;overflow:hidden">
+    <div style="display:flex;align-items:center;gap:9px;padding:0 20px">
+      <span style="width:22px;height:22px;border-radius:6px;background:#C8F068;overflow:hidden;position:relative;flex-shrink:0"><span style="position:absolute;right:-5px;bottom:-5px;width:17px;height:17px;border-radius:50%;background:#14170F"></span></span>
+      <span style="font-size:16px;font-family:'Space Grotesk',sans-serif;font-weight:700;letter-spacing:-0.02em">_beyond</span>
+    </div>
+
+    <div style="padding:0 20px">
+      <button onClick="{{ goHome }}" style="display:flex;align-items:center;gap:8px;width:100%;padding:10px 14px;border-radius:100px;border:none;background:#C8F068;color:#14170F;font-size:12.5px;font-weight:800;letter-spacing:-0.01em" style-hover="background:#B6E44E">Ask</button>
+    </div>
+
+    <div style="display:flex;flex-direction:column;flex:1;min-height:0">
+      <div style="font-size:9.5px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#6B6B61;padding:0 20px 8px">Your questions</div>
+      <div style="flex:1;min-height:0;overflow:auto;padding-bottom:8px">
+        <sc-for list="{{ threads }}" as="t" hint-placeholder-count="7">
+          <div>
+            <sc-if value="{{ t.isHeader }}">
+              <div style="font-size:9.5px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#A3A399;padding:12px 20px 5px">{{ t.label }}</div>
+            </sc-if>
+            <sc-if value="{{ t.isRow }}" hint-placeholder-val="{{ true }}">
+              <button class="by-row" onClick="{{ t.open }}" aria-current="{{ t.cur }}" style="display:block;width:100%;text-align:left;padding:8px 20px;border:none;border-left:2px solid {{ t.edge }};background:{{ t.bg }};font:inherit">
+                <span style="display:flex;align-items:center;gap:7px">
+                  <sc-if value="{{ t.byYou }}" hint-placeholder-val="{{ true }}">
+                    <span style="width:5px;height:5px;border-radius:50%;background:{{ t.dot }};flex-shrink:0"></span>
+                  </sc-if>
+                  <sc-if value="{{ t.byBeyond }}">
+                    <svg viewBox="0 0 10 10" aria-hidden="true" style="width:9px;height:9px;margin:0 -2px;flex-shrink:0;overflow:visible"><path d="M5 0 L6.05 3.95 L10 5 L6.05 6.05 L5 10 L3.95 6.05 L0 5 L3.95 3.95 Z" fill="{{ t.dot }}"></path></svg>
+                  </sc-if>
+                  <span style="font-size:12px;font-weight:{{ t.w }};color:{{ t.fg }};overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0">{{ t.q }}</span>
+                </span>
+                <span style="display:block;font-size:10px;color:#A3A399;padding-left:12px;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ t.meta }}</span>
+              </button>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;border-top:1px solid #E5E5DA;padding-top:10px">
+      <button onClick="{{ goCockpit }}" aria-current="{{ nav.cockpit.cur }}" style="display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:9px 20px;border:none;background:{{ nav.cockpit.bg }};border-left:2px solid {{ nav.cockpit.edge }};font-size:13px;font-weight:{{ nav.cockpit.w }};color:{{ nav.cockpit.fg }}">Cockpit<span style="margin-left:auto;font-size:10.5px;color:{{ alertColor }};font-weight:700;font-variant-numeric:tabular-nums">{{ alertBadge }}</span></button>
+      <button onClick="{{ goSettings }}" aria-current="{{ nav.settings.cur }}" style="display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:9px 20px;border:none;background:{{ nav.settings.bg }};border-left:2px solid {{ nav.settings.edge }};font-size:13px;font-weight:{{ nav.settings.w }};color:{{ nav.settings.fg }}">Settings<span style="margin-left:auto;font-size:11px;color:#6B6B61;font-variant-numeric:tabular-nums">{{ connCount }}</span></button>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:12px;padding:0 20px">
+      
+      <div style="display:flex;align-items:center;gap:9px">
+        <span style="width:24px;height:24px;border-radius:50%;background:#14170F;color:#fff;font-size:9px;font-weight:700;display:grid;place-items:center">TS</span>
+        <span style="min-width:0">
+          <span style="display:block;font-size:11.5px;font-weight:600">Tom Smith</span>
+          <span style="display:block;font-size:10px;color:#6B6B61">Norwell Pharma · West Africa</span>
+        </span>
+      </div>
+    </div>
+  </aside>
+
+  <main style="display:flex;flex-direction:column;overflow:hidden">
+    <div style="flex-shrink:0;height:52px;display:flex;align-items:center;gap:16px;padding:0 40px;border-bottom:1px solid {{ topRule }}">
+      <div style="font-size:12px;font-weight:600;color:#14170F">{{ crumb }}</div>
+      
+      
+    </div>
+
+    <div style="flex:1;overflow:auto;position:relative">
+
+      <!-- ============================ ASK, the front door ============================ -->
+      <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+      <div style="min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:56px 44px 48px;animation:byFade 160ms ease-out">
+        <div style="width:100%;max-width:660px;display:flex;flex-direction:column;align-items:center">
+          <div style="display:flex;align-items:center;gap:16px">
+            <span style="width:44px;height:44px;border-radius:13px;background:#C8F068;overflow:hidden;position:relative;flex-shrink:0"><span style="position:absolute;right:-10px;bottom:-10px;width:34px;height:34px;border-radius:50%;background:#14170F"></span></span>
+            <div style="font-size:38px;font-family:'Space Grotesk',sans-serif;font-weight:700;letter-spacing:-0.03em">_beyond</div>
+          </div>
+          <div class="by-box" style="position:relative;width:100%;margin-top:30px;background:#fff;border:1.5px solid #D3D3C4;border-radius:16px">
+            <input id="by-ask" value="{{ draft }}" onInput="{{ setDraft }}" onKeyDown="{{ askKey }}" placeholder="{{ askPlaceholder }}" aria-label="Ask about the measured market" style="width:100%;background:transparent;border:none;border-radius:16px;padding:19px 62px 19px 22px;font-size:15px;outline:none;color:#14170F">
+            <button onClick="{{ askSend }}" aria-label="Ask" style="position:absolute;right:9px;top:50%;transform:translateY(-50%);width:38px;height:38px;border-radius:10px;background:{{ askBg }};border:none;display:grid;place-items:center;color:#14170F;font-size:15px;font-weight:700;cursor:{{ askCursor }}">→</button>
+          </div>
+
+          
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ============================ THE CONVERSATION ============================ -->
+      <sc-if value="{{ isChat }}">
+      <div style="display:flex;flex-direction:column;height:100%;animation:byFade 160ms ease-out">
+        <div style="flex:1;overflow:auto">
+          <div style="max-width:860px;margin:0 auto;padding:34px 44px 30px">
+
+            <sc-for list="{{ thread }}" as="m" hint-placeholder-count="4">
+            <div style="margin-bottom:26px">
+
+              <sc-if value="{{ m.isUser }}">
+                <div style="display:flex;justify-content:flex-end">
+                  <div style="max-width:540px;background:#F7F7EF;border:1px solid #E5E5DA;border-radius:12px 12px 4px 12px;padding:14px 18px;font-size:13.5px;line-height:1.55">{{ m.text }}</div>
+                </div>
+              </sc-if>
+
+              <sc-if value="{{ m.isBeyondAsk }}">
+                <div style="display:flex;justify-content:flex-start">
+                  <div style="max-width:560px;background:#14170F;color:#F7F7EF;border-radius:12px 12px 12px 4px;padding:15px 19px">
+                    <div style="font-size:9.5px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#C8F068">Asked for you</div>
+                    <div style="font-size:13.5px;line-height:1.55;margin-top:8px">{{ m.text }}</div>
+                    <div style="font-size:11.5px;line-height:1.65;color:rgba(247,247,239,.72);margin-top:9px">{{ m.why }}</div>
+                  </div>
+                </div>
+              </sc-if>
+
+              <sc-if value="{{ m.isTrace }}">
+                
+              </sc-if>
+
+              <sc-if value="{{ m.isAnswer }}" hint-placeholder-val="{{ true }}">
+                <div style="max-width:700px">
+                  <h2 style="font-size:24px;font-weight:800;letter-spacing:-0.025em;line-height:1.2;margin:0">{{ m.head }} <span style="color:#5F7A12">{{ m.headAccent }}</span></h2>
+                  <p style="font-size:13.5px;line-height:1.7;color:#6B6B61;margin:12px 0 24px">{{ m.body }}</p>
+                </div>
+                <div style="border-top:2px solid #14170F;padding-top:14px">
+                  <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:14px">
+                    <div style="font-size:12.5px;font-weight:700">{{ m.chartTitle }}</div>
+                    <div style="display:flex;gap:8px">
+                      <button onClick="{{ toggleWatch }}" style="padding:5px 11px;border-radius:6px;border:1px solid {{ watchBorder }};background:{{ watchBg }};font-size:11px;font-weight:700;color:{{ watchFg }};white-space:nowrap">{{ watchLabel }}</button>
+                      <button style="padding:5px 11px;border-radius:6px;border:1px solid #D3D3C4;background:#fff;font-size:11px;font-weight:600;color:#6B6B61">Export</button>
+                    </div>
+                  </div>
+              <sc-if value="{{ m.chart.isBars }}">
+                <svg viewBox="0 0 100 46" preserveAspectRatio="none" role="img" aria-label="{{ m.chartTitle }}" style="display:block;width:100%;height:170px">
+                  <sc-for list="{{ m.chart.bars }}" as="b" hint-placeholder-count="8">
+                    <rect x="{{ b.x }}" y="{{ b.y }}" width="{{ b.w }}" height="{{ b.h }}" fill="{{ b.c }}"></rect>
+                  </sc-for>
+                </svg>
+                <div style="display:flex;justify-content:space-between;margin-top:7px">
+                  <sc-for list="{{ m.chart.axis }}" as="a" hint-placeholder-count="8">
+                    <span style="font-size:10px;color:#6B6B61">{{ a.t }}</span>
+                  </sc-for>
+                </div>
+              </sc-if>
+              <sc-if value="{{ m.chart.isDonut }}">
+                <div style="display:flex;align-items:center;gap:36px;flex-wrap:wrap">
+                  <svg viewBox="0 0 40 40" role="img" aria-label="{{ m.chartTitle }}" style="width:170px;height:170px;flex-shrink:0">
+                    <g transform="rotate(-90 20 20)">
+                      <sc-for list="{{ m.chart.ring }}" as="r" hint-placeholder-count="4">
+                        <circle cx="20" cy="20" r="16" fill="none" stroke="{{ r.c }}" stroke-width="7" stroke-dasharray="{{ r.dash }}" stroke-dashoffset="{{ r.off }}"></circle>
+                      </sc-for>
+                    </g>
+                  </svg>
+                  <div style="display:flex;flex-direction:column;gap:9px;flex:1;min-width:180px">
+                    <sc-for list="{{ m.chart.legend }}" as="l" hint-placeholder-count="4">
+                      <div style="display:flex;align-items:center;gap:9px;font-size:12px;color:#6B6B61;padding-bottom:8px;border-bottom:1px solid #EFEFE4"><span style="width:9px;height:9px;border-radius:2px;background:{{ l.c }};flex-shrink:0"></span><span style="min-width:0">{{ l.t }}</span><span style="margin-left:auto;font-size:13px;font-weight:700;color:#14170F;font-variant-numeric:tabular-nums">{{ l.v }}</span></div>
+                    </sc-for>
+                  </div>
+                </div>
+              </sc-if>
+              <sc-if value="{{ m.chart.isLine }}">
+                <svg viewBox="0 0 100 46" preserveAspectRatio="none" role="img" aria-label="{{ m.chartTitle }}" style="display:block;width:100%;height:170px">
+                  <polyline points="{{ m.chart.pts }}" fill="none" stroke="{{ m.chart.stroke }}" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"></polyline>
+                </svg>
+                <div style="display:flex;justify-content:space-between;margin-top:7px">
+                  <sc-for list="{{ m.chart.axis }}" as="a" hint-placeholder-count="4">
+                    <span style="font-size:10px;color:#6B6B61">{{ a.t }}</span>
+                  </sc-for>
+                </div>
+              </sc-if>
+              <sc-if value="{{ m.chart.isArea }}">
+                <svg viewBox="0 0 100 46" preserveAspectRatio="none" role="img" aria-label="{{ m.chartTitle }}" style="display:block;width:100%;height:170px">
+                  <path d="{{ m.chart.fillD }}" fill="{{ m.chart.fill }}"></path>
+                  <polyline points="{{ m.chart.pts }}" fill="none" stroke="{{ m.chart.stroke }}" stroke-width="2.4" stroke-linejoin="round" vector-effect="non-scaling-stroke"></polyline>
+                </svg>
+                <div style="display:flex;justify-content:space-between;margin-top:7px">
+                  <sc-for list="{{ m.chart.axis }}" as="a" hint-placeholder-count="4">
+                    <span style="font-size:10px;color:#6B6B61">{{ a.t }}</span>
+                  </sc-for>
+                </div>
+              </sc-if>
+              <sc-if value="{{ m.chart.isHbars }}" hint-placeholder-val="{{ true }}">
+                <sc-for list="{{ m.chart.rows }}" as="d" hint-placeholder-count="5">
+                  <div style="display:grid;grid-template-columns:124px 1fr 60px;gap:14px;align-items:center;padding:8px 0;border-bottom:1px solid #EFEFE4">
+                    <div style="min-width:0">
+                      <div style="font-size:12px;font-weight:500">{{ d.name }}</div>
+                      <div style="font-size:10px;color:#6B6B61;margin-top:1px">{{ d.note }}</div>
+                    </div>
+                    <div style="position:relative;height:16px">
+                      <div style="position:absolute;inset:0;background:#EFEFE4;border-radius:3px"></div>
+                      <div style="position:absolute;top:0;bottom:0;left:{{ d.left }};width:{{ d.w }};background:{{ d.color }};border-radius:3px"></div>
+                      <sc-if value="{{ m.chart.showZero }}"><div style="position:absolute;top:-3px;bottom:-3px;left:{{ m.chart.zeroAt }};width:1px;background:#14170F"></div></sc-if>
+                    </div>
+                    <div style="font-size:12px;font-weight:700;text-align:right;font-variant-numeric:tabular-nums;color:{{ d.color }}">{{ d.v }}</div>
+                  </div>
+                </sc-for>
+                <sc-if value="{{ m.chart.showZero }}">
+                <div style="display:grid;grid-template-columns:124px 1fr 60px;gap:14px;margin-top:7px">
+                  <span></span>
+                  <span style="position:relative;display:block;font-size:10px;color:#6B6B61"><span style="position:absolute;left:{{ m.chart.zeroAt }};transform:translateX(-50%);white-space:nowrap">0</span></span>
+                  <span></span>
+                </div>
+                </sc-if>
+              </sc-if>
+              <sc-if value="{{ m.chart.isDots }}">
+                <sc-for list="{{ m.chart.rows }}" as="d" hint-placeholder-count="5">
+                  <div style="display:grid;grid-template-columns:124px 1fr 60px;gap:14px;align-items:center;padding:9px 0;border-bottom:1px solid #EFEFE4">
+                    <div style="min-width:0">
+                      <div style="font-size:12px;font-weight:500">{{ d.name }}</div>
+                      <div style="font-size:10px;color:#6B6B61;margin-top:1px">{{ d.note }}</div>
+                    </div>
+                    <div style="position:relative;height:14px">
+                      <div style="position:absolute;left:0;right:0;top:6px;height:1px;background:#EFEFE4"></div>
+                      <div style="position:absolute;top:1px;left:{{ d.left }};width:12px;height:12px;border-radius:50%;background:{{ d.color }};margin-left:-6px"></div>
+                    </div>
+                    <div style="font-size:12px;font-weight:700;text-align:right;font-variant-numeric:tabular-nums;color:{{ d.color }}">{{ d.v }}</div>
+                  </div>
+                </sc-for>
+              </sc-if>
+                </div>
+                <div style="display:grid;grid-template-columns:96px 1fr;gap:18px;padding:14px 0;border-top:1px solid #E5E5DA;border-bottom:1px solid #E5E5DA;margin-top:22px">
+                  <div style="font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#6B6B61">Method</div>
+                  <div style="font-size:11.5px;line-height:1.6;color:#6B6B61">{{ m.method }}</div>
+                </div>
+              </sc-if>
+
+              <!-- _beyond argues with the question -->
+              <sc-if value="{{ m.isChallenge }}">
+                <div style="border:1px solid #14170F;border-radius:14px;overflow:hidden">
+                  <div style="background:#14170F;color:#F7F7EF;padding:15px 20px 16px">
+                    <div style="font-size:9.5px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#C8F068">{{ m.kicker }}</div>
+                    <div style="font-size:18px;font-weight:800;letter-spacing:-0.02em;line-height:1.3;margin-top:8px">{{ m.head }}</div>
+                    <div style="font-size:12.5px;line-height:1.65;color:rgba(247,247,239,.74);margin-top:8px;max-width:600px">{{ m.body }}</div>
+                  </div>
+                  <div style="background:#fff;padding:14px 20px;display:flex;flex-wrap:wrap;align-items:center;gap:10px">
+                    <button onClick="{{ m.cta }}" style="padding:10px 18px;border-radius:100px;border:none;background:#C8F068;color:#14170F;font-size:12.5px;font-weight:800" style-hover="background:#B6E44E">{{ m.ctaLabel }}</button>
+                    <button onClick="{{ m.alt }}" style="padding:10px 16px;border-radius:100px;border:1px solid #D3D3C4;background:#fff;font-size:12.5px;font-weight:600;color:#14170F" style-hover="border-color:#14170F">{{ m.altLabel }}</button>
+                    
+                  </div>
+                </div>
+              </sc-if>
+
+              <!-- coverage is thin: _beyond asks before it acts -->
+              <sc-if value="{{ m.isExpand }}">
+                <div style="border:1px solid #D3D3C4;border-radius:14px;background:#fff;padding:18px 20px">
+                  <div style="display:flex;align-items:center;gap:9px">
+                    <span style="font-size:9.5px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#9A5C0F">{{ m.kicker }}</span>
+                    <span style="height:1px;flex:1;background:#E5E5DA"></span>
+                  </div>
+                  <div style="font-size:17px;font-weight:800;letter-spacing:-0.02em;line-height:1.3;margin-top:10px">{{ m.head }}</div>
+                  <div style="font-size:12.5px;line-height:1.65;color:#6B6B61;margin-top:8px;max-width:620px">{{ m.body }}</div>
+                  <div style="display:flex;flex-direction:column;gap:0;margin-top:16px;border-top:1px solid #E5E5DA">
+                    <sc-for list="{{ m.rows }}" as="r" hint-placeholder-count="3">
+                      <div style="display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:12px;align-items:baseline;padding:11px 0;border-bottom:1px solid #E5E5DA">
+                        <div style="font-size:10.5px;font-weight:700;color:#A3A399;font-variant-numeric:tabular-nums">{{ r.n }}</div>
+                        <div style="min-width:0">
+                          <div style="font-size:12.5px;font-weight:600">{{ r.head }}</div>
+                          <div style="font-size:11px;color:#6B6B61;margin-top:3px">{{ r.note }}</div>
+                        </div>
+                        <div style="font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:{{ r.tagFg }};white-space:nowrap">{{ r.tag }}</div>
+                      </div>
+                    </sc-for>
+                  </div>
+                  <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:16px">
+                    <button onClick="{{ m.cta }}" style="padding:10px 18px;border-radius:100px;border:none;background:#C8F068;color:#14170F;font-size:12.5px;font-weight:800" style-hover="background:#B6E44E">{{ m.ctaLabel }}</button>
+                    <button onClick="{{ m.alt }}" style="padding:10px 16px;border-radius:100px;border:1px solid #D3D3C4;background:#fff;font-size:12.5px;font-weight:600;color:#14170F" style-hover="border-color:#14170F">{{ m.altLabel }}</button>
+                    <span style="font-size:10.5px;color:#A3A399;margin-left:auto;max-width:320px;text-align:right;text-wrap:pretty">{{ m.note }}</span>
+                  </div>
+                </div>
+              </sc-if>
+
+              <!-- what the expansion actually did -->
+              <sc-if value="{{ m.isExpanded }}">
+                <div style="border-left:3px solid #C8F068;padding:2px 0 2px 16px">
+                  <div style="font-size:9.5px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#5F7A12">{{ m.kicker }}</div>
+                  <div style="display:flex;flex-direction:column;gap:7px;margin-top:10px">
+                    <sc-for list="{{ m.rows }}" as="r" hint-placeholder-count="3">
+                      <div style="display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;align-items:baseline">
+                        <div style="font-size:12.5px;color:#14170F;min-width:0">{{ r.head }}</div>
+                        <div style="font-size:10.5px;font-weight:700;color:{{ r.tagFg }};white-space:nowrap">{{ r.tag }}</div>
+                      </div>
+                    </sc-for>
+                  </div>
+                  <div style="font-size:11.5px;line-height:1.6;color:#6B6B61;margin-top:12px;max-width:600px">{{ m.foot }}</div>
+                </div>
+              </sc-if>
+
+              <!-- the agent writes to its own memory, and shows you what it wrote -->
+              <sc-if value="{{ m.isMemory }}">
+                <div style="border:1px solid #C8F068;border-radius:14px;background:#FBFEF3;padding:18px 20px">
+                  <div style="display:flex;align-items:center;gap:10px">
+                    <span style="width:18px;height:18px;border-radius:5px;background:#C8F068;overflow:hidden;position:relative;flex-shrink:0"><span style="position:absolute;right:-4px;bottom:-4px;width:14px;height:14px;border-radius:50%;background:#14170F"></span></span>
+                    <span style="font-size:9.5px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#5F7A12">{{ m.kicker }}</span>
+                    <span style="margin-left:auto;font-size:10.5px;color:#6B6B61">{{ m.when }}</span>
+                  </div>
+                  <div style="font-size:16.5px;font-weight:800;letter-spacing:-0.02em;line-height:1.35;margin-top:11px;max-width:600px">{{ m.head }}</div>
+                  <div style="display:flex;flex-direction:column;margin-top:14px;border-top:1px solid #E5E5DA">
+                    <sc-for list="{{ m.rows }}" as="r" hint-placeholder-count="3">
+                      <div style="display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;align-items:baseline;padding:11px 0;border-bottom:1px solid #E5E5DA">
+                        <div style="min-width:0">
+                          <div style="font-size:12.5px;font-weight:600;text-wrap:pretty">{{ r.head }}</div>
+                          <div style="font-size:11px;color:#6B6B61;margin-top:3px">{{ r.note }}</div>
+                        </div>
+                        <button onClick="{{ r.forget }}" style="padding:4px 11px;border-radius:100px;border:1px solid #D3D3C4;background:#fff;font-size:10.5px;font-weight:700;color:{{ r.btnFg }};white-space:nowrap" style-hover="border-color:#14170F">{{ r.btn }}</button>
+                      </div>
+                    </sc-for>
+                  </div>
+                  <div style="font-size:11px;line-height:1.6;color:#6B6B61;margin-top:12px">{{ m.foot }}</div>
+                </div>
+              </sc-if>
+
+              <sc-if value="{{ m.isNone }}">
+                <div style="max-width:680px;border-top:2px solid #14170F;padding-top:18px">
+                  <h2 style="font-size:20px;font-weight:800;letter-spacing:-0.02em;line-height:1.3;margin:0">No sourced read for that question yet.</h2>
+                  <p style="font-size:13.5px;line-height:1.7;color:#6B6B61;margin:10px 0 0">This prototype runs on a handful of measured reads. Everything else would be a number without a source, and <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;letter-spacing:-0.02em;color:#14170F">_beyond</span> does not publish those. Pick one below, or connect the source that would answer it.</p>
+                </div>
+              </sc-if>
+
+            </div>
+            </sc-for>
+
+            
+
+            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:20px">
+              <sc-for list="{{ followUps }}" as="f" hint-placeholder-count="4">
+                <button onClick="{{ f.ask }}" style="padding:8px 14px;border-radius:20px;border:1px solid #D3D3C4;background:#fff;font-size:12px;font-weight:500;color:#14170F;text-align:left" style-hover="border-color:#14170F;background:#F7F7EF">{{ f.t }}</button>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+        <div style="flex-shrink:0;padding:18px 44px 22px;border-top:1px solid #E5E5DA;background:#fff">
+          <div style="max-width:860px;margin:0 auto;position:relative">
+            <input id="by-ask-chat" value="{{ draft }}" onInput="{{ setDraft }}" onKeyDown="{{ askKey }}" placeholder="Ask a follow-up" aria-label="Ask a follow-up" style="width:100%;background:#F7F7EF;border:1.5px solid #E5E5DA;border-radius:10px;padding:14px 56px 14px 18px;font-size:13.5px;outline:none;color:#14170F">
+            <button onClick="{{ askSend }}" aria-label="Ask" style="position:absolute;right:7px;top:50%;transform:translateY(-50%);width:34px;height:34px;border-radius:8px;background:{{ askBg }};border:none;display:grid;place-items:center;color:#14170F;font-size:14px;font-weight:700;cursor:{{ askCursor }}">→</button>
+          </div>
+          <div style="max-width:860px;margin:8px auto 0;font-size:10.5px;color:#6B6B61;text-align:center">Answers are read from the lake. <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;letter-spacing:-0.02em;color:#14170F">_beyond</span> does not write to your sources.</div>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ============================ COCKPIT ============================ -->
+      <sc-if value="{{ isCockpit }}">
+      <div style="display:flex;flex-direction:column;min-height:100%;animation:byFade 160ms ease-out">
+        <div style="flex:1;padding:34px 44px 40px">
+
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:24px">
+            <div style="max-width:620px">
+              <div style="font-size:10.5px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#6B6B61">WEDNESDAY 26 AUGUST 2026</div>
+              <h1 style="font-size:30px;font-weight:800;letter-spacing:-0.025em;line-height:1.2;margin:10px 0 0">Six graphs <span style="color:#5F7A12">you don't have to ask for.</span></h1>
+              
+            </div>
+            <div style="text-align:right;flex-shrink:0">
+              <div style="font-size:10.5px;color:#6B6B61">recomputed 14 min ago</div>
+              
+            </div>
+          </div>
+
+          <button onClick="{{ openAlert }}" style="display:flex;flex-wrap:wrap;align-items:center;gap:14px;width:100%;text-align:left;margin-top:24px;padding:15px 18px;border-radius:12px;border:1px solid #C0473F;background:rgba(192,71,63,.04);font:inherit;color:inherit" style-hover="background:rgba(192,71,63,.08)">
+            <span style="font-size:9.5px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#C0473F;white-space:nowrap">Alert fired · 2 h ago</span>
+            <span style="font-size:13.5px;font-weight:700;letter-spacing:-0.01em;min-width:0">Advil share in Cocody fell 11.4 % week on week.</span>
+            <span style="font-size:11.5px;color:#6B6B61">you asked to be told below −10 % · set 12 Aug</span>
+            <span style="margin-left:auto;font-size:12px;font-weight:700;color:#14170F;white-space:nowrap">why →</span>
+          </button>
+
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;margin-top:20px">
+            <sc-for list="{{ cockpitCards }}" as="c" hint-placeholder-count="6">
+              <button onClick="{{ c.open }}" style="text-align:left;border:1px solid {{ c.border }};border-radius:14px;background:#fff;padding:17px 19px 15px;display:flex;flex-direction:column;min-width:0;font:inherit;color:inherit;cursor:pointer;animation:{{ c.rise }}" style-hover="border-color:#14170F">
+                <span style="display:flex;align-items:center;gap:8px;width:100%">
+                  <span style="display:inline-flex;align-items:center;gap:5px;padding:0 9px;height:19px;border-radius:20px;background:{{ c.badgeBg }};border:1px solid {{ c.badgeBorder }};font-size:9px;line-height:1;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:{{ c.badgeFg }};white-space:nowrap">{{ c.badge }}</span>
+                  <span style="margin-left:auto;font-size:10px;color:#6B6B61;white-space:nowrap">{{ c.when }}</span>
+                </span>
+                <span style="display:block;font-size:13px;font-weight:700;letter-spacing:-0.01em;line-height:1.35;margin-top:11px;text-wrap:pretty">{{ c.title }}</span>
+                <span style="display:flex;align-items:baseline;gap:9px;margin-top:7px">
+                  <span style="font-size:27px;font-weight:800;letter-spacing:-0.025em;font-variant-numeric:tabular-nums">{{ c.v }}</span>
+                  <span style="font-size:12px;font-weight:800;font-variant-numeric:tabular-nums;color:{{ c.dc }};white-space:nowrap">{{ c.delta }}</span>
+                </span>
+          <span style="display:block;margin-top:12px">
+            <sc-if value="{{ c.chart.isBars }}">
+              <svg viewBox="0 0 100 46" preserveAspectRatio="none" role="img" aria-label="{{ c.title }}" style="display:block;width:100%;height:82px">
+                <sc-for list="{{ c.chart.bars }}" as="b" hint-placeholder-count="8">
+                  <rect x="{{ b.x }}" y="{{ b.y }}" width="{{ b.w }}" height="{{ b.h }}" fill="{{ b.c }}"></rect>
+                </sc-for>
+              </svg>
+              <span style="display:flex;justify-content:space-between;margin-top:5px">
+                <sc-for list="{{ c.chart.axis }}" as="a" hint-placeholder-count="8">
+                  <span style="font-size:8.5px;color:#6B6B61">{{ a.t }}</span>
+                </sc-for>
+              </span>
+            </sc-if>
+            <sc-if value="{{ c.chart.isDonut }}">
+              <span style="display:flex;align-items:center;gap:16px">
+                <svg viewBox="0 0 40 40" role="img" aria-label="{{ c.title }}" style="width:82px;height:82px;flex-shrink:0">
+                  <g transform="rotate(-90 20 20)">
+                    <sc-for list="{{ c.chart.ring }}" as="r" hint-placeholder-count="4">
+                      <circle cx="20" cy="20" r="16" fill="none" stroke="{{ r.c }}" stroke-width="7" stroke-dasharray="{{ r.dash }}" stroke-dashoffset="{{ r.off }}"></circle>
+                    </sc-for>
+                  </g>
+                </svg>
+                <span style="display:flex;flex-direction:column;gap:5px;flex:1;min-width:0">
+                  <sc-for list="{{ c.chart.legend }}" as="l" hint-placeholder-count="4">
+                    <span style="display:flex;align-items:center;gap:7px;font-size:10.5px;color:#6B6B61"><span style="width:7px;height:7px;border-radius:2px;background:{{ l.c }};flex-shrink:0"></span><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ l.t }}</span><span style="margin-left:auto;font-weight:700;color:#14170F;font-variant-numeric:tabular-nums">{{ l.v }}</span></span>
+                  </sc-for>
+                </span>
+              </span>
+            </sc-if>
+            <sc-if value="{{ c.chart.isLine }}">
+              <svg viewBox="0 0 100 46" preserveAspectRatio="none" role="img" aria-label="{{ c.title }}" style="display:block;width:100%;height:82px">
+                <polyline points="{{ c.chart.pts }}" fill="none" stroke="{{ c.chart.stroke }}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"></polyline>
+              </svg>
+              <span style="display:flex;justify-content:space-between;margin-top:5px">
+                <sc-for list="{{ c.chart.axis }}" as="a" hint-placeholder-count="4">
+                  <span style="font-size:8.5px;color:#6B6B61">{{ a.t }}</span>
+                </sc-for>
+              </span>
+            </sc-if>
+            <sc-if value="{{ c.chart.isArea }}">
+              <svg viewBox="0 0 100 46" preserveAspectRatio="none" role="img" aria-label="{{ c.title }}" style="display:block;width:100%;height:82px">
+                <path d="{{ c.chart.fillD }}" fill="{{ c.chart.fill }}"></path>
+                <polyline points="{{ c.chart.pts }}" fill="none" stroke="{{ c.chart.stroke }}" stroke-width="2" stroke-linejoin="round" vector-effect="non-scaling-stroke"></polyline>
+              </svg>
+              <span style="display:flex;justify-content:space-between;margin-top:5px">
+                <sc-for list="{{ c.chart.axis }}" as="a" hint-placeholder-count="4">
+                  <span style="font-size:8.5px;color:#6B6B61">{{ a.t }}</span>
+                </sc-for>
+              </span>
+            </sc-if>
+            <sc-if value="{{ c.chart.isHbars }}">
+              <span style="display:flex;flex-direction:column;gap:6px">
+                <sc-for list="{{ c.chart.rows }}" as="r" hint-placeholder-count="5">
+                  <span style="display:grid;grid-template-columns:68px 1fr 36px;gap:9px;align-items:center">
+                    <span style="font-size:10px;color:#6B6B61;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ r.name }}</span>
+                    <span style="position:relative;display:block;height:9px;background:#EFEFE4;border-radius:2px"><span style="position:absolute;top:0;bottom:0;left:{{ r.left }};width:{{ r.w }};background:{{ r.color }};border-radius:2px"></span></span>
+                    <span style="font-size:10px;font-weight:700;text-align:right;font-variant-numeric:tabular-nums;color:{{ r.color }}">{{ r.v }}</span>
+                  </span>
+                </sc-for>
+              </span>
+            </sc-if>
+            <sc-if value="{{ c.chart.isDots }}">
+              <span style="display:flex;flex-direction:column;gap:6px">
+                <sc-for list="{{ c.chart.rows }}" as="r" hint-placeholder-count="5">
+                  <span style="display:grid;grid-template-columns:68px 1fr 36px;gap:9px;align-items:center">
+                    <span style="font-size:10px;color:#6B6B61;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ r.name }}</span>
+                    <span style="position:relative;display:block;height:9px"><span style="position:absolute;left:0;right:0;top:4px;height:1px;background:#EFEFE4"></span><span style="position:absolute;top:0;left:{{ r.left }};width:9px;height:9px;border-radius:50%;background:{{ r.color }};margin-left:-4px"></span></span>
+                    <span style="font-size:10px;font-weight:700;text-align:right;font-variant-numeric:tabular-nums;color:{{ r.color }}">{{ r.v }}</span>
+                  </span>
+                </sc-for>
+              </span>
+            </sc-if>
+          </span>
+                <span style="display:block;font-size:10px;color:#6B6B61;margin-top:11px">{{ c.foot }}</span>
+                <span style="display:flex;align-items:center;gap:7px;margin-top:11px;padding-top:10px;border-top:1px solid #EFEFE4">
+                  <span style="width:5px;height:5px;border-radius:50%;background:{{ c.whyDot }};flex-shrink:0"></span>
+                  <span style="font-size:10.5px;color:#6B6B61;min-width:0;text-wrap:pretty">{{ c.why }}</span>
+                </span>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+        <div style="flex-shrink:0;padding:12px 44px;border-top:1px solid #E5E5DA;font-size:10.5px;color:#6B6B61">Nothing here was configured. Click any graph to open the conversation it came from.</div>
+      </div>
+      </sc-if>
+
+      <!-- ============================ SETTINGS: connect, digest, memory ============================ -->
+      <sc-if value="{{ isSettings }}">
+      <div style="display:flex;flex-direction:column;min-height:100%;animation:byFade 160ms ease-out">
+        <div style="flex-shrink:0;display:flex;align-items:center;gap:8px;padding:16px 44px 0">
+          <sc-for list="{{ setTabs }}" as="t" hint-placeholder-count="3">
+            <button onClick="{{ t.pick }}" aria-current="{{ t.cur }}" style="padding:8px 16px;border-radius:100px;border:1px solid {{ t.border }};background:{{ t.bg }};font-size:12px;font-weight:{{ t.w }};color:{{ t.fg }};white-space:nowrap">{{ t.label }}<span style="margin-left:7px;font-size:10.5px;color:{{ t.countFg }};font-variant-numeric:tabular-nums">{{ t.count }}</span></button>
+          </sc-for>
+          <span style="margin-left:auto;font-size:10.5px;color:#A3A399">the machine room · not where the decision maker works</span>
+        </div>
+
+        <sc-if value="{{ isConnectTab }}" hint-placeholder-val="{{ true }}">
+        <div style="flex-shrink:0;display:flex;align-items:center;gap:7px;padding:14px 44px 0">
+          <button onClick="{{ pickSourcesTab }}" style="padding:6px 13px;border-radius:100px;border:1px solid {{ subSourcesBorder }};background:#fff;font-size:11.5px;font-weight:{{ tabSourcesW }};color:{{ tabSourcesFg }}">Sources</button>
+          <button onClick="{{ pickDropTab }}" style="padding:6px 13px;border-radius:100px;border:1px solid {{ subDropBorder }};background:#fff;font-size:11.5px;font-weight:{{ tabDropW }};color:{{ tabDropFg }}">Drop zone</button>
+        </div>
+      <div style="display:flex;flex-direction:column;min-height:100%;animation:byFade 160ms ease-out">
+        <div style="flex:1;padding:38px 44px 36px">
+          <sc-if value="{{ isDropTab }}">
+          <div style="max-width:760px;margin:0 auto">
+            <div style="text-align:center;margin-top:14px">
+              <h1 style="font-size:24px;font-weight:800;letter-spacing:-0.02em;margin:0">Drop anything.</h1>
+              <div style="font-size:13px;color:#6B6B61;margin-top:8px;text-wrap:pretty">A spreadsheet, a PDF, a photo of a delivery note. <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;letter-spacing:-0.02em;color:#14170F">_beyond</span> reads it, works out what it is, and files it where it belongs in the lake.</div>
+            </div>
+            <button type="button" onClick="{{ startDrop }}" aria-label="Drop a file, or press Enter to browse" style="position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;margin-top:26px;width:100%;min-height:344px;padding:24px 22px;border:2px dashed {{ dzEdge }};border-radius:15px;background:{{ dzBg }};color:inherit;font:inherit;text-align:center;cursor:pointer" style-hover="border-color:#14170F;background:#FBFCF3">
+
+              <svg width="380" height="210" viewBox="0 0 380 210" aria-hidden="true" focusable="false" style="position:relative;overflow:hidden;flex-shrink:0">
+                <defs>
+                  <linearGradient id="dzWater" x1="0" y1="0" x2="0.25" y2="1">
+                    <stop offset="0" stop-color="#9FD1F2"></stop>
+                    <stop offset="1" stop-color="#5B9BD9"></stop>
+                  </linearGradient>
+                </defs>
+
+                <g style="transform-box:fill-box;transform-origin:center;opacity:{{ dzStoneOp }};animation:{{ dzStone }}">
+                  <path d="M163,28 C165,16 177,8 192,9 C208,10 219,18 220,30 C221,42 211,51 194,52 C177,53 164,46 162,36 C161,33 161,30 163,28 Z" fill="#6B6B61" stroke="#6B6B61" stroke-width="2.4" stroke-linejoin="round"></path>
+                </g>
+
+                <path d="M44,168 C39,153 63,142 93,139 C126,135 149,146 182,141 C213,136 248,133 278,139 C314,146 341,157 335,173 C330,188 291,197 235,200 C177,203 116,198 78,189 C55,183 47,175 44,168 Z" fill="url(#dzWater)" stroke="#C8F068" stroke-width="2.8" stroke-linejoin="round"></path>
+
+                <g fill="none" stroke="rgba(255,255,255,.55)" stroke-width="1.6" stroke-linecap="round">
+                  <path d="M76,160 q10,-7 20,0 t20,0"></path>
+                  <path d="M250,152 q10,-7 20,0 t20,0"></path>
+                  <path d="M142,184 q10,-7 20,0 t20,0"></path>
+                </g>
+
+                <g fill="none" stroke="rgba(255,255,255,.85)" stroke-width="1.7" style="opacity:{{ dzRippleOp }}">
+                  <ellipse cx="190" cy="143" rx="56" ry="17" style="transform-origin:190px 143px;animation:{{ dzRing1 }}"></ellipse>
+                  <ellipse cx="190" cy="143" rx="56" ry="17" style="transform-origin:190px 143px;animation:{{ dzRing2 }}"></ellipse>
+                  <ellipse cx="190" cy="143" rx="56" ry="17" style="transform-origin:190px 143px;animation:{{ dzRing3 }}"></ellipse>
+                </g>
+
+                <g style="opacity:{{ dzSplashOp }}">
+                  <g fill="none" stroke="#5B9BD9" stroke-width="3" stroke-linecap="round" style="transform-origin:190px 142px;animation:{{ dzCrown }}">
+                    <path d="M180,142 C171,134 164,130 156,127"></path>
+                    <path d="M187,141 C184,131 182,125 180,118"></path>
+                    <path d="M195,141 C199,131 202,126 205,119"></path>
+                    <path d="M202,142 C211,135 218,131 226,128"></path>
+                  </g>
+                  <circle cx="190" cy="140" r="3.4" fill="#5B9BD9" style="animation:{{ dzDropA }}"></circle>
+                  <circle cx="190" cy="140" r="3" fill="#5B9BD9" style="animation:{{ dzDropB }}"></circle>
+                  <circle cx="190" cy="140" r="2.6" fill="#7FB8E6" style="animation:{{ dzDropC }}"></circle>
+                </g>
+              </svg>
+
+              <sc-if value="{{ dzIdle }}" hint-placeholder-val="{{ true }}">
+                <span style="position:relative;font-size:14.5px;font-weight:800;letter-spacing:-0.01em">Drop a file here, or click to browse</span>
+                <span style="position:relative;font-size:11px;color:#6B6B61">xlsx · csv · pdf · docx · images · anything, really</span>
+              </sc-if>
+              <sc-if value="{{ dzMagic }}">
+                <span style="position:relative;font-size:15px;font-weight:800;letter-spacing:-0.01em;color:#14170F">We're working our magic</span>
+                <span style="position:relative;font-size:11.5px;color:#5F7A12;font-weight:700;animation:byPulseTxt 1.6s ease-in-out infinite">{{ dzStep }}</span>
+              </sc-if>
+              <sc-if value="{{ dzDone }}">
+                <span style="position:relative;display:inline-block;font-size:16px;font-weight:800;padding:3px 16px 5px">Filed.
+                  <svg viewBox="0 0 130 46" preserveAspectRatio="none" style="position:absolute;left:-12%;top:-24%;width:124%;height:150%;overflow:visible;pointer-events:none">
+                    <path d="M104,11 C88,3 44,1 23,9 C6,16 5,32 22,39 C41,47 90,45 107,36 C120,29 117,14 98,8" fill="none" stroke="#A5CE3C" stroke-width="3" stroke-linecap="round" vector-effect="non-scaling-stroke" stroke-dasharray="330" stroke-dashoffset="330" style="animation:byDraw 760ms ease-out 160ms forwards"></path>
+                  </svg>
+                </span>
+                <span style="position:relative;font-size:11.5px;color:#6B6B61">Read as sell-in, Bouaké wholesaler · 1 214 rows → sales, June 2026</span>
+              </sc-if>
+            </button>
+            <details style="margin-top:14px">
+              <summary style="font-size:12px;font-weight:600;color:#6B6B61;cursor:pointer;list-style:none">+ Add a note or instructions <span style="color:#6B6B61;font-weight:500">(optional)</span></summary>
+              <textarea placeholder="e.g. June figures from the Bouaké wholesaler, amounts are per carton" style="width:100%;box-sizing:border-box;margin-top:10px;min-height:72px;border:1px solid #E5E5DA;border-radius:10px;padding:12px 14px;font-family:inherit;font-size:12.5px;color:#14170F;resize:vertical;background:#fff"></textarea>
+            </details>
+            <div style="margin-top:34px">
+              <div style="display:flex;align-items:baseline;justify-content:space-between;border-bottom:2px solid #14170F;padding-bottom:8px">
+                <div style="font-size:13px;font-weight:800">Recently dropped</div>
+                <div style="font-size:10.5px;color:#6B6B61">what <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;letter-spacing:-0.02em;color:#14170F">_beyond</span> made of each file</div>
+              </div>
+              <sc-for list="{{ drops }}" as="d" hint-placeholder-count="3">
+                <div style="display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:14px;align-items:center;padding:13px 0;border-bottom:1px solid #E5E5DA">
+                  <span style="width:34px;height:34px;border-radius:9px;background:{{ d.tint }};color:{{ d.col }};display:grid;place-items:center;font-size:9px;font-weight:800">{{ d.ext }}</span>
+                  <span style="min-width:0">
+                    <span style="display:block;font-size:12.5px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ d.name }}</span>
+                    <span style="display:block;font-size:11px;color:#6B6B61;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ d.read }}</span>
+                  </span>
+                  <span style="font-size:10.5px;font-weight:700;color:{{ d.stc }};white-space:nowrap">{{ d.status }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          </sc-if>
+          <sc-if value="{{ isSourcesTab }}" hint-placeholder-val="{{ true }}">
+          <div style="font-size:10.5px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#6B6B61;margin-bottom:18px;animation:byRise 520ms ease-out both">Connect · <span style="font-variant-numeric:tabular-nums">{{ connCount }}</span> sources · one lake</div>
+          <div style="display:grid;grid-template-columns:264px 1fr 400px;gap:0;align-items:stretch">
+            <div style="display:flex;flex-direction:column;position:relative;z-index:2">
+              <sc-for list="{{ connSources }}" as="s" hint-placeholder-count="6">
+                <div style="flex:1;display:flex;align-items:center;padding:5px 0;animation:{{ s.rise }}">
+                <div style="width:100%;display:flex;align-items:center;gap:10px;border:1px solid {{ s.border }};border-left:1px solid {{ s.border }};border-radius:10px;padding:10px 12px;background:{{ s.bg }}">
+                  <span style="width:32px;height:32px;border-radius:9px;background:{{ s.mono }};color:{{ s.ink }};display:grid;place-items:center;font-size:11px;font-weight:800;flex-shrink:0">{{ s.ini }}</span>
+                  <span style="min-width:0;flex:1">
+                    <span style="display:block;font-size:12.5px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ s.name }}</span>
+                    <span style="display:block;font-size:10px;line-height:1.45;color:{{ s.footColor }};text-wrap:pretty">{{ s.foot }}</span>
+                  </span>
+                  <sc-if value="{{ s.hasError }}">
+                    <button style="flex-shrink:0;padding:5px 10px;border-radius:6px;border:none;background:#C0473F;color:#fff;font-size:10px;font-weight:700;white-space:nowrap">{{ s.fix }}</button>
+                  </sc-if>
+                  <sc-if value="{{ s.noError }}" hint-placeholder-val="{{ true }}">
+                    <span style="flex-shrink:0;width:7px;height:7px;border-radius:50%;background:{{ s.stColor }};animation:{{ s.anim }}"></span>
+                  </sc-if>
+                </div>
+                </div>
+              </sc-for>
+            </div>
+            <div ref="{{ flowRef }}" style="position:relative;margin:0 -186px 0 0;min-width:120px">
+              <svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;overflow:visible">
+                <sc-for list="{{ flows }}" as="f" hint-placeholder-count="6">
+                  <path d="{{ f.d }}" fill="none" stroke="{{ f.stroke }}" stroke-width="{{ f.w }}" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-dasharray="{{ f.dash }}" style="{{ f.style }}"></path>
+                </sc-for>
+              </svg>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:center;position:relative;z-index:2">
+              <div style="animation:byRise 620ms ease-out 160ms both">
+              <div style="position:relative;width:310px;height:279px">
+                <svg viewBox="0 0 240 216" style="position:absolute;inset:0;width:100%;height:100%;overflow:visible;transform:scale({{ lakeScale }});transform-origin:50% 52%;transition:transform 1600ms cubic-bezier(.22,1,.36,1)">
+                  <defs>
+                    <linearGradient id="lakeWater" x1="0" y1="0" x2="0.3" y2="1">
+                      <stop offset="0" stop-color="#9FD1F2"></stop>
+                      <stop offset="1" stop-color="#5B9BD9"></stop>
+                    </linearGradient>
+                  </defs>
+                  <path d="M20,112 C8,80 30,50 64,42 C90,36 104,16 136,18 C174,21 200,40 214,68 C230,100 226,136 200,160 C174,184 136,198 100,188 C66,178 32,144 20,112 Z" fill="#C8F068" opacity=".34" transform="translate(3,5)"></path>
+                  <path d="M20,112 C8,80 30,50 64,42 C90,36 104,16 136,18 C174,21 200,40 214,68 C230,100 226,136 200,160 C174,184 136,198 100,188 C66,178 32,144 20,112 Z" fill="url(#lakeWater)" stroke="#C8F068" stroke-width="3"></path>
+                  <g fill="none" stroke="rgba(255,255,255,.55)" stroke-width="1.4" stroke-linecap="round">
+                    <path d="M52,146 q9,-7 18,0 t18,0"></path>
+                    <path d="M150,54 q9,-7 18,0 t18,0"></path>
+                    <path d="M162,150 q9,-7 18,0 t18,0"></path>
+                    <path d="M44,86 q9,-7 18,0 t18,0"></path>
+                  </g>
+                  <g fill="none" stroke="rgba(255,255,255,.6)" stroke-width="1.2">
+                    <ellipse cx="118" cy="104" rx="34" ry="22" style="transform-origin:118px 104px;animation:byRing 3.4s ease-out infinite"></ellipse>
+                    <ellipse cx="118" cy="104" rx="34" ry="22" style="transform-origin:118px 104px;animation:byRing 3.4s ease-out infinite 1.7s"></ellipse>
+                  </g>
+                  <path d="M74,166 q10,-9 22,-4 q9,4 20,-2" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="5" stroke-linecap="round"></path>
+                </svg>
+                <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;text-align:center;color:#0B2233;padding-top:10px;white-space:nowrap">
+                  <span style="font-size:11px;font-weight:700;letter-spacing:0.12em;color:#0B2233">THE LAKE</span>
+                  <span style="font-size:46px;font-weight:800;letter-spacing:-0.03em;line-height:1;font-variant-numeric:tabular-nums">{{ lakeRows }}</span>
+                  <span style="font-size:12.5px;font-weight:500;color:#0B2233">rows · read-only</span>
+                  <span style="font-size:11px;color:#0B2233;font-weight:700;margin-top:8px">recomputed 14 min ago</span>
+                </div>
+              </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;align-items:baseline;gap:18px;padding-bottom:10px;border-bottom:2px solid #14170F;margin-top:36px">
+            <div style="font-size:12.5px;font-weight:700">Library</div>
+            <div style="display:flex;gap:4px;margin-left:8px">
+              <sc-for list="{{ libTabs }}" as="t" hint-placeholder-count="5">
+                <button onClick="{{ t.pick }}" style="padding:5px 12px;border-radius:100px;border:1px solid {{ t.border }};background:{{ t.bg }};font-size:11px;font-weight:{{ t.w }};color:{{ t.fg }}">{{ t.label }}</button>
+              </sc-for>
+            </div>
+            <div style="margin-left:auto;display:flex;align-items:baseline;gap:6px"><span style="font-size:20px;font-weight:800;letter-spacing:-0.02em;font-variant-numeric:tabular-nums;color:#14170F">{{ libCount }}</span><span style="font-size:10.5px;color:#6B6B61">available</span></div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(292px,1fr));gap:10px;margin-top:16px">
+            <sc-for list="{{ library }}" as="l" hint-placeholder-count="8">
+              <div style="border:1px solid #E5E5DA;border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:12px;min-width:0;animation:{{ l.rise }}" style-hover="border-color:#14170F">
+                <div style="display:flex;align-items:center;gap:12px;min-width:0;flex:1">
+                  <span style="width:34px;height:34px;border-radius:9px;background:{{ l.tint }};color:{{ l.col }};display:grid;place-items:center;font-size:11px;font-weight:800;flex-shrink:0;border:1px solid rgba(20,23,15,.08)">
+                    <sc-if value="{{ l.isIni }}" hint-placeholder-val="{{ true }}">
+                      <span>{{ l.ini }}</span>
+                    </sc-if>
+                    <sc-if value="{{ l.isDb }}">
+                      <svg viewBox="0 0 32 32" aria-hidden="true" style="width:15px;height:15px"><path d="M8 3 L0 8 L8 13 L16 8 Z M24 3 L16 8 L24 13 L32 8 Z M0 18 L8 13 L16 18 L8 23 Z M24 13 L32 18 L24 23 L16 18 Z M8 25 L16 20 L24 25 L16 30 Z" fill="#FFFFFF"></path></svg>
+                    </sc-if>
+                    <sc-if value="{{ l.isGd }}">
+                      <svg viewBox="0 0 32 32" aria-hidden="true" style="width:17px;height:17px"><path d="M29.5,21l-3.1708,5.5489A3.07,3.07,0,0,1,23.6459,28H8.3541a3.07,3.07,0,0,1-2.6833-1.4511L4.3687,24.27,9.7578,21Z" fill="#4285f4"></path><path d="M12.3822,4.13a3.2262,3.2262,0,0,0-1.7067,1.4276L2.9591,18.76a3.07,3.07,0,0,0-.1012,3.0489l1.53,2.4658L9.7579,21,16,10.32Z" fill="#00ac47"></path><path d="M9.7578,21H2.568a2.6543,2.6543,0,0,0,.29.8089L4.38,24.2632l-.0115.007L5.6709,26.549A2.8267,2.8267,0,0,0,7.008,27.6974L9.7578,21l-.0081.0049Z" fill="#0066da"></path><path d="M19.6068,4.13a3.2256,3.2256,0,0,1,1.7066,1.4276L29.03,18.76a3.07,3.07,0,0,1,.1013,3.0489l-1.5295,2.4658L22.2311,21,15.9889,10.32Z" fill="#ffba00"></path><path d="M22.2311,21h7.19a2.6541,2.6541,0,0,1-.29.8089l-1.5224,2.4544.0116.007L26.3181,26.549a2.8272,2.8272,0,0,1-1.3371,1.1484L22.2312,21l.0081.0049Z" fill="#ea4435"></path><path d="M19.6155,4.1342l.0023-.004a2.7726,2.7726,0,0,0-.3609-.0983L16,4l-3.2569.0319a2.7726,2.7726,0,0,0-.3609.0983,3.0224,3.0224,0,0,0-.367.1666L15.9889,10.32,19.977,4.2993A3.03,3.03,0,0,0,19.6155,4.1342Z" fill="#188038"></path></svg>
+                    </sc-if>
+                    <sc-if value="{{ l.isGs }}">
+                      <svg viewBox="0 0 32 32" aria-hidden="true" style="width:19px;height:19px"><path d="M8 3 H19 L26 10 V27 A2 2 0 0 1 24 29 H10 A2 2 0 0 1 8 27 V5 A2 2 0 0 1 10 3 Z" fill="#0F9D58"></path><path d="M19 3 L26 10 H19 Z" fill="#0B8043"></path><rect x="11.5" y="14" width="11" height="11" fill="#FFFFFF"></rect><g stroke="#0F9D58" stroke-width="1.3"><path d="M11.5 17.7 H22.5 M11.5 21.4 H22.5 M15.2 14 V25 M18.8 14 V25"></path></g></svg>
+                    </sc-if>
+                    <sc-if value="{{ l.isXl }}">
+                      <svg viewBox="0 0 32 32" aria-hidden="true" style="width:19px;height:19px"><path d="M8 3 H19 L26 10 V27 A2 2 0 0 1 24 29 H10 A2 2 0 0 1 8 27 V5 A2 2 0 0 1 10 3 Z" fill="#217346"></path><path d="M19 3 L26 10 H19 Z" fill="#185C37"></path><polygon points="11.5,12 15.5,12 22.5,25 18.5,25" fill="#FFFFFF"></polygon><polygon points="18.5,12 22.5,12 15.5,25 11.5,25" fill="#FFFFFF"></polygon></svg>
+                    </sc-if>
+                  </span>
+                  <span style="min-width:0;display:flex;flex-direction:column;gap:2px">
+                    <span style="display:flex;align-items:center;gap:5px;min-width:0">
+                      <span style="font-size:12.5px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ l.name }}</span>
+                      <sc-if value="{{ l.trusted }}">
+                        <svg viewBox="0 0 24 24" role="img" aria-label="Verified by _beyond" style="flex-shrink:0;width:13px;height:13px"><path d="M23 12l-2.44-2.79.34-3.69-3.61-.82-1.89-3.2L12 2.96 8.6 1.5 6.71 4.69 3.1 5.5l.34 3.7L1 12l2.44 2.79-.34 3.7 3.61.82L8.6 22.5l3.4-1.47 3.4 1.46 1.89-3.19 3.61-.82-.34-3.69L23 12zm-12.91 4.72l-3.8-3.81 1.48-1.48 2.32 2.33 5.85-5.87 1.48 1.48-7.33 7.35z" fill="#9C9C90"></path></svg>
+                      </sc-if>
+                      <sc-if value="{{ l.popular }}">
+                        <span style="display:flex;align-items:center;gap:3px;flex-shrink:0;color:#029B82">
+                          <span style="font-size:11px;font-weight:600;letter-spacing:-0.01em">Popular</span>
+                          <svg viewBox="0 0 24 24" aria-hidden="true" style="width:12px;height:12px;fill:none;stroke:#029B82;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round"><path d="M3 17 L9.5 10.5 L13.5 14.5 L21 7"></path><path d="M15 7 H21 V13"></path></svg>
+                        </span>
+                      </sc-if>
+                    </span>
+                    <span style="display:block;font-size:11.5px;line-height:1.45;color:#6B6B61">{{ l.desc }}</span>
+                  </span>
+                </div>
+                <button onClick="{{ l.connect }}" title="{{ l.btnTitle }}" style="flex-shrink:0;width:30px;height:30px;border-radius:8px;border:none;background:{{ l.btnBg }};color:{{ l.btnFg }};font-size:22px;font-weight:400;line-height:1;display:grid;place-items:center;padding:0" style-hover="background:#EFEFE4">
+                  <sc-if value="{{ l.notAdded }}" hint-placeholder-val="{{ true }}">
+                    <svg viewBox="0 0 32 32" aria-hidden="true" style="width:18px;height:18px;stroke:#A8A8A0;stroke-width:1.8;stroke-linecap:round"><path d="M16 4 V28 M4 16 H28"></path></svg>
+                  </sc-if>
+                  <sc-if value="{{ l.added }}">
+                    <span style="font-size:15px;line-height:1">✓</span>
+                  </sc-if>
+                </button>
+              </div>
+            </sc-for>
+          </div>
+          </sc-if>
+        </div>
+        
+      </div>
+        </sc-if>
+
+        <sc-if value="{{ isDigestTab }}">
+      <div style="height:100%;overflow:auto;animation:byFade 160ms ease-out">
+        <div style="max-width:880px;margin:0 auto;padding:38px 44px 64px">
+          <div style="font-size:10.5px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#6B6B61;margin-bottom:14px">Digest · what it did with your data</div>
+          <h1 style="font-size:30px;font-weight:800;letter-spacing:-0.025em;line-height:1.2;margin:0;text-wrap:pretty;max-width:740px"><span style="font-family:'Space Grotesk',sans-serif;font-weight:700;letter-spacing:-0.02em;color:#14170F">_beyond</span> took 92 actions on its own this month. <span style="color:#9A5C0F">{{ pendHead }}</span></h1>
+
+          <div style="margin-top:38px">
+            <div style="display:flex;align-items:baseline;justify-content:space-between;border-bottom:2px solid #14170F;padding-bottom:10px">
+              <div style="font-size:14px;font-weight:800">{{ pendTitle }}</div>
+              <div style="font-size:11px;color:#6B6B61">where <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;letter-spacing:-0.02em;color:#14170F">_beyond</span> is not sure enough to act alone</div>
+            </div>
+            <sc-for list="{{ pending }}" as="p" hint-placeholder-count="2">
+              <div style="display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:28px;align-items:start;padding:22px 0;border-bottom:1px solid #E5E5DA">
+                <div>
+                  <div style="font-family:'Space Grotesk',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.1em;color:#9A5C0F;margin-bottom:8px">{{ p.kind }} · CONFIDENCE {{ p.conf }}</div>
+                  <div style="font-size:16.5px;font-weight:700;letter-spacing:-0.015em;line-height:1.35;text-wrap:pretty">{{ p.head }}</div>
+                  <div style="font-size:12.5px;line-height:1.65;color:#6B6B61;margin-top:8px">{{ p.why }}</div>
+                  <sc-if value="{{ p.undecided }}" hint-placeholder-val="{{ true }}">
+                  <div style="display:flex;gap:10px;margin-top:16px">
+                    <button onClick="{{ p.approve }}" style="padding:9px 18px;border-radius:8px;border:none;background:#C8F068;color:#14170F;font-size:12.5px;font-weight:700;white-space:nowrap" style-hover="background:#B6E44E">Approve</button>
+                    <button onClick="{{ p.dismiss }}" style="padding:9px 16px;border-radius:8px;border:1px solid #D3D3C4;background:#fff;font-size:12.5px;font-weight:600;color:#14170F;white-space:nowrap" style-hover="border-color:#14170F">{{ p.no }}</button>
+                  </div>
+                  </sc-if>
+                  <sc-if value="{{ p.resolved }}">
+                  <div style="display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin-top:16px;padding:11px 14px;border-radius:8px;background:{{ p.outTint }};border:1px solid {{ p.outBorder }}">
+                    <span style="font-size:12.5px;font-weight:700;color:{{ p.outFg }};white-space:nowrap">{{ p.outLabel }}</span>
+                    <span style="font-size:11.5px;line-height:1.5;color:#6B6B61;min-width:0">{{ p.outNote }}</span>
+                    <button onClick="{{ p.undo }}" style="margin-left:auto;padding:5px 12px;border-radius:6px;border:1px solid #D3D3C4;background:#fff;font-size:11px;font-weight:700;color:#14170F;white-space:nowrap" style-hover="border-color:#14170F">Undo</button>
+                  </div>
+                  </sc-if>
+                </div>
+                <div style="background:#F7F7EF;border:1px solid #E5E5DA;border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:9px">
+                  <sc-for list="{{ p.rows }}" as="r" hint-placeholder-count="3">
+                    <div style="display:grid;grid-template-columns:104px 1fr;gap:10px;align-items:baseline">
+                      <div style="font-size:10px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:{{ r.c }}">{{ r.s }}</div>
+                      <div style="font-family:'Space Grotesk',sans-serif;font-size:10.5px;color:#14170F;line-height:1.5">{{ r.v }}</div>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-for>
+            <sc-if value="{{ noPending }}">
+              <div style="padding:22px 0;border-bottom:1px solid #E5E5DA;font-size:12.5px;color:#6B6B61">Nothing waiting. New proposals land here before anything changes in the lake.</div>
+            </sc-if>
+          </div>
+
+          <div style="margin-top:44px">
+            <div style="display:flex;align-items:baseline;justify-content:space-between;border-bottom:2px solid #14170F;padding-bottom:10px">
+              <div style="font-size:14px;font-weight:800">Done automatically</div>
+              <div style="font-size:11px;color:#6B6B61">92 actions this month · every one above 90% confidence</div>
+            </div>
+            <sc-for list="{{ autoActions }}" as="a" hint-placeholder-count="6">
+              <div style="display:grid;grid-template-columns:minmax(0,1fr) 52px 84px;gap:18px;align-items:baseline;padding:14px 0;border-bottom:1px solid #E5E5DA">
+                <div style="min-width:0">
+                  <div style="font-size:13px;font-weight:600;letter-spacing:-0.005em">{{ a.head }}</div>
+                  <div style="font-family:'Space Grotesk',sans-serif;font-size:10.5px;color:#6B6B61;margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ a.detail }}</div>
+                </div>
+                <div style="font-family:'Space Grotesk',sans-serif;font-size:10.5px;font-weight:700;color:#029B82;text-align:right">{{ a.conf }}</div>
+                <div style="font-size:10.5px;color:#6B6B61;text-align:right;white-space:nowrap">{{ a.when }}</div>
+              </div>
+            </sc-for>
+            <div style="font-size:11px;color:#6B6B61;margin-top:12px">and 86 more · every action is logged with its rule and can be undone</div>
+          </div>
+        </div>
+      </div>
+        </sc-if>
+
+        <sc-if value="{{ isMemoryTab }}">
+        <div style="height:100%;overflow:auto">
+          <div style="max-width:880px;margin:0 auto;padding:30px 44px 64px">
+            <div style="font-size:10.5px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#6B6B61;margin-bottom:14px">Memory · what it remembers about you</div>
+            <h1 style="font-size:30px;font-weight:800;letter-spacing:-0.025em;line-height:1.2;margin:0;max-width:740px;text-wrap:pretty">{{ memCount }} things learned from your questions. <span style="color:#5F7A12">Every one of them is yours to delete.</span></h1>
+            <p style="font-size:13px;line-height:1.65;color:#6B6B61;margin:12px 0 0;max-width:640px">Memory shapes the next answer: which cut <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;letter-spacing:-0.02em;color:#14170F">_beyond</span> reaches for first, when it refuses to lead with a directional number, what it thinks you are measured on. It never leaves your lake and it is never sent to a source.</p>
+
+            <sc-for list="{{ memGroups }}" as="g" hint-placeholder-count="3">
+            <div style="margin-top:34px">
+              <div style="display:flex;align-items:baseline;justify-content:space-between;border-bottom:2px solid #14170F;padding-bottom:9px">
+                <div style="font-size:14px;font-weight:800">{{ g.title }}</div>
+                <div style="font-size:11px;color:#6B6B61">{{ g.note }}</div>
+              </div>
+              <sc-for list="{{ g.rows }}" as="r" hint-placeholder-count="3">
+                <div style="display:grid;grid-template-columns:minmax(0,1fr) 120px auto;gap:18px;align-items:baseline;padding:14px 0;border-bottom:1px solid #E5E5DA">
+                  <div style="min-width:0">
+                    <div style="font-size:13px;font-weight:600;letter-spacing:-0.005em;color:{{ r.fg }};text-wrap:pretty">{{ r.head }}</div>
+                    <div style="font-size:10.5px;color:#6B6B61;margin-top:4px">{{ r.note }}</div>
+                  </div>
+                  <div style="font-size:10.5px;color:#6B6B61;text-align:right">{{ r.when }}</div>
+                  <button onClick="{{ r.forget }}" style="padding:5px 12px;border-radius:100px;border:1px solid #D3D3C4;background:#fff;font-size:10.5px;font-weight:700;color:{{ r.btnFg }};white-space:nowrap" style-hover="border-color:#14170F">{{ r.btn }}</button>
+                </div>
+              </sc-for>
+            </div>
+            </sc-for>
+
+            <div style="font-size:11px;color:#6B6B61;margin-top:22px">Memory is written only from your own questions and your own lake. <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;letter-spacing:-0.02em;color:#14170F">_beyond</span> never reads another customer's memory, and never writes back to a source.</div>
+          </div>
+        </div>
+        </sc-if>
+
+      </div>
+      </sc-if>
+
+    </div>
+  </main>
+</div>
+</sc-if>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;startView&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;home&quot;,&quot;chat&quot;,&quot;cockpit&quot;,&quot;settings&quot;,&quot;intro&quot;],&quot;default&quot;:&quot;home&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Demo&quot;},&quot;startStep&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;0&quot;,&quot;1&quot;,&quot;2&quot;],&quot;default&quot;:&quot;0&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Demo&quot;},&quot;startTab&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;connect&quot;,&quot;digest&quot;,&quot;memory&quot;],&quot;default&quot;:&quot;connect&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Demo&quot;},&quot;methodNotes&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Method&quot;},&quot;showTrace&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Method&quot;}}">
+class Component extends DCLogic {
+  state = { view: null, step: null, question: null, digestDone: {}, memOff: {}, lib: "All", watching: false,
+            connTab: "sources", setTab: null, dz: "idle", dzStepI: 0, added: {}, asked: 0, draft: "" };
+
+  get view() { return this.state.view || this.props.startView || "home"; }
+
+  wm(s, ink) {
+    if (typeof s !== "string" || s.indexOf("_beyond") < 0) return s;
+    const out = [];
+    s.split("_beyond").forEach((part, i) => {
+      if (i) out.push(React.createElement("span", { key: "w" + i, style: { fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, letterSpacing: "-0.02em", color: ink || "#14170F" } }, "_beyond"));
+      if (part) out.push(part);
+    });
+    return out;
+  }
+
+  ns(id) {
+    const a = this.view === id;
+    return a
+      ? { bg: "linear-gradient(90deg,rgba(200,240,104,.42),transparent)", fg: "#14170F", edge: "#14170F", w: "700", on: true, cur: "page" }
+      : { bg: "transparent", fg: "#6B6B61", edge: "transparent", w: "500", on: false, cur: null };
+  }
+
+  addedCount() {
+    const a = this.state.added || {};
+    return Object.keys(a).filter(k => a[k]).length;
+  }
+
+  lakeScaleNow() { return 1 + Math.min(this.addedCount(), 6) * 0.037; }
+
+  measureFlow() {
+    if (this.__mt) clearTimeout(this.__mt);
+    this.__mt = setTimeout(() => {
+      const h = this.flowEl ? this.flowEl.getBoundingClientRect().height : 0;
+      if (h && Math.abs(h - (this.state.colH || 0)) > 2) this.setState({ colH: h });
+    }, 60);
+  }
+  connected() {
+    const bars = (arr, err) => arr.map((h, i) => ({ h: h + "%", c: err && i >= arr.length - 3 ? "#E5B8B4" : h > 0 ? "#D8EBA0" : "#EFEFE4" }));
+    const extra = this.libraryItems()
+      .filter(l => this.state.added[l.name])
+      .map(l => ({ ini: l.ini.slice(0, 2).toUpperCase(), mono: "#14170F", name: l.name, kind: l.cat,
+        status: "SYNCING", stColor: "#9A5C0F", anim: "byPulse 1.4s ease-in-out infinite",
+        border: "#E5E5DA", bg: "#fff", fresh: "First import running", vol: "—",
+        hist: bars([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]), hasError: false }));
+    return extra.concat([
+      { ini: "PP", mono: "#5F7A12", name: "Pharmacy panel", kind: "What 612 pharmacies sell", status: "LIVE", stColor: "#029B82", anim: "byPulse 2.2s ease-in-out infinite", border: "#E5E5DA", bg: "#fff", fresh: "Imported 2 h ago", vol: "48,210 rows/mo", hist: bars([55, 60, 58, 64, 62, 70, 66, 72, 68, 74, 76, 80]), hasError: false },
+      { ini: "SV", mono: "#14170F", name: "Sivop wholesale", kind: "Monthly file, dropped by SFTP", status: "ERROR", stColor: "#C0473F", anim: "none", border: "rgba(192,71,63,.35)", bg: "rgba(192,71,63,.03)", fresh: "Last good import 9 days ago", vol: "21,887 rows/mo", hist: bars([60, 62, 58, 64, 66, 62, 68, 64, 60, 0, 0, 0], true), hasError: true, error: "Credential expired · 3 imports failed", fix: "Renew" },
+      { ini: "AD", mono: "#029B82", name: "Norwell internal", kind: "Your own sales, every night", status: "LIVE", stColor: "#029B82", anim: "byPulse 2.2s ease-in-out infinite", border: "#E5E5DA", bg: "#fff", fresh: "Imported 04:12 today", vol: "9,044 rows/mo", hist: bars([40, 42, 44, 40, 46, 44, 48, 46, 50, 48, 52, 50]), hasError: false },
+      { ini: "WH", mono: "#F67748", name: "Wholesaler orders", kind: "What wholesalers ship · API", status: "LIVE", stColor: "#029B82", anim: "byPulse 2.2s ease-in-out infinite", border: "#E5E5DA", bg: "#fff", fresh: "Imported yesterday", vol: "8,331 rows/mo", hist: bars([30, 34, 32, 38, 36, 40, 42, 44, 40, 46, 48, 50]), hasError: false },
+      { ini: "PL", mono: "#9A5C0F", name: "Official price list", kind: "Public · PDF each quarter", status: "IDLE", stColor: "#6B6B61", anim: "none", border: "#E5E5DA", bg: "#fff", fresh: "Next issue Oct 2026", vol: "12 rows/quarter", hist: bars([0, 0, 60, 0, 0, 60, 0, 0, 62, 0, 0, 0]), hasError: false },
+      { ini: "PO", mono: "#8AA31E", name: "Population data", kind: "Public · open data", status: "IDLE", stColor: "#6B6B61", anim: "none", border: "#E5E5DA", bg: "#fff", fresh: "2025 census, stable", vol: "static reference", hist: bars([50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]), hasError: false }
+    ]);
+  }
+
+  libraryItems() {
+    return [
+      { ini: "CSV", name: "File upload", cat: "General", desc: "Drop PDF, CSV, Excel, Word or images by hand", mode: "MANUAL", popular: true },
+      { ini: "@", name: "Custom dedicated inbox", cat: "General", desc: "Forward anything to your own _beyond address", mode: "SCHEDULED" },
+      { ini: "YM", name: "Your mailbox", cat: "General", desc: "Read the reports already sitting in Gmail or Outlook", mode: "ON YOUR BEHALF", popular: true },
+      { ini: "DB", logo: "db", tintOverride: "#0061FF", name: "Dropbox", cat: "General", desc: "Watch a folder your team already drops files in", mode: "SCHEDULED" },
+      { ini: "GD", logo: "gd", tintOverride: "#FFFFFF", name: "Google Drive", cat: "General", desc: "Watch a shared drive folder for new files", mode: "SCHEDULED", popular: true },
+      { ini: "API", name: "REST API", cat: "General", desc: "Call your endpoint with credentials you scope", mode: "SCHEDULED" },
+      { ini: "MC", name: "MCP server", cat: "General", desc: "Read a live tool like any other source", mode: "LIVE" },
+      { ini: "GS", logo: "gs", tintOverride: "#FFFFFF", name: "Google Sheets", cat: "General", desc: "Read the hand-kept spreadsheet where it lives", mode: "LIVE", popular: true },
+      { ini: "XL", logo: "xl", tintOverride: "#FFFFFF", name: "Excel Online", cat: "General", desc: "Workbooks on SharePoint or OneDrive", mode: "LIVE" },
+
+      { ini: "L'O", brand: "#000000", name: "L'Oréal portal", cat: "Brand portals", desc: "Your sell-in reports, pulled with your own login", mode: "ON YOUR BEHALF", trusted: true, popular: true },
+      { ini: "SAN", brand: "#7A00E1", name: "Sanofi partner portal", cat: "Brand portals", desc: "Orders, rebates and claims", mode: "ON YOUR BEHALF", trusted: true },
+      { ini: "BAY", brand: "#10384F", name: "Bayer wholesaler portal", cat: "Brand portals", desc: "Monthly statements and price letters", mode: "ON YOUR BEHALF", trusted: true },
+      { ini: "PFE", brand: "#0093D0", name: "Pfizer distributor hub", cat: "Brand portals", desc: "Allocation and shipment reports", mode: "ON YOUR BEHALF", trusted: true },
+      { ini: "HAL", brand: "#C24E1F", name: "Haleon trade portal", cat: "Brand portals", desc: "Consumer health orders, promotions, credit notes", mode: "ON YOUR BEHALF", trusted: true },
+      { ini: "OP", brand: "#176AE5", name: "Opeaz execution", cat: "Brand portals", desc: "Trade execution data, read-only", mode: "LIVE", trusted: true },
+
+      { ini: "UB", name: "Ubipharm", cat: "Wholesalers", desc: "Wholesaler flows for 8 West African markets", mode: "SCHEDULED", trusted: true, popular: true },
+      { ini: "CP", name: "Copharmed", cat: "Wholesalers", desc: "Côte d'Ivoire interior coverage", mode: "SCHEDULED", trusted: true },
+      { ini: "TD", name: "Tedis Pharma", cat: "Wholesalers", desc: "Francophone Africa distribution flows", mode: "LIVE", trusted: true },
+      { ini: "WP", name: "Winpharma exports", cat: "Wholesalers", desc: "Pharmacy till exports, where contributors run it", mode: "SCHEDULED", trusted: true },
+
+      { ini: "PN", name: "Pharmacy panel · Senegal", cat: "Public info", desc: "The same sell-out panel, 380 pharmacies", mode: "LIVE", trusted: true },
+      { ini: "OM", name: "WHO health stats", cat: "Public info", desc: "Epidemiology baselines for seasonality", mode: "SCHEDULED", trusted: true, popular: true },
+      { ini: "DN", name: "Customs imports", cat: "Public info", desc: "What crossed the border, upstream of wholesalers", mode: "SCHEDULED", trusted: true },
+      { ini: "PS", name: "Price list · Senegal", cat: "Public info", desc: "Published prices, next market over", mode: "SCHEDULED", trusted: true },
+      { ini: "HF", name: "Health facilities", cat: "Public info", desc: "Clinics and hospitals per district", mode: "SCHEDULED", trusted: true },
+
+      { ini: "PR", name: "Pharmacy register", cat: "Community", by: "Ordre des Pharmaciens", desc: "Licensed outlets, shared by Ordre des Pharmaciens", mode: "SHARED", trusted: true, popular: true },
+      { ini: "CI", name: "District population", cat: "Community", by: "Omri Landman", desc: "Counted by hand, shared by Omri Landman", mode: "SHARED" },
+      { ini: "GX", name: "Shelf price survey", cat: "Community", by: "Kea Santé", desc: "40 generics in Abidjan, shared by Kea Santé", mode: "SHARED" },
+      { ini: "RD", name: "Delivery routes", cat: "Community", by: "Tedis Pharma", desc: "Serving days per outlet, shared by Tedis Pharma", mode: "SHARED" }
+    ];
+  }
+
+  chartHbars(rows, lo, hi) {
+    const span = hi - lo, zero = (0 - lo) / span;
+    const signed = rows.some(r => r.pts < 0);
+    return { kind: "hbars", zeroAt: (zero * 100).toFixed(1) + "%", showZero: signed, rows: rows.map(r => ({
+      name: r.name, note: r.note, color: r.color,
+      v: (signed ? (r.pts > 0 ? "+" : r.pts < 0 ? "\u2212" : "") : "") + Math.abs(r.pts).toFixed(r.dp === 0 ? 0 : 1),
+      left: (((r.pts < 0 ? r.pts : 0) - lo) / span * 100).toFixed(1) + "%",
+      w: (Math.abs(r.pts) / span * 100).toFixed(1) + "%" })) };
+  }
+
+  chartBars(vals, labels, col, last) {
+    const max = Math.max.apply(null, vals) * 1.08, step = 100 / vals.length, w = step * 0.58;
+    return { kind: "bars", axis: labels.map(t => ({ t: t })), bars: vals.map((v, i) => {
+      const h = (v / max) * 44;
+      return { x: (i * step + step * 0.21).toFixed(2), w: w.toFixed(2), h: h.toFixed(2), y: (44 - h).toFixed(2),
+        c: i === vals.length - 1 ? (last || col) : col };
+    }) };
+  }
+
+  chartRing(parts) {
+    const C = 100.53, tot = parts.reduce((s, p) => s + p.v, 0);
+    let cum = 0;
+    return { kind: "donut", ring: parts.map(p => {
+      const len = (p.v / tot) * C, seg = { c: p.c, dash: len.toFixed(2) + " " + (C - len).toFixed(2), off: (-cum).toFixed(2) };
+      cum += len; return seg;
+    }), legend: parts.map(p => ({ c: p.c, t: p.n, v: p.v.toFixed(1) + "%" })) };
+  }
+
+  chartCurve(vals, labels, col, fill) {
+    const max = Math.max.apply(null, vals) * 1.1;
+    const pts = vals.map((v, i) => ((i / (vals.length - 1)) * 100).toFixed(1) + "," + (44 - (v / max) * 42).toFixed(1));
+    return { kind: fill ? "area" : "line", stroke: col, fill: fill, pts: pts.join(" "),
+      fillD: "M0,44 L" + pts.join(" L") + " L100,44 Z", axis: labels.map(t => ({ t: t })) };
+  }
+
+  chartDots(rows, hi) {
+    return { kind: "dots", rows: rows.map(r => ({ name: r.name, note: r.note, color: r.color,
+      v: String(r.pts), left: ((r.pts / hi) * 100).toFixed(1) + "%" })) };
+  }
+
+  answers() {
+    const months = ["Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"];
+    const q4 = ["Aug", "Nov", "Feb", "May", "Jul"];
+    return [
+      { id: "national", origin: "you", when: "asked today",
+        q: "How is Advil doing in C\u00f4te d'Ivoire?",
+        title: "Advil, nationally",
+        v: "48 210", delta: "+1.2%", dc: "#029B82", foot: "units \u00b7 July \u00b7 every district",
+        head: "48 210 units in July.",
+        headAccent: "Nationally, Advil is flat.",
+        body: "Volume is 1.2 % above June and 8 % above the twelve-month average. Nothing in the national line is large enough to explain what your reps are reporting from the field.",
+        chartTitle: "Units sold, by month",
+        method: "Sell-out from the 612 panel pharmacies, weighted by district and outlet size. Confirmed identities only. Figures are illustrative.",
+        crumb: "Advil nationally, twelve months",
+        trace: ["read question \u00b7 one brand, one country, over time", "resolved Advil to 4 confirmed identities", "queried lake \u00b7 612 outlets \u00d7 12 months"],
+        chart: this.chartBars([41.2, 42.8, 39.9, 43.1, 42.4, 40.6, 43.9, 44.8, 46.1, 46.9, 47.6, 48.2], months, "#D8EBA0", "#5F7A12") },
+
+      { id: "citysize", origin: "you", when: "asked today",
+        q: "Split it by city size.",
+        title: "Advil by city size",
+        v: "+3.1 pts", delta: "small towns", dc: "#029B82", foot: "share points \u00b7 three months \u00b7 by city size",
+        head: "The flat line is two lines.",
+        headAccent: "Cities are losing, small towns are gaining.",
+        body: "Abidjan gave up 2.4 share points over three months and the other large towns 0.6. Towns under 50 000 gained 3.1. The national number is flat because the two cancel each other out.",
+        chartTitle: "Share points, three months, by city size",
+        method: "Share on confirmed identities. Abidjan and the large towns clear the threshold of 3 contributors and 40 units. Towns under 50 000 do not: 2 contributors, 31 units, so that line is directional. Figures are illustrative.",
+        crumb: "Advil by city size, three months",
+        trace: ["read question \u00b7 same brand, a cut you have never used", "grouped 43 towns into three bands by population", "queried lake \u00b7 612 outlets \u00d7 4 months", "checked threshold per band \u00b7 2 of 3 pass"],
+        chart: this.chartHbars([
+          { name: "Abidjan", pts: -2.4, note: "four districts \u00b7 measured", color: "#C0473F" },
+          { name: "Large towns", pts: -0.6, note: "over 50 000 \u00b7 measured", color: "#F67748" },
+          { name: "Small towns", pts: 3.1, note: "under 50 000 \u00b7 directional, 2 contributors", color: "#9A5C0F" }], -2.6, 3.3) },
+
+      { id: "citysize2", origin: "you", when: "widened today",
+        q: "Small towns, measured.",
+        title: "Advil by city size, widened",
+        v: "+2.7 pts", delta: "measured", dc: "#029B82", foot: "share points \u00b7 three months \u00b7 after widening",
+        head: "Small towns are up 2.7 points.",
+        headAccent: "Measured now, not directional.",
+        body: "With the interior wholesaler in the lake, towns under 50 000 rest on 4 contributors and 61 units, which clears the threshold. The gain is 2.7 points, slightly below the directional estimate. Abidjan and the large towns have not moved.",
+        chartTitle: "Share points, three months, by city size",
+        method: "Share on confirmed identities. All three bands now clear the threshold of 3 contributors and 40 units. The survey of 40 small-town pharmacies is queued and will widen this again in five days. Figures are illustrative.",
+        crumb: "Advil by city size, widened",
+        trace: ["added source \u00b7 Copharmed interior feed \u00b7 14 towns", "re-resolved outlet identities \u00b7 41 new matches", "recomputed lake \u00b7 626 outlets \u00d7 4 months", "checked threshold per band \u00b7 3 of 3 pass"],
+        chart: this.chartHbars([
+          { name: "Abidjan", pts: -2.4, note: "four districts \u00b7 measured", color: "#C0473F" },
+          { name: "Large towns", pts: -0.6, note: "over 50 000 \u00b7 measured", color: "#F67748" },
+          { name: "Small towns", pts: 2.7, note: "under 50 000 \u00b7 4 contributors \u00b7 61 units", color: "#5F7A12" }], -2.6, 3.3) },
+
+      { id: "units", origin: "you", when: "asked 2 Aug",
+        q: "How many units did we sell each month?",
+        title: "Units sold, month by month",
+        v: "48 210", delta: "+1.2%", dc: "#029B82", foot: "twelve months \u00b7 all districts",
+        head: "48 210 units in July.",
+        headAccent: "The best month of the twelve.",
+        body: "Volume has climbed every month since February. July is 8 % above the twelve-month average, and the two weakest months, October and January, are the two shortest selling months of the year.",
+        chartTitle: "Units sold, by month",
+        method: "Sell-out from the 612 panel pharmacies, weighted by district and outlet size. Confirmed outlet identities only.",
+        crumb: "units sold, twelve months",
+        trace: ["read question \u00b7 volume over time", "resolved Advil to 4 confirmed identities", "queried lake \u00b7 612 outlets \u00d7 12 months"],
+        chart: this.chartBars([41.2, 42.8, 39.9, 43.1, 42.4, 40.6, 43.9, 44.8, 46.1, 46.9, 47.6, 48.2], months, "#D8EBA0", "#5F7A12") },
+
+      { id: "share", origin: "you", when: "asked 2 Aug",
+        q: "How is the analgesics category split between brands?",
+        title: "Share of the analgesics category",
+        v: "31.4%", delta: "\u22122.1 pts", dc: "#C0473F", foot: "units \u00b7 July \u00b7 five brands",
+        head: "Advil holds 31.4 % of units.",
+        headAccent: "Nurofen is at 23.8 % and rising.",
+        body: "Advil is still first, but the lead over Nurofen is 7.6 points, down from 14.2 a year ago. Doliprane and Panadol are flat. The rest is spread across ten smaller brands, none above 5 %.",
+        chartTitle: "Category share, by brand",
+        method: "Units, July 2026, confirmed identities only. Brands under 5 % grouped as others.",
+        crumb: "category share, July 2026",
+        trace: ["read question \u00b7 category split", "resolved 14 brands \u00b7 10 grouped", "queried lake \u00b7 612 outlets \u00d7 1 month"],
+        chart: this.chartRing([
+          { n: "Advil 200 mg", v: 31.4, c: "#5F7A12" },
+          { n: "Nurofen", v: 23.8, c: "#F67748" },
+          { n: "Doliprane", v: 12.1, c: "#9A5C0F" },
+          { n: "Panadol", v: 8.5, c: "#A3A399" },
+          { n: "Ten others", v: 24.2, c: "#E5E5DA" }]) },
+
+      { id: "value", origin: "you", when: "asked 12 May",
+        q: "What is our sell-out value month by month?",
+        title: "Sell-out value in XOF",
+        v: "60.3M", delta: "+0.8%", dc: "#029B82", foot: "XOF \u00b7 twelve months \u00b7 list prices",
+        head: "60.3 million XOF in July.",
+        headAccent: "Value grew slower than volume.",
+        body: "Volume rose 1.2 % and value 0.8 %. The gap is the promotional discount running in Abidjan since April: more units, slightly less per unit.",
+        chartTitle: "Sell-out value, by month",
+        method: "Units multiplied by the official list price for the month. Discounts applied where the source records them.",
+        crumb: "sell-out value, twelve months",
+        trace: ["read question \u00b7 value over time", "joined units to the official price list", "queried lake \u00b7 612 outlets \u00d7 12 months"],
+        chart: this.chartCurve([52.1, 53.4, 50.2, 54.1, 53.6, 51.4, 55.2, 56.4, 58.0, 59.1, 59.8, 60.3], months, "#5B9BD9", "rgba(91,155,217,.18)") },
+
+      { id: "coef", origin: "you", when: "asked today",
+        q: "What is the coefficient between consumer price and ex-factory price for dermocosmetics?",
+        title: "Ex-factory to consumer, by category",
+        v: "3.4\u00d7", delta: "dermocosmetics", dc: "#5F7A12", foot: "consumer price \u00f7 ex-factory price \u00b7 July",
+        head: "Dermocosmetics runs at 3.4\u00d7.",
+        headAccent: "Not 5\u00d7, and never 2\u00d7.",
+        body: "A tube that leaves the factory at 1 000 XOF reaches the counter at 3 400. The importer takes 1.42\u00d7, the wholesaler 1.18\u00d7, the pharmacy 1.35\u00d7, and import duty plus VAT carry the rest. Regulated medicines sit far lower, because the price decree caps them: antibiotics at 1.9 and chronic treatments at 1.8.",
+        chartTitle: "Consumer price \u00f7 ex-factory price, by category",
+        method: "Matched pairs only: 1 214 products where an ex-factory price from the wholesaler feed and a consumer price from the official list or the shelf survey exist in the same month. The coefficient is the median per category, July 2026, not a modelled markup chain. Figures are illustrative.",
+        crumb: "price coefficient by category",
+        trace: ["read question \u00b7 a ratio, not a formula", "paired ex-factory to consumer prices \u00b7 1 214 products", "took the median per category \u00b7 5 categories", "checked threshold per category \u00b7 5 of 5 pass"],
+        chart: this.chartHbars([
+          { name: "Food supplements", pts: 3.8, note: "free price \u00b7 214 products", color: "#9A5C0F" },
+          { name: "Dermocosmetics", pts: 3.4, note: "free price \u00b7 386 products", color: "#5F7A12" },
+          { name: "OTC analgesics", pts: 2.6, note: "free price \u00b7 178 products", color: "#F67748" },
+          { name: "Antibiotics", pts: 1.9, note: "capped by decree \u00b7 203 products", color: "#5B9BD9" },
+          { name: "Chronic treatments", pts: 1.8, note: "capped by decree \u00b7 233 products", color: "#5B9BD9" }], 0, 4.1) },
+
+      { id: "loss", origin: "beyond", when: "for you \u00b7 today",
+        q: "Where did Advil lose share last quarter, and to whom?",
+        why: "Your share fell for the third month running and nobody had asked where it was going. So _beyond asked.",
+        title: "Where the share went",
+        v: "\u22122.1 pts", delta: "3 months", dc: "#C0473F", foot: "share points lost, by district",
+        head: "Advil lost 2.1 points.",
+        headAccent: "Three quarters of it went to Nurofen, in Abidjan.",
+        body: "Cocody and Yopougon account for 1.6 of the 2.1 points. Nurofen took 1.3 of those, entirely in the 400 mg sachet format, which entered 214 of the 612 panel pharmacies over the same window. Outside Abidjan the share is flat.",
+        chartTitle: "Share points lost, by district",
+        method: "Share computed on confirmed identities only. Cocody and Yopougon each clear the threshold of 3 contributors and 40 units. Treichville is reported as directional: 2 contributors.",
+        crumb: "share loss, Q2 2026",
+        trace: ["noticed \u00b7 share down 3 months, no question asked", "wrote the question \u00b7 share loss, one brand, one quarter", "queried lake \u00b7 612 outlets \u00d7 4 months", "checked threshold per district \u00b7 8 of 9 pass"],
+        chart: this.chartHbars([
+          { name: "Cocody", pts: -0.9, note: "to Nurofen", color: "#C0473F" },
+          { name: "Yopougon", pts: -0.7, note: "to Nurofen", color: "#C0473F" },
+          { name: "Plateau", pts: -0.3, note: "to others", color: "#F67748" },
+          { name: "Treichville", pts: -0.2, note: "to others \u00b7 directional", color: "#F67748" },
+          { name: "Bouak\u00e9", pts: 0.1, note: "gained", color: "#029B82" }], -1.0, 0.1) },
+
+      { id: "rival", origin: "beyond", when: "for you \u00b7 today",
+        q: "How fast is Nurofen 400 mg spreading through the panel?",
+        why: "A format that did not exist in your panel seven months ago is now in a third of it. _beyond thought you would want the curve.",
+        title: "Pharmacies stocking Nurofen 400 mg",
+        v: "214", delta: "+9 this wk", dc: "#C0473F", foot: "of 612 panel pharmacies \u00b7 weekly",
+        head: "From zero to 214 in seven months.",
+        headAccent: "The curve has not flattened.",
+        body: "The 400 mg sachet entered the panel in January and has added outlets every week since. It is now in 35 % of the panel, and 20 of the 25 pharmacies that dropped Advil stock it.",
+        chartTitle: "Pharmacies stocking Nurofen 400 mg",
+        method: "Counted weekly on confirmed outlet identities. A pharmacy counts as stocking from its first recorded sale.",
+        crumb: "competitor spread, 7 months",
+        trace: ["noticed \u00b7 new format, 7 straight months of growth", "wrote the question \u00b7 how fast, how far", "queried lake \u00b7 612 outlets \u00d7 30 weeks"],
+        chart: this.chartCurve([0, 4, 18, 47, 96, 148, 190, 214], ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "now"], "#C0473F") },
+
+      { id: "stopped", origin: "beyond", when: "for you \u00b7 yesterday",
+        q: "Which pharmacies stopped stocking Advil?",
+        why: "Twenty-five pharmacies quietly dropped Advil over four months. That reads better before the next quarter than after it.",
+        title: "Pharmacies that stopped stocking Advil",
+        v: "25", delta: "of 612", dc: "#6B6B61", foot: "four months \u00b7 by district",
+        head: "25 pharmacies stopped.",
+        headAccent: "Twenty-one of them are in Cocody and Yopougon.",
+        body: "587 of the 612 panel pharmacies sold Advil in July, down from 612 in March. The 25 that stopped sit in the two districts the 400 mg sachet entered first, and 20 of them now stock Nurofen. The named list is available to export.",
+        chartTitle: "Pharmacies that stopped, by district",
+        method: "Counted on confirmed outlet identities only, over four months. Bouak\u00e9 and Treichville are reported as directional: each is below the threshold of 3 contributors.",
+        crumb: "outlets lost, Q2 2026",
+        trace: ["noticed \u00b7 25 outlets stopped, no question asked", "wrote the question \u00b7 outlet churn, one brand", "queried lake \u00b7 612 outlets \u00d7 4 months", "checked threshold per district \u00b7 3 of 5 pass"],
+        chart: this.chartDots([
+          { name: "Cocody", pts: 11, note: "9 now stock Nurofen", color: "#C0473F" },
+          { name: "Yopougon", pts: 10, note: "10 now stock Nurofen", color: "#C0473F" },
+          { name: "Plateau", pts: 2, note: "1 now stocks Nurofen", color: "#F67748" },
+          { name: "Treichville", pts: 1, note: "directional \u00b7 2 contributors", color: "#F67748" },
+          { name: "Bouak\u00e9", pts: 1, note: "below threshold", color: "#F67748" }], 12) }
+    ];
+  }
+
+  answerFor(q) {
+    const t = (q || this.answers()[0].q).toLowerCase();
+    const words = t.split(/[^a-z0-9\u00e0-\u00ff]+/).filter(w => w.length > 3);
+    return this.answers().find(a => a.q.toLowerCase() === t)
+      || this.answers().find(a => {
+        const hay = (a.q + " " + a.title).toLowerCase();
+        return words.length > 1 && words.filter(w => hay.indexOf(w) > -1).length >= Math.min(2, words.length);
+      }) || null;
+  }
+
+
+  ask(q) {
+    const t = (q || "").trim();
+    if (!t) return;
+    const a = this.answerFor(t) || {};
+    if (a.id === "citysize") { this.setState({ view: "chat", question: this.A("national").q, step: 1, draft: "" }); return; }
+    if (a.id === "citysize2") { this.setState({ view: "chat", question: this.A("national").q, step: 2, draft: "" }); return; }
+    this.setState({ view: "chat", question: t, step: 0, draft: "", asked: (this.state.asked || 0) + 1 });
+  }
+
+
+  componentDidMount() {
+    this.measureFlow();
+    window.addEventListener("resize", this.__rz = () => this.measureFlow());
+    this._hotkey = e => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        this.setState({ view: "home" });
+        setTimeout(() => { const el = document.getElementById("by-ask"); if (el) el.focus(); }, 60);
+      }
+    };
+    window.addEventListener("keydown", this._hotkey);
+    this.phTick();
+  }
+
+  phList() {
+    return [
+      "How is Advil doing in C\u00f4te d'Ivoire?",
+      "Split my sell-out by city size.",
+      "What is the price coefficient for dermocosmetics?",
+      "Which pharmacies stopped stocking Advil?",
+      "Where did I lose share last quarter, and to whom?"
+    ];
+  }
+
+  phTick() {
+    if (this.view !== "home" || (this.state.draft || "").length) {
+      this._phT = setTimeout(() => this.phTick(), 500);
+      return;
+    }
+    const list = this.phList();
+    let i = this.state.phI || 0, n = this.state.phN || 0, del = !!this.state.phDel, wait;
+    const full = list[i % list.length];
+    if (!del) {
+      if (n < full.length) { n += 1; wait = 38 + Math.random() * 40; }
+      else { del = true; wait = 2200; }
+    } else if (n > 0) { n = Math.max(0, n - 2); wait = 20; }
+    else { del = false; i = (i + 1) % list.length; wait = 340; }
+    this.setState({ phI: i, phN: n, phDel: del });
+    this._phT = setTimeout(() => this.phTick(), wait);
+  }
+
+  componentDidUpdate() { this.measureFlow(); }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.__rz);
+    window.removeEventListener("keydown", this._hotkey);
+    if (this._phT) clearTimeout(this._phT);
+    if (this.__mt) clearTimeout(this.__mt);
+    clearInterval(this._dzInt);
+  }
+
+  digestPending() {
+    return [
+      { kind: "SAME PHARMACY", conf: "94%",
+        head: "Two names, one pharmacy. _beyond believes these are the same shop.",
+        why: "Same street address, same licence number. One file writes it in capitals, the other the short way. Approving merges them, and 1 204 sales stop being split across two pharmacies that do not both exist.",
+        no: "Different shops",
+        onYes: "Merged into one pharmacy · 1 204 sales joined up · logged 14:31",
+        onNo: "Kept apart. _beyond will not raise this pair again.",
+        rows: [
+          { s: "Panel file", v: "PHARMACIE DU PLATEAU", c: "#6B6B61" },
+          { s: "Wholesaler file", v: "Pharmacie Plateau", c: "#6B6B61" },
+          { s: "If approved", v: "one pharmacy · 1 204 sales joined", c: "#5F7A12" }] },
+      { kind: "SAME DATA TWICE", conf: "81%",
+        head: "July arrived twice. _beyond believes the new feed and the monthly spreadsheet are the same numbers.",
+        why: "Both carry July, line for line. Approving keeps the feed, files the spreadsheet away, and July stops being counted twice.",
+        no: "Keep both",
+        onYes: "Feed is now the source · spreadsheet filed away · nothing counted twice",
+        onNo: "Both kept. July stays counted twice until you decide.",
+        rows: [
+          { s: "Monthly spreadsheet", v: "21 887 rows · July", c: "#6B6B61" },
+          { s: "New feed", v: "21 887 rows · July · same numbers", c: "#6B6B61" },
+          { s: "If approved", v: "feed becomes the source · spreadsheet filed away", c: "#5F7A12" }] }
+    ];
+  }
+
+  A(id) { return this.answers().find(a => a.id === id) || {}; }
+
+  get step() { return this.state.step == null ? Number(this.props.startStep || 0) : this.state.step; }
+
+  get tab() { return this.state.setTab || this.props.startTab || "connect"; }
+
+  whyFor(id) {
+    return {
+      citysize2: { t: "on screen because city size is how you read this brand now", dot: "#5F7A12", kind: "you asked" },
+      units:     { t: "watching since 12 Aug · tell me if it falls below −10 %", dot: "#C0473F", kind: "watching" },
+      share:     { t: "on screen because you have asked for it three times this quarter", dot: "#5F7A12", kind: "you asked" },
+      loss:      { t: "share fell three months running and nobody had asked", dot: "#14170F", kind: "asked for you" },
+      rival:     { t: "a format that did not exist in your panel in January", dot: "#14170F", kind: "asked for you" },
+      stopped:   { t: "25 outlets stopped stocking you and none of them said so", dot: "#14170F", kind: "asked for you" }
+    }[id] || { t: "", dot: "#E5E5DA", kind: "you asked" };
+  }
+
+  /* ---- the thread ---------------------------------------------------------
+     One conversation, four beats: the question, the answer, _beyond arguing
+     with the cut, and the moment it admits the data is too thin and asks to
+     widen it. The memory card is the fourth beat: the agent writes down what
+     it learned, in the open, where you can delete it.                       */
+
+  mUser(t) { return { isUser: true, text: t }; }
+
+  mAsk(a) { return { isBeyondAsk: true, text: a.q, why: this.wm(a.why || "", "#C8F068") }; }
+
+  mTrace(a) { return { isTrace: true, lines: (a.trace || []).map(l => ({ l: l })) }; }
+
+  mAns(a) {
+    const ch = a.chart || {};
+    return { isAnswer: true, head: a.head, headAccent: a.headAccent, body: a.body,
+      chartTitle: a.chartTitle, method: a.method,
+      chart: Object.assign({}, ch, { isBars: ch.kind === "bars", isDonut: ch.kind === "donut",
+        isLine: ch.kind === "line", isArea: ch.kind === "area", isHbars: ch.kind === "hbars", isDots: ch.kind === "dots" }) };
+  }
+
+  memoryNew() {
+    return [
+      { k: "cut", head: "You read this brand by city size, not by district.",
+        note: "learned from this conversation · applied to every Advil question from here" },
+      { k: "thin", head: "Never lead with a directional number. Offer to widen the data first.",
+        note: "learned when you said yes · applies to any cut below the threshold" },
+      { k: "src", head: "The interior wholesaler and the delivery routes belong in the lake.",
+        note: "learned from the two sources you accepted" }
+    ];
+  }
+
+  memoryAll() {
+    return [
+      { title: "What you care about", note: "learned from 23 questions", rows: [
+        { k: "brand", head: "Advil 200 mg against Nurofen, oral analgesics, Côte d'Ivoire.", note: "learned from 23 questions", when: "since 2 Aug" },
+        { k: "cut", head: "You read this brand by city size, not by district.", note: "learned from your question today", when: "today" },
+        { k: "act", head: "Cocody and Yopougon are where you act first.", note: "learned from what you opened after each answer", when: "12 Aug" }] },
+      { title: "How you want answers", note: "learned from how you read them", rows: [
+        { k: "thin", head: "Never lead with a directional number. Offer to widen the data first.", note: "learned when you said yes today", when: "today" },
+        { k: "units", head: "Units first, value second. You ask for value second every time.", note: "learned from the order of your questions", when: "2 Aug" },
+        { k: "method", head: "Keep the method visible. You open it on every answer.", note: "learned from 19 of 21 answers", when: "5 Aug" }] },
+      { title: "What _beyond learned about your data", note: "held per source, never shared", rows: [
+        { k: "src", head: "The interior wholesaler and the delivery routes belong in the lake.", note: "learned from the two sources you accepted", when: "today" },
+        { k: "late", head: "The Sivop file arrives late every month. A gap is not a fall.", note: "learned after the September gap read as a drop", when: "19 Aug" },
+        { k: "codes", head: "Four product codes are one product: Advil 200 mg, 20 tabs.", note: "learned in Digest, confirmed by you", when: "12 Aug" }] }
+    ];
+  }
+
+  scriptedThread() {
+    const step = this.step;
+    const nat = this.A("national"), cs = this.A("citysize"), cs2 = this.A("citysize2");
+    const out = [this.mUser(nat.q), this.mTrace(nat), this.mAns(nat)];
+
+    out.push({ isChallenge: true,
+      kicker: "_beyond would ask this differently",
+      head: this.wm("You asked a national question. The answer is not national.", "#F7F7EF"),
+      body: this.wm("Every question you have asked this month has been national or by district. City size has never been one of your cuts, and on this brand it is the cut that moves. Ask it that way and the flat line separates into two.", "#F7F7EF"),
+      ctaLabel: "Split it by city size", altLabel: "Keep the national view",
+      note: "you decide, not _beyond",
+      cta: () => this.setState({ step: 1 }), alt: () => {} });
+
+    if (step >= 1) {
+      out.push(this.mUser("Split it by city size."));
+      out.push(this.mTrace(cs));
+      out.push(this.mAns(cs));
+      out.push({ isExpand: true,
+        kicker: "confidence · one of those lines is directional",
+        head: this.wm("One of those three lines is not measured."),
+        body: this.wm("Towns under 50 000 rest on 2 contributors and 31 units, below the threshold of 3 contributors and 40 units. _beyond will not let you act on that as though it were measured. It can widen the data first."),
+        rows: [
+          { n: "01", head: "Add the interior wholesaler already in your library", note: "Copharmed, on contributor terms, read-only. Covers 14 towns under 50 000, Bouaké among them.", tag: "6 min", tagFg: "#5F7A12" },
+          { n: "02", head: "Add the delivery routes a contributor shares", note: "Which outlets are served on which days beyond the coastal belt. Shared by Tedis Pharma.", tag: "shared", tagFg: "#5F7A12" },
+          { n: "03", head: "Walk a short survey in 40 small-town pharmacies", note: "Twelve questions, walked by the Opeaz field team. You approve the questions before anyone leaves.", tag: "5 days", tagFg: "#9A5C0F" }],
+        ctaLabel: "Yes, widen it", altLabel: "Answer with what we have",
+        note: "_beyond reads and asks. It writes nothing back to any source.",
+        cta: () => this.setState({ step: 2 }), alt: () => {} });
+    }
+
+    if (step >= 2) {
+      out.push(this.mUser("Yes, widen it."));
+      out.push({ isExpanded: true, kicker: "widened · 6 min",
+        rows: [
+          { head: this.wm("Interior wholesaler connected · 14 towns · 3 214 rows"), tag: "live", tagFg: "#029B82" },
+          { head: this.wm("Delivery routes added · 212 outlets mapped"), tag: "shared", tagFg: "#029B82" },
+          { head: this.wm("Survey drafted · 40 pharmacies · 12 questions waiting for you"), tag: "queued", tagFg: "#9A5C0F" },
+          { head: this.wm("41 new outlet identities resolved · one pair sent to you"), tag: "1 approval", tagFg: "#F67748" }],
+        foot: this.wm("Towns under 50 000 now rest on 4 contributors and 61 units. That clears the threshold, so the line below is measured rather than directional.") });
+      out.push(this.mAns(cs2));
+      out.push({ isMemory: true, kicker: "memory updated", when: "just now",
+        head: this.wm("_beyond wrote three things down. They change what it reaches for next time."),
+        rows: this.memoryNew().map(r => {
+          const off = !!this.state.memOff[r.k];
+          return { head: this.wm(r.head), note: r.note,
+            btn: off ? "Forgotten" : "Forget", btnFg: off ? "#A3A399" : "#14170F",
+            forget: () => this.setState(s => {
+              const n = Object.assign({}, s.memOff);
+              if (n[r.k]) { delete n[r.k]; } else { n[r.k] = true; }
+              return { memOff: n };
+            }) };
+        }),
+        foot: this.wm("Memory lives in Settings, where you can read all of it and delete any of it. It never leaves your lake and is never sent to a source.") });
+    }
+    return out;
+  }
+
+  threadRows() {
+    return [
+      { h: "Today" },
+      { id: "national", q: "How is Advil doing in Côte d'Ivoire?", meta: "you · three follow-ups", dot: "#5F7A12" },
+      { id: "coef", q: "What is the coefficient between consumer price and ex-factory price for dermocosmetics?", meta: "you \u00b7 asked today", dot: "#5F7A12" },
+      { id: "loss", q: "Where did Advil lose share last quarter, and to whom?", meta: "asked for you", dot: "#14170F" },
+      { id: "stopped", q: "Which pharmacies stopped stocking Advil?", meta: "asked for you", dot: "#14170F" },
+      { h: "Earlier" },
+      { id: "rival", q: "How fast is Nurofen 400 mg spreading through the panel?", meta: "asked for you · yesterday", dot: "#14170F" },
+      { id: "units", q: "How many units did we sell each month?", meta: "you · 2 Aug · watching", dot: "#5F7A12" },
+      { id: "share", q: "How is the analgesics category split between brands?", meta: "you · 2 Aug", dot: "#5F7A12" },
+      { id: "value", q: "What is our sell-out value month by month?", meta: "you · 12 May", dot: "#5F7A12" }
+    ];
+  }
+
+
+  renderVals() {
+    const v = this.view, tab = this.tab, step = this.step;
+    const pendLeft = this.digestPending().filter((p, i) => !this.state.digestDone[i]).length;
+    const memLeft = this.memoryAll().reduce((n, g) => n + g.rows.filter(r => !this.state.memOff[r.k]).length, 0);
+    const cur = this.state.question;
+    const scripted = !cur || cur === this.A("national").q;
+    const crumbs = {
+      home: ["", ""],
+      chat: ["Ask", (this.answerFor(cur) || { crumb: "a question with its method" }).crumb],
+      cockpit: ["Cockpit", "six graphs you don't have to ask for"],
+      settings: ["Settings", tab === "connect" ? (this.state.connTab === "drop" ? "connect · drop zone" : "connect · sources and coverage")
+                 : tab === "digest" ? "digest · " + (pendLeft === 0 ? "all approvals cleared" : pendLeft === 1 ? "1 approval waiting" : pendLeft + " approvals waiting")
+                 : "memory · " + memLeft + " things remembered"]
+    }[v] || ["", ""];
+    const cockpitIds = ["citysize2", "units", "share", "loss", "rival", "stopped"];
+
+    return {
+      /* ---- shell ---- */
+      isIntro: v === "intro", isApp: v !== "intro",
+      isHome: v === "home", isChat: v === "chat", isCockpit: v === "cockpit", isSettings: v === "settings",
+      crumb: crumbs[0], crumb2: crumbs[1],
+      topRule: v === "home" ? "transparent" : "#E5E5DA",
+      goHome: () => this.setState({ view: "home", question: null, step: 0, draft: "" }),
+      goCockpit: () => this.setState({ view: "cockpit" }),
+      goSettings: () => this.setState({ view: "settings" }),
+      nav: { cockpit: this.ns("cockpit"), settings: this.ns("settings") },
+      alertBadge: "1", alertColor: "#C0473F",
+      methodNotes: this.props.methodNotes !== false,
+      showTrace: this.props.showTrace !== false,
+
+      /* ---- history ---- */
+      threads: this.threadRows().map(r => {
+        if (r.h) return { isHeader: true, isRow: false, label: r.h };
+        const on = r.id === "national" ? (v === "chat" && scripted) : (v === "chat" && cur === r.q);
+        const forYou = (r.meta || "").indexOf("asked for you") > -1;
+        return { isHeader: false, isRow: true, q: r.q, meta: r.meta, byYou: !forYou, byBeyond: forYou,
+          dot: forYou ? (on ? "#14170F" : "#6B6B61") : r.dot,
+          bg: on ? "linear-gradient(90deg,rgba(200,240,104,.42),transparent)" : "transparent",
+          edge: on ? "#14170F" : "transparent", fg: on ? "#14170F" : "#6B6B61", w: on ? "700" : "500",
+          cur: on ? "page" : null,
+          open: () => this.setState({ view: "chat", question: this.A(r.id).q, step: r.id === "national" ? 0 : 0, draft: "" }) };
+      }),
+
+      /* ---- the ask screen ---- */
+      openAlert: () => this.setState({ view: "chat", question: this.A("loss").q, draft: "" }),
+
+      /* ---- the conversation ---- */
+      thread: (() => {
+        if (scripted) return this.scriptedThread();
+        const a = this.answerFor(cur);
+        if (!a) return [this.mUser(cur), { isNone: true }];
+        if (a.origin === "beyond") return [this.mAsk(a), this.mTrace(a), this.mAns(a)];
+        return [this.mUser(a.q), this.mTrace(a), this.mAns(a)];
+      })(),
+      chatSources: [
+        { n: "Pharmacy panel · 612 outlets", dot: "#5F7A12" },
+        { n: "Interior wholesaler", dot: "#F67748" },
+        { n: "Norwell internal", dot: "#029B82" },
+        { n: "Reference model · 4 identities", dot: "#14170F" }],
+      followUps: (scripted && step >= 2
+        ? ["Which small towns moved most?", "Compare with sell-in over the same window", "Watch this cut every month"]
+        : scripted
+          ? ["Where did Advil lose share last quarter, and to whom?", "Compare with sell-in over the same window", "How many units did we sell each month?"]
+          : ["How is Advil doing in Côte d'Ivoire?", "Split it by city size.", "Compare with sell-in over the same window"]
+        ).map(t => ({ t: t, ask: () => this.ask(t) })),
+
+      draft: this.state.draft,
+      setDraft: e => this.setState({ draft: e.target.value }),
+      askKey: e => { if (e.key === "Enter") { e.preventDefault(); this.ask(this.state.draft || this.A("national").q); } },
+      askSend: () => this.ask(this.state.draft || (v === "home" ? this.A("national").q : "")),
+      askBg: (this.state.draft.trim() || v === "home") ? "#C8F068" : "#E5E5DA",
+      askPlaceholder: (() => {
+        const list = this.phList(), full = list[(this.state.phI || 0) % list.length];
+        return full.slice(0, this.state.phN || 0) + "\u2502";
+      })(),
+      askCursor: (this.state.draft.trim() || v === "home") ? "pointer" : "default",
+
+      toggleWatch: () => this.setState(s => ({ watching: !s.watching })),
+      watchLabel: this.state.watching ? "Watching ✓" : "Watch this",
+      watchBg: this.state.watching ? "#5F7A12" : "#fff",
+      watchFg: this.state.watching ? "#fff" : "#6B6B61",
+      watchBorder: this.state.watching ? "#5F7A12" : "#D3D3C4",
+
+      /* ---- cockpit ---- */
+      cockpitCards: cockpitIds.map(id => this.A(id)).map((a, i) => {
+        const w = this.whyFor(a.id), k = a.chart.kind, forYou = w.kind === "asked for you", watch = w.kind === "watching";
+        return {
+          title: a.title, v: a.v, delta: a.delta, dc: a.dc, foot: a.foot, when: a.when,
+          badge: w.kind,
+          badgeBg: forYou ? "#14170F" : "#fff",
+          badgeFg: forYou ? "#C8F068" : watch ? "#5F7A12" : "#6B6B61",
+          badgeBorder: forYou ? "#14170F" : watch ? "#C8F068" : "#D3D3C4",
+          border: forYou ? "#D3D3C4" : "#E5E5DA",
+          why: w.t, whyDot: w.dot,
+          chart: Object.assign({}, a.chart, { isBars: k === "bars", isDonut: k === "donut",
+            isLine: k === "line", isArea: k === "area", isHbars: k === "hbars", isDots: k === "dots" }),
+          rise: "byRise 520ms ease-out " + Math.min(i * 60, 360) + "ms both",
+          open: () => this.setState({ view: "chat", question: a.id === "citysize2" ? this.A("national").q : a.q, step: a.id === "citysize2" ? 2 : 0 })
+        };
+      }),
+
+      /* ---- settings ---- */
+      setTabs: [{ k: "connect", label: "Connect", count: this.connected().length },
+                { k: "digest", label: "Digest", count: pendLeft === 0 ? "" : pendLeft },
+                { k: "memory", label: "Memory", count: memLeft }].map(t => ({
+        label: t.label, count: t.count,
+        bg: tab === t.k ? "#14170F" : "#fff",
+        fg: tab === t.k ? "#fff" : "#6B6B61",
+        countFg: tab === t.k ? "rgba(247,247,239,.6)" : "#A3A399",
+        border: tab === t.k ? "#14170F" : "#D3D3C4",
+        w: tab === t.k ? "700" : "500",
+        cur: tab === t.k ? "page" : null,
+        pick: () => this.setState({ setTab: t.k })
+      })),
+      isConnectTab: tab === "connect", isDigestTab: tab === "digest", isMemoryTab: tab === "memory",
+      subSourcesBorder: this.state.connTab !== "drop" ? "#14170F" : "#E5E5DA",
+      subDropBorder: this.state.connTab === "drop" ? "#14170F" : "#E5E5DA",
+
+      memCount: memLeft,
+      memGroups: this.memoryAll().map(g => ({
+        title: this.wm(g.title), note: g.note,
+        rows: g.rows.map(r => {
+          const off = !!this.state.memOff[r.k];
+          return { head: this.wm(r.head), note: r.note, when: r.when,
+            fg: off ? "#A3A399" : "#14170F",
+            btn: off ? "Forgotten" : "Forget", btnFg: off ? "#A3A399" : "#14170F",
+            forget: () => this.setState(s => {
+              const n = Object.assign({}, s.memOff);
+              if (n[r.k]) { delete n[r.k]; } else { n[r.k] = true; }
+              return { memOff: n };
+            }) };
+        })
+      })),
+
+      /* ---- connect (unchanged machinery) ---- */
+      dzIdle: this.state.dz === "idle", dzMagic: this.state.dz === "magic", dzDone: this.state.dz === "done",
+      dzEdge: this.state.dz === "done" ? "#5F7A12" : "#A5CE3C",
+      dzStone: this.state.dz === "magic" ? "byRockFall 860ms linear forwards" : this.state.dz === "done" ? "none" : "byRockHover 3s ease-in-out infinite",
+      dzStoneOp: this.state.dz === "done" ? "0" : "1",
+      dzSplashOp: this.state.dz === "magic" ? "1" : "0",
+      dzCrown: this.state.dz === "magic" ? "byCrown 400ms ease-out 680ms both" : "none",
+      dzDropA: this.state.dz === "magic" ? "byDropA 560ms ease-out 688ms both" : "none",
+      dzDropB: this.state.dz === "magic" ? "byDropB 620ms ease-out 688ms both" : "none",
+      dzDropC: this.state.dz === "magic" ? "byDropC 680ms ease-out 700ms both" : "none",
+      dzRippleOp: this.state.dz === "idle" ? ".26" : this.state.dz === "magic" ? "1" : ".55",
+      dzRing1: this.state.dz === "magic" ? "byRipple 2.4s ease-out 700ms infinite backwards" : this.state.dz === "done" ? "byRipple 3.4s ease-out infinite backwards" : "byRipple 4.4s ease-out infinite backwards",
+      dzRing2: this.state.dz === "magic" ? "byRipple 2.4s ease-out 1250ms infinite backwards" : this.state.dz === "done" ? "byRipple 3.4s ease-out 1.1s infinite backwards" : "byRipple 4.4s ease-out 1.5s infinite backwards",
+      dzRing3: this.state.dz === "magic" ? "byRipple 2.4s ease-out 1800ms infinite backwards" : this.state.dz === "done" ? "byRipple 3.4s ease-out 2.2s infinite backwards" : "byRipple 4.4s ease-out 3s infinite backwards",
+      dzBg: this.state.dz === "idle" ? "#F7F7EF" : "#fff",
+      dzStep: ["reading the file", "extracting 1 214 rows", "understanding the context", "finding where it fits in the lake"][this.state.dzStepI % 4],
+      startDrop: () => {
+        if (this.state.dz !== "idle") return;
+        this.setState({ dz: "magic", dzStepI: 0 });
+        this._dzInt = setInterval(() => this.setState(s => ({ dzStepI: s.dzStepI + 1 })), 1100);
+        setTimeout(() => { clearInterval(this._dzInt); this.setState({ dz: "done" }); }, 4400);
+        setTimeout(() => this.setState({ dz: "idle" }), 19400);
+      },
+      isSourcesTab: this.state.connTab !== "drop", isDropTab: this.state.connTab === "drop",
+      pickSourcesTab: () => this.setState({ connTab: "sources" }), pickDropTab: () => this.setState({ connTab: "drop" }),
+      tabSourcesW: this.state.connTab !== "drop" ? 700 : 500, tabSourcesFg: this.state.connTab !== "drop" ? "#14170F" : "#6B6B61",
+      tabDropW: this.state.connTab === "drop" ? 700 : 500, tabDropFg: this.state.connTab === "drop" ? "#14170F" : "#6B6B61",
+      drops: [
+        { ext: "XLSX", tint: "#EEF7CF", col: "#5F7A12", name: "ventes_juin_bouake_v2 (1).xlsx", read: "Read as sell-in, Bouaké wholesaler · 1 214 rows → sales, June 2026", status: "Filed", stc: "#029B82" },
+        { ext: "PDF", tint: "#FDEEE8", col: "#F67748", name: "Tarif officiel 2026 - DPM.pdf", read: "Read as a price list · 3 180 products → reference prices, 2026", status: "Filed", stc: "#029B82" },
+        { ext: "JPG", tint: "#EAF7F4", col: "#1B998B", name: "IMG_4482.jpg", read: "Photo of a delivery note · 14 lines extracted → deliveries, Yopougon", status: "Filed", stc: "#029B82" },
+        { ext: "CSV", tint: "#EFEFE4", col: "#6B6B61", name: "export_stock (3).csv", read: "Read as stock levels · 2 006 rows → stock, July 2026", status: "Filed", stc: "#029B82" }],
+
+      lakeScale: this.lakeScaleNow(),
+      lakeRows: (function (n) { const m = 3.1 + n * 0.18; return m.toFixed(m < 10 ? 1 : 0) + "M"; })(this.addedCount()),
+      connCount: this.connected().length,
+      connSources: this.connected().map((s, i) => {
+        const live = s.status === "LIVE", err = s.hasError;
+        return Object.assign({}, s, {
+          noError: !err, foot: err ? s.error : s.fresh, footColor: err ? "#C0473F" : "#6B6B61",
+          mono: err ? "#C0473F" : live ? "#14170F" : "#EFEFE4",
+          ink: err ? "#FFFFFF" : live ? "#F7F7EF" : "#6B6B61",
+          bg: err ? "rgba(192,71,63,.04)" : "#fff",
+          border: err ? "rgba(192,71,63,.35)" : live ? "rgba(165,206,60,.85)" : "#E5E5DA",
+          edge: err ? "#C0473F" : live ? "#A5CE3C" : "#E5E5DA",
+          rise: "byRise 520ms ease-out " + (i * 80) + "ms both"
+        });
+      }),
+      flowRef: el => { this.flowEl = el; this.measureFlow(); },
+      flows: this.connected().map((s, i, arr) => {
+        const y = ((i + 0.5) / arr.length) * 100;
+        const colH = this.state.colH || 0;
+        const lakeUsable = 279 * this.lakeScaleNow() * 0.56;
+        const band = colH ? Math.max(6, Math.min(34, (lakeUsable / colH) * 100)) : 32;
+        const yEnd = 50 + (((i + 0.5) / arr.length) - 0.5) * band;
+        const dead = s.status === "IDLE";
+        return { d: "M0," + y + " C34," + y + " 52," + yEnd + " 100," + yEnd,
+          stroke: s.hasError ? "rgba(192,71,63,.55)" : dead ? "rgba(20,23,15,.28)" : "#5B9BD9",
+          w: 1.6, dash: "7 6",
+          style: s.hasError || dead ? "opacity:.8" : "opacity:.9;animation:byFlow 1.1s linear infinite" };
+      }),
+      libTabs: ["All", "General", "Brand portals", "Wholesalers", "Public info", "Community"].map(t => ({
+        label: t,
+        bg: this.state.lib === t ? "#14170F" : "#fff",
+        fg: this.state.lib === t ? "#fff" : "#6B6B61",
+        border: this.state.lib === t ? "#14170F" : "#D3D3C4",
+        w: this.state.lib === t ? "700" : "500",
+        pick: () => this.setState({ lib: t })
+      })),
+      library: this.libraryItems().map(l => Object.assign({}, l, { desc: this.wm(l.desc) })).filter(l => this.state.lib === "All" || l.cat === this.state.lib).map((l, i) => {
+        const skin = l.brand              ? { tint: l.brand, col: "#FFFFFF" }
+                   : l.cat === "Community" ? { tint: "#14170F", col: "#C8F068" }
+                   : l.cat === "General"   ? { tint: "#EFEFE4", col: "#6B6B61" }
+                   :                         { tint: "#C8F068", col: "#14170F" };
+        const on = !!this.state.added[l.name];
+        const drop = l.name === "File upload";
+        return Object.assign({}, l, { col: skin.col, tint: l.tintOverride || skin.tint, trusted: !!l.trusted,
+          isDb: l.logo === "db", isGd: l.logo === "gd", isGs: l.logo === "gs", isXl: l.logo === "xl", isIni: !l.logo,
+          popular: !!l.popular,
+          added: on, notAdded: !on,
+          btnTitle: drop ? "Open the drop zone" : on ? "Connected \u00b7 remove" : "Add " + l.name,
+          btnBg: on ? "#C8F068" : "transparent",
+          btnFg: "#14170F",
+          connect: drop ? (() => this.setState({ connTab: "drop" })) : (() => this.setState(st => {
+            const next = Object.assign({}, st.added);
+            if (next[l.name]) { delete next[l.name]; } else { next[l.name] = true; }
+            return { added: next };
+          })),
+          rise: "byRise 520ms ease-out " + Math.min(i * 45, 400) + "ms both" });
+      }),
+      libCount: this.libraryItems().filter(l => this.state.lib === "All" || l.cat === this.state.lib).length,
+
+      /* ---- digest (unchanged machinery) ---- */
+      pendingCount: pendLeft,
+      pendHead: pendLeft === 0 ? "Nothing is waiting for you." : pendLeft === 1 ? "One needs your approval." : pendLeft + " need your approval.",
+      pendTitle: pendLeft === 0 ? "Your decisions" : "Waiting for your approval",
+      pendBadgeColor: pendLeft === 0 ? "#6B6B61" : "#F67748",
+      pendBadgeWeight: pendLeft === 0 ? "500" : "700",
+      noPending: pendLeft === 0,
+      pending: this.digestPending().map((p, i) => {
+        const decision = this.state.digestDone[i];
+        const yes = decision === "approved";
+        const set = d => () => this.setState(s => {
+          const next = Object.assign({}, s.digestDone);
+          if (d) { next[i] = d; } else { delete next[i]; }
+          return { digestDone: next };
+        });
+        return Object.assign({}, p, {
+          head: this.wm(p.head), why: this.wm(p.why),
+          undecided: !decision, resolved: !!decision,
+          outLabel: yes ? "Approved" : "Not applied",
+          outNote: this.wm(yes ? p.onYes : p.onNo),
+          outTint: yes ? "#F4FAE3" : "#F7F7EF",
+          outBorder: yes ? "#C8F068" : "#E5E5DA",
+          outFg: yes ? "#5F7A12" : "#14170F",
+          approve: set("approved"), dismiss: set("rejected"), undo: set(null)
+        });
+      }),
+      autoActions: [
+        { head: "Read four different column titles as one field: units sold.", detail: "QTE · Quantité vendue · units_out · SORTIE_STOCK → units_sold", conf: "96%", when: "today 04:12" },
+        { head: "Moved wholesaler timestamps from Paris time to Abidjan time.", detail: "14/07/2026 15:05 CEST → 14/07/2026 13:05 GMT", conf: "99%", when: "today 04:12" },
+        { head: "Converted wholesaler prices from euros to XOF at the fixed peg.", detail: "1,91 EUR → 1 253 XOF · rate 655.957", conf: "98%", when: "today 04:12" },
+        { head: "Read Norwell's Excel date numbers as calendar dates.", detail: "46208 → 5 July 2026", conf: "97%", when: "yesterday" },
+        { head: "Recognized the same pharmacy under three different ids.", detail: "CI-AB-0412 = client 70233 = PHIE DU PLATEAU ABJ · 597 of 612 matched", conf: "94%", when: "yesterday" },
+        { head: "Matched the same product under four different codes.", detail: "841022 · PRD-00841 · P.841/CI · 8410 → Advil 200 mg, 20 tabs", conf: "94%", when: "12 Aug" }]
+    };
+  }
+}
+</script>
+</body>
+</html>

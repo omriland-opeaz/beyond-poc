@@ -1,0 +1,25 @@
+<!-- @dsCard group="Colors" viewport="700x150" name="Ink, cream, paper" subtitle="Cream page, white surfaces, ink type" -->
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>Surfaces</title>
+<link rel="stylesheet" href="../../styles.css">
+<style>
+  body { margin:0; padding:16px 18px; background:var(--by-cream); color:var(--by-ink);
+         font-family:var(--by-font-sans); -webkit-font-smoothing:antialiased; }
+  .grid { display:flex; gap:10px; flex-wrap:wrap; }
+  .sw { display:flex; flex-direction:column; gap:6px; min-width:0; }
+  .chip { height:56px; border-radius:8px; }
+  .n { font-size:11px; font-weight:700; letter-spacing:-0.01em; }
+  .h { font-size:10px; color:var(--by-grey); font-variant-numeric:tabular-nums; }
+  .u { font-size:9.5px; color:var(--by-grey-light); line-height:1.4; }
+  .row { display:flex; align-items:baseline; gap:14px; padding:6px 0; border-bottom:1px solid var(--by-line); }
+  .lab { font-size:9.5px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--by-grey); }
+</style></head><body>
+<div class="grid">
+  <div class="sw" style="flex:1"><div class="chip" style="background:#14170F;"></div><div class="n">Ink</div><div class="h">#14170F</div><div class="u">All text, dark surfaces, anything on lime</div></div>
+  <div class="sw" style="flex:1"><div class="chip" style="background:#F7F7EF;border:1px solid var(--by-line)"></div><div class="n">Cream</div><div class="h">#F7F7EF</div><div class="u">Page background, sunken panels</div></div>
+  <div class="sw" style="flex:1"><div class="chip" style="background:#FFFFFF;border:1px solid var(--by-line)"></div><div class="n">Paper</div><div class="h">#FFFFFF</div><div class="u">Cards and app surfaces</div></div>
+  <div class="sw" style="flex:1"><div class="chip" style="background:#E5E5DA;border:1px solid var(--by-line-strong)"></div><div class="n">Line</div><div class="h">#E5E5DA</div><div class="u">Rules and card borders</div></div>
+  <div class="sw" style="flex:1"><div class="chip" style="background:#D3D3C4;"></div><div class="n">Line strong</div><div class="h">#D3D3C4</div><div class="u">Inputs, outline buttons</div></div>
+  <div class="sw" style="flex:1"><div class="chip" style="background:#EFEFE4;"></div><div class="n">Line faint</div><div class="h">#EFEFE4</div><div class="u">Inside a graph: tracks and row rules</div></div>
+</div>
+</body></html>
