@@ -1,7 +1,7 @@
 import { S } from "../css.js";
 import Ask from "./Ask.jsx";
 import Chat from "./Chat.jsx";
-import Cockpit from "./Cockpit.jsx";
+import Space from "./Space.jsx";
 import Settings from "./Settings.jsx";
 
 export default function Shell({ v }) {
@@ -50,8 +50,8 @@ export default function Shell({ v }) {
         </div>
 
         <div style={S("display:flex;flex-direction:column;border-top:1px solid #E5E5DA;padding-top:10px")}>
-          <button onClick={v.goCockpit} aria-current={v.nav.cockpit.cur || undefined} style={S(`display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:9px 20px;border:none;background:${v.nav.cockpit.bg};border-left:2px solid ${v.nav.cockpit.edge};font-size:13px;font-weight:${v.nav.cockpit.w};color:${v.nav.cockpit.fg}`)}>
-            Cockpit
+          <button onClick={v.goSpace} aria-current={v.nav.space.cur || undefined} style={S(`display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:9px 20px;border:none;background:${v.nav.space.bg};border-left:2px solid ${v.nav.space.edge};font-size:13px;font-weight:${v.nav.space.w};color:${v.nav.space.fg}`)}>
+            Your space
             <span style={S(`margin-left:auto;font-size:10.5px;color:${v.alertColor};font-weight:700;font-variant-numeric:tabular-nums`)}>{v.alertBadge}</span>
           </button>
           <button onClick={v.goSettings} aria-current={v.nav.settings.cur || undefined} style={S(`display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:9px 20px;border:none;background:${v.nav.settings.bg};border-left:2px solid ${v.nav.settings.edge};font-size:13px;font-weight:${v.nav.settings.w};color:${v.nav.settings.fg}`)}>
@@ -73,13 +73,21 @@ export default function Shell({ v }) {
 
       <main style={S("display:flex;flex-direction:column;overflow:hidden")}>
         <div style={S(`flex-shrink:0;height:52px;display:flex;align-items:center;gap:16px;padding:0 40px;border-bottom:1px solid ${v.topRule}`)}>
-          <div style={S("font-size:12px;font-weight:600;color:#14170F")}>{v.crumb}</div>
+          {v.isSpace ? (
+            <div style={S("display:flex;align-items:center;gap:6px")}>
+              {v.spaceTabs.map(t => (
+                <button key={t.key} onClick={t.pick} aria-current={t.cur || undefined} className="by-h-ink" style={S(`padding:5px 12px;border-radius:100px;border:1px solid ${t.border};background:${t.bg};font-size:11.5px;font-weight:${t.w};color:${t.fg};white-space:nowrap`)}>{t.name}</button>
+              ))}
+            </div>
+          ) : (
+            <div style={S("font-size:12px;font-weight:600;color:#14170F")}>{v.crumb}</div>
+          )}
         </div>
 
         <div style={S("flex:1;overflow:auto;position:relative")}>
           {v.isHome && <Ask v={v} />}
           {v.isChat && <Chat v={v} />}
-          {v.isCockpit && <Cockpit v={v} />}
+          {v.isSpace && <Space v={v} />}
           {v.isSettings && <Settings v={v} />}
         </div>
       </main>

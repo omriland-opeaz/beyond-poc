@@ -106,10 +106,10 @@ export function AnswerChart({ chart: c, title }) {
   return null;
 }
 
-export function CardChart({ chart: c, title }) {
+export function CardChart({ chart: c, title, height = 82 }) {
   if (c.isBars) return (
     <>
-      <svg viewBox="0 0 100 46" preserveAspectRatio="none" role="img" aria-label={title} style={S("display:block;width:100%;height:82px")}>
+      <svg viewBox="0 0 100 46" preserveAspectRatio="none" role="img" aria-label={title} style={S(`display:block;width:100%;height:${height}px`)}>
         {c.bars.map((b, i) => <rect key={i} x={b.x} y={b.y} width={b.w} height={b.h} fill={b.c}></rect>)}
       </svg>
       <span style={S("display:flex;justify-content:space-between;margin-top:5px")}>
@@ -120,7 +120,7 @@ export function CardChart({ chart: c, title }) {
 
   if (c.isDonut) return (
     <span style={S("display:flex;align-items:center;gap:16px")}>
-      <svg viewBox="0 0 40 40" role="img" aria-label={title} style={S("width:82px;height:82px;flex-shrink:0")}>
+      <svg viewBox="0 0 40 40" role="img" aria-label={title} style={S(`width:${height}px;height:${height}px;flex-shrink:0`)}>
         <g transform="rotate(-90 20 20)">
           {c.ring.map((r, i) => <circle key={i} cx="20" cy="20" r="16" fill="none" stroke={r.c} strokeWidth="7" strokeDasharray={r.dash} strokeDashoffset={r.off}></circle>)}
         </g>
@@ -139,7 +139,7 @@ export function CardChart({ chart: c, title }) {
 
   if (c.isLine) return (
     <>
-      <svg viewBox="0 0 100 46" preserveAspectRatio="none" role="img" aria-label={title} style={S("display:block;width:100%;height:82px")}>
+      <svg viewBox="0 0 100 46" preserveAspectRatio="none" role="img" aria-label={title} style={S(`display:block;width:100%;height:${height}px`)}>
         <polyline points={c.pts} fill="none" stroke={c.stroke} strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" vectorEffect="non-scaling-stroke"></polyline>
       </svg>
       <span style={S("display:flex;justify-content:space-between;margin-top:5px")}>
@@ -150,7 +150,7 @@ export function CardChart({ chart: c, title }) {
 
   if (c.isArea) return (
     <>
-      <svg viewBox="0 0 100 46" preserveAspectRatio="none" role="img" aria-label={title} style={S("display:block;width:100%;height:82px")}>
+      <svg viewBox="0 0 100 46" preserveAspectRatio="none" role="img" aria-label={title} style={S(`display:block;width:100%;height:${height}px`)}>
         <path d={c.fillD} fill={c.fill}></path>
         <polyline points={c.pts} fill="none" stroke={c.stroke} strokeWidth="2" strokeLinejoin="round" vectorEffect="non-scaling-stroke"></polyline>
       </svg>

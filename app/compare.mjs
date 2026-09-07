@@ -25,7 +25,6 @@ const SCENES = [
   { name: "chat-area", steps: [["text", "What is our sell-out value month by month?"]] },
   { name: "chat-line", steps: [["text", "How fast is Nurofen 400 mg spreading through the panel?"]] },
   { name: "chat-dots", steps: [["text", "Which pharmacies stopped stocking Advil?"]] },
-  { name: "cockpit", steps: [["text", "Cockpit"]] },
   { name: "connect", steps: [["text", "Settings"]] },
   { name: "connect-library-community", steps: [["text", "Settings"], ["text", "Community"]] },
   { name: "dropzone", steps: [["text", "Settings"], ["text", "Drop zone"]] },

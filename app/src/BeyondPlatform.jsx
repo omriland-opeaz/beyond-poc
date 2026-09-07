@@ -8,10 +8,14 @@ import Shell from "./views/Shell.jsx";
    logic and the views. */
 
 export default class BeyondPlatform extends React.Component {
-  state = { view: null, step: null, question: null, digestDone: {}, memOff: {}, lib: "All", watching: false,
+  state = { view: null, step: null, question: null, digestDone: {}, memOff: {}, lib: "All", watching: false, alerting: false, spaceId: "advil", arranger: "beyond", deepOn: {},
             connTab: "sources", setTab: null, dz: "idle", dzStepI: 0, added: {}, asked: 0, draft: "" };
 
-  get view() { return this.state.view || this.props.startView || "home"; }
+  get view() {
+    const v = this.state.view || this.props.startView || "home";
+    /* cockpit and spaces are the two names this screen used to have. Old links keep working. */
+    return (v === "cockpit" || v === "spaces") ? "space" : v;
+  }
 
   wm(s, ink) {
     if (typeof s !== "string" || s.indexOf("_beyond") < 0) return s;
@@ -75,12 +79,12 @@ export default class BeyondPlatform extends React.Component {
       { ini: "GS", logo: "gs", tintOverride: "#FFFFFF", name: "Google Sheets", cat: "General", desc: "Read the hand-kept spreadsheet where it lives", mode: "LIVE", popular: true },
       { ini: "XL", logo: "xl", tintOverride: "#FFFFFF", name: "Excel Online", cat: "General", desc: "Workbooks on SharePoint or OneDrive", mode: "LIVE" },
 
-      { ini: "L'O", brand: "#000000", name: "L'Oréal portal", cat: "Brand portals", desc: "Your sell-in reports, pulled with your own login", mode: "ON YOUR BEHALF", trusted: true, popular: true },
-      { ini: "SAN", brand: "#7A00E1", name: "Sanofi partner portal", cat: "Brand portals", desc: "Orders, rebates and claims", mode: "ON YOUR BEHALF", trusted: true },
-      { ini: "BAY", brand: "#10384F", name: "Bayer wholesaler portal", cat: "Brand portals", desc: "Monthly statements and price letters", mode: "ON YOUR BEHALF", trusted: true },
-      { ini: "PFE", brand: "#0093D0", name: "Pfizer distributor hub", cat: "Brand portals", desc: "Allocation and shipment reports", mode: "ON YOUR BEHALF", trusted: true },
-      { ini: "HAL", brand: "#C24E1F", name: "Haleon trade portal", cat: "Brand portals", desc: "Consumer health orders, promotions, credit notes", mode: "ON YOUR BEHALF", trusted: true },
-      { ini: "OP", brand: "#176AE5", name: "Opeaz execution", cat: "Brand portals", desc: "Trade execution data, read-only", mode: "LIVE", trusted: true },
+      { ini: "L'O", logo: "loreal", tintOverride: "#FFFFFF", name: "L'Oréal portal", cat: "Brand portals", desc: "Your sell-in reports, pulled with your own login", mode: "ON YOUR BEHALF", trusted: true, popular: true },
+      { ini: "SAN", logo: "sanofi", tintOverride: "#FFFFFF", name: "Sanofi partner portal", cat: "Brand portals", desc: "Orders, rebates and claims", mode: "ON YOUR BEHALF", trusted: true },
+      { ini: "BAY", logo: "bayer", tintOverride: "#FFFFFF", name: "Bayer wholesaler portal", cat: "Brand portals", desc: "Monthly statements and price letters", mode: "ON YOUR BEHALF", trusted: true },
+      { ini: "PFE", logo: "pfizer", tintOverride: "#FFFFFF", name: "Pfizer distributor hub", cat: "Brand portals", desc: "Allocation and shipment reports", mode: "ON YOUR BEHALF", trusted: true },
+      { ini: "HAL", logo: "haleon", tintOverride: "#FFFFFF", name: "Haleon trade portal", cat: "Brand portals", desc: "Consumer health orders, promotions, credit notes", mode: "ON YOUR BEHALF", trusted: true },
+      { ini: "OP", logo: "opeaz", tintOverride: "#FFFFFF", name: "Opeaz execution", cat: "Brand portals", desc: "Trade execution data, read-only", mode: "LIVE", trusted: true },
 
       { ini: "UB", name: "Ubipharm", cat: "Wholesalers", desc: "Wholesaler flows for 8 West African markets", mode: "SCHEDULED", trusted: true, popular: true },
       { ini: "CP", name: "Copharmed", cat: "Wholesalers", desc: "Côte d'Ivoire interior coverage", mode: "SCHEDULED", trusted: true },
@@ -88,7 +92,7 @@ export default class BeyondPlatform extends React.Component {
       { ini: "WP", name: "Winpharma exports", cat: "Wholesalers", desc: "Pharmacy till exports, where contributors run it", mode: "SCHEDULED", trusted: true },
 
       { ini: "PN", name: "Pharmacy panel · Senegal", cat: "Public info", desc: "The same sell-out panel, 380 pharmacies", mode: "LIVE", trusted: true },
-      { ini: "OM", name: "WHO health stats", cat: "Public info", desc: "Epidemiology baselines for seasonality", mode: "SCHEDULED", trusted: true, popular: true },
+      { ini: "OM", logo: "who", tintOverride: "#FFFFFF", name: "WHO health stats", cat: "Public info", desc: "Epidemiology baselines for seasonality", mode: "SCHEDULED", trusted: true, popular: true },
       { ini: "DN", name: "Customs imports", cat: "Public info", desc: "What crossed the border, upstream of wholesalers", mode: "SCHEDULED", trusted: true },
       { ini: "PS", name: "Price list · Senegal", cat: "Public info", desc: "Published prices, next market over", mode: "SCHEDULED", trusted: true },
       { ini: "HF", name: "Health facilities", cat: "Public info", desc: "Clinics and hospitals per district", mode: "SCHEDULED", trusted: true },
@@ -230,7 +234,7 @@ export default class BeyondPlatform extends React.Component {
         method: "Units multiplied by the official list price for the month. Discounts applied where the source records them.",
         crumb: "sell-out value, twelve months",
         trace: ["read question · value over time", "joined units to the official price list", "queried lake · 612 outlets × 12 months"],
-        chart: this.chartCurve([52.1, 53.4, 50.2, 54.1, 53.6, 51.4, 55.2, 56.4, 58.0, 59.1, 59.8, 60.3], months, "#5B9BD9", "rgba(91,155,217,.18)") },
+        chart: this.chartCurve([52.1, 53.4, 50.2, 54.1, 53.6, 51.4, 55.2, 56.4, 58.0, 59.1, 59.8, 60.3], months, "#A5CE3C", "rgba(200,240,104,.30)") },
 
       { id: "coef", origin: "you", when: "asked today",
         q: "What is the coefficient between consumer price and ex-factory price for dermocosmetics?",
@@ -416,6 +420,64 @@ export default class BeyondPlatform extends React.Component {
     }[id] || { t: "", dot: "#E5E5DA", kind: "you asked" };
   }
 
+  /* ---- your space ---------------------------------------------------------
+     A cross-section of the lake, read top to bottom. Above the water is what
+     surfaced since Monday. The waterline is the level you keep. Below the
+     surface is what _beyond is still measuring and will not bring up yet.
+
+     Nothing here is a saved conversation. It is what _beyond drew out of the
+     lake using what it learned from them, so each card carries the memory that
+     put it there — and that line opens Memory, where you delete it.
+
+     Cards are declared in the order you would have kept them; rank is the order
+     _beyond argues for. The one whose rank differs carries moved, and that is
+     the card that climbs on arrival.                                          */
+
+  spaceDeep() {
+    return [
+      { k: "sivop", head: "Whether the September gap in the Sivop file was a fall or a late delivery.",
+        note: "Two more arrivals settle it. Until then _beyond will not read that gap as a drop.",
+        conf: "48%", tag: "two months" },
+      { k: "survey", head: "Whether the small-town line holds once 40 pharmacies have been walked.",
+        note: "The survey is drafted. Twelve questions are waiting for you to approve them.",
+        conf: "not yet", tag: "5 days" },
+      { k: "spread", head: "Whether Nurofen has stopped spreading outside Abidjan.",
+        note: "Three of the five interior districts sit below the threshold of 3 contributors.",
+        conf: "61%", tag: "shallow" }
+    ];
+  }
+
+  spaceList() {
+    return [
+      { id: "advil", name: "Advil · Côte d'Ivoire",
+        head: "Since you looked on Monday,", headAccent: "three things broke the surface.",
+        cards: [
+          { id: "citysize2", form: "graph", rank: 2,
+            because: "a graph, because you read this brand by city size", mem: "cut", when: "learned today" },
+          { id: "rival", form: "note", rank: 3,
+            because: "written, because you watch Advil against Nurofen", mem: "brand", when: "learned from 23 questions" },
+          { id: "loss", form: "alert", rank: 1, moved: true,
+            movedWhy: "_beyond moved this up 2 h ago",
+            kicker: "Alert fired · 2 h ago",
+            head: "Advil share in Cocody fell 11.4 % week on week.",
+            sub: "you asked to be told below −10 % · set 12 Aug",
+            because: "first, because Cocody and Yopougon are where you act", mem: "act", when: "learned 12 Aug" }
+        ] },
+
+      { id: "week", name: "This week",
+        head: "A flat line", headAccent: "with two currents running under it.",
+        cards: [
+          { id: "stopped", form: "note", rank: 2,
+            because: "written, because Cocody and Yopougon are where you act", mem: "act", when: "learned 12 Aug" },
+          { id: "citysize2", form: "graph", rank: 3,
+            because: "a graph, because you read this brand by city size", mem: "cut", when: "learned today" },
+          { id: "loss", form: "graph", rank: 1, moved: true,
+            movedWhy: "_beyond moved this up · a third month of decline",
+            because: "share fell three months running and nobody had asked", when: "noticed today" }
+        ] }
+    ];
+  }
+
   /* ---- the thread ---------------------------------------------------------
      One conversation, four beats: the question, the answer, _beyond arguing
      with the cut, and the moment it admits the data is too thin and asks to
@@ -542,26 +604,28 @@ export default class BeyondPlatform extends React.Component {
     const memLeft = this.memoryAll().reduce((n, g) => n + g.rows.filter(r => !this.state.memOff[r.k]).length, 0);
     const cur = this.state.question;
     const scripted = !cur || cur === this.A("national").q;
+    const spaces = this.spaceList();
+    const space = spaces.find(sp => sp.id === this.state.spaceId) || spaces[0];
+    const arranged = this.state.arranger !== "you";
     const crumbs = {
       home: ["", ""],
       chat: ["Ask", (this.answerFor(cur) || { crumb: "a question with its method" }).crumb],
-      cockpit: ["Cockpit", "six graphs you don't have to ask for"],
+      space: [space.name, space.head + " " + space.headAccent],
       settings: ["Settings", tab === "connect" ? (this.state.connTab === "drop" ? "connect · drop zone" : "connect · sources and coverage")
                  : tab === "digest" ? "digest · " + (pendLeft === 0 ? "all approvals cleared" : pendLeft === 1 ? "1 approval waiting" : pendLeft + " approvals waiting")
                  : "memory · " + memLeft + " things remembered"]
     }[v] || ["", ""];
-    const cockpitIds = ["citysize2", "units", "share", "loss", "rival", "stopped"];
 
     return {
       /* ---- shell ---- */
       isIntro: v === "intro", isApp: v !== "intro",
-      isHome: v === "home", isChat: v === "chat", isCockpit: v === "cockpit", isSettings: v === "settings",
+      isHome: v === "home", isChat: v === "chat", isSpace: v === "space", isSettings: v === "settings",
       crumb: crumbs[0], crumb2: crumbs[1],
       topRule: v === "home" ? "transparent" : "#E5E5DA",
       goHome: () => this.setState({ view: "home", question: null, step: 0, draft: "" }),
-      goCockpit: () => this.setState({ view: "cockpit" }),
+      goSpace: () => this.setState({ view: "space" }),
       goSettings: () => this.setState({ view: "settings" }),
-      nav: { cockpit: this.ns("cockpit"), settings: this.ns("settings") },
+      nav: { space: this.ns("space"), settings: this.ns("settings") },
       alertBadge: "1", alertColor: "#C0473F",
       methodNotes: this.props.methodNotes !== false,
       showTrace: this.props.showTrace !== false,
@@ -614,27 +678,80 @@ export default class BeyondPlatform extends React.Component {
       askCursor: (this.state.draft.trim() || v === "home") ? "pointer" : "default",
 
       toggleWatch: () => this.setState(s => ({ watching: !s.watching })),
-      watchLabel: this.state.watching ? "Watching ✓" : "Watch this",
+      watchLabel: this.state.watching ? "In my space ✓" : "Add to my space",
       watchBg: this.state.watching ? "#5F7A12" : "#fff",
       watchFg: this.state.watching ? "#fff" : "#6B6B61",
       watchBorder: this.state.watching ? "#5F7A12" : "#D3D3C4",
 
-      /* ---- cockpit ---- */
-      cockpitCards: cockpitIds.map(id => this.A(id)).map((a, i) => {
-        const w = this.whyFor(a.id), k = a.chart.kind, forYou = w.kind === "asked for you", watch = w.kind === "watching";
+      toggleAlert: () => this.setState(s => ({ alerting: !s.alerting })),
+      alertLabel: this.state.alerting ? "Alert on ✓" : "Create an alert",
+      alertBg: this.state.alerting ? "#5F7A12" : "#fff",
+      alertFg: this.state.alerting ? "#fff" : "#6B6B61",
+      alertBorder: this.state.alerting ? "#5F7A12" : "#D3D3C4",
+
+      /* ---- your space ---- */
+      spaceTabs: spaces.map(sp => {
+        const on = sp.id === space.id;
+        return { key: sp.id, name: sp.name, cur: on ? "page" : null, w: on ? "700" : "500",
+          bg: on ? "#14170F" : "#fff", fg: on ? "#F7F7EF" : "#6B6B61", border: on ? "#14170F" : "#D3D3C4",
+          pick: () => this.setState({ spaceId: sp.id }) };
+      }),
+      spaceKicker: "Your space · Wednesday 26 August 2026",
+      spaceHead: space.head,
+      spaceHeadAccent: space.headAccent,
+      spaceStamp: "last sounding 14 min ago",
+
+      arrangeTabs: [{ k: "beyond", label: "_beyond arranges this" }, { k: "you", label: "I arrange this" }].map(t => {
+        const on = arranged === (t.k === "beyond");
+        return { key: t.k, label: this.wm(t.label, on ? "#F7F7EF" : "#14170F"), cur: on ? "true" : "false",
+          bg: on ? "#14170F" : "#fff", fg: on ? "#F7F7EF" : "#6B6B61", border: on ? "#14170F" : "#D3D3C4",
+          w: on ? "700" : "500",
+          pick: () => this.setState({ arranger: t.k }) };
+      }),
+      deepKicker: "Below the surface · still being measured",
+      deepNote: this.wm("_beyond is not sure enough to bring these up. You are told anyway."),
+
+      spaceDeep: this.spaceDeep().map(d => {
+        const on = !!this.state.deepOn[d.k];
+        return { key: d.k, head: this.wm(d.head), note: this.wm(d.note), conf: d.conf, tag: d.tag,
+          btn: on ? "Will tell you ✓" : "Tell me when it surfaces",
+          btnBg: on ? "#5F7A12" : "#fff", btnFg: on ? "#fff" : "#6B6B61", btnBorder: on ? "#5F7A12" : "#D3D3C4",
+          toggle: () => this.setState(st => {
+            const n = Object.assign({}, st.deepOn);
+            if (n[d.k]) { delete n[d.k]; } else { n[d.k] = true; }
+            return { deepOn: n };
+          }) };
+      }),
+
+      spaceCurrent: (arranged ? space.cards.slice().sort((a, b) => a.rank - b.rank) : space.cards).map((c, i) => {
+        const a = this.A(c.id), k = (a.chart || {}).kind, climbs = arranged && !!c.moved;
         return {
-          title: a.title, v: a.v, delta: a.delta, dc: a.dc, foot: a.foot, when: a.when,
-          badge: w.kind,
-          badgeBg: forYou ? "#14170F" : "#fff",
-          badgeFg: forYou ? "#C8F068" : watch ? "#5F7A12" : "#6B6B61",
-          badgeBorder: forYou ? "#14170F" : watch ? "#C8F068" : "#D3D3C4",
-          border: forYou ? "#D3D3C4" : "#E5E5DA",
-          why: w.t, whyDot: w.dot,
+          key: c.id + "-" + c.form,
+          isAlert: c.form === "alert", isGraph: c.form === "graph", isNote: c.form === "note",
+          kicker: c.kicker || "", sub: c.sub || "",
+          title: a.title, head: this.wm(c.head || a.head), headAccent: a.headAccent, body: this.wm(a.body),
+          v: a.v, delta: a.delta, dc: a.dc, foot: a.foot,
           chart: Object.assign({}, a.chart, { isBars: k === "bars", isDonut: k === "donut",
             isLine: k === "line", isArea: k === "area", isHbars: k === "hbars", isDots: k === "dots" }),
-          rise: "byRise 520ms ease-out " + Math.min(i * 60, 360) + "ms both",
-          open: () => this.setState({ view: "chat", question: a.id === "citysize2" ? this.A("national").q : a.q, step: a.id === "citysize2" ? 2 : 0 })
+          showWhy: arranged,
+          climbs: climbs,
+          movedWhy: climbs ? this.wm(c.movedWhy) : "",
+          because: c.because, becauseWhen: c.when,
+          fromMemory: !!c.mem,
+          whyDot: c.mem ? "#5F7A12" : "#14170F",
+          toMemory: c.mem ? () => this.setState({ view: "settings", setTab: "memory" }) : null,
+          rise: climbs ? "bySettle 520ms cubic-bezier(.22,1,.36,1) 420ms both"
+                       : "byRise 520ms ease-out " + Math.min(i * 70, 280) + "ms both",
+          ask: c.form === "alert" ? "Ask why →" : "Ask about this →",
+          open: () => this.setState({ view: "chat", question: a.q, step: 0, draft: "" })
         };
+      }),
+
+      spaceStill: ["units", "share", "value"].map((id, i) => {
+        const a = this.A(id);
+        return { key: id, title: a.title, v: a.v, delta: a.delta, dc: a.dc, foot: a.foot,
+          rise: "byRise 520ms ease-out " + (300 + i * 70) + "ms both",
+          open: () => this.setState({ view: "chat", question: a.q, step: 0, draft: "" }) };
       }),
 
       /* ---- settings ---- */
@@ -747,7 +864,10 @@ export default class BeyondPlatform extends React.Component {
         const on = !!this.state.added[l.name];
         const drop = l.name === "File upload";
         return Object.assign({}, l, { col: skin.col, tint: l.tintOverride || skin.tint, trusted: !!l.trusted,
-          isDb: l.logo === "db", isGd: l.logo === "gd", isGs: l.logo === "gs", isXl: l.logo === "xl", isIni: !l.logo,
+          isDb: l.logo === "db", isGd: l.logo === "gd", isGs: l.logo === "gs", isXl: l.logo === "xl",
+          isLoreal: l.logo === "loreal", isSanofi: l.logo === "sanofi", isBayer: l.logo === "bayer",
+          isPfizer: l.logo === "pfizer", isHaleon: l.logo === "haleon", isOpeaz: l.logo === "opeaz",
+          isWho: l.logo === "who", isIni: !l.logo,
           popular: !!l.popular,
           added: on, notAdded: !on,
           btnTitle: drop ? "Open the drop zone" : on ? "Connected · remove" : "Add " + l.name,

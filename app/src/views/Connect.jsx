@@ -1,5 +1,9 @@
 import { S } from "../css.js";
-import { Dropbox, GoogleDrive, GoogleSheets, Excel, VerifiedSeal, PopularTag, PlusGlyph } from "./VendorLogos.jsx";
+import {
+  Dropbox, GoogleDrive, GoogleSheets, Excel,
+  Loreal, Sanofi, Bayer, Pfizer, Haleon, Opeaz, Who,
+  VerifiedSeal, PopularTag, PlusGlyph
+} from "./VendorLogos.jsx";
 
 /* Sources on the left, the lake on the right, straight dotted flows between them.
    Every thread leaves at the vertical middle of its card; the lake grows a little
@@ -93,12 +97,19 @@ export default function Connect({ v }) {
         {v.library.map((l, i) => (
           <div key={l.name} className="by-h-ink" style={S(`border:1px solid #E5E5DA;border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:12px;min-width:0;animation:${l.rise}`)}>
             <div style={S("display:flex;align-items:center;gap:12px;min-width:0;flex:1")}>
-              <span style={S(`width:34px;height:34px;border-radius:9px;background:${l.tint};color:${l.col};display:grid;place-items:center;font-size:11px;font-weight:800;flex-shrink:0;border:1px solid rgba(20,23,15,.08)`)}>
+              <span style={S(`width:34px;height:34px;border-radius:9px;background:${l.tint};color:${l.col};display:grid;place-items:center;font-size:11px;font-weight:800;flex-shrink:0;${l.isIni ? "border:1px solid rgba(20,23,15,.08)" : "border:none"}`)}>
                 {l.isIni && <span>{l.ini}</span>}
                 {l.isDb && <Dropbox />}
                 {l.isGd && <GoogleDrive />}
                 {l.isGs && <GoogleSheets />}
                 {l.isXl && <Excel />}
+                {l.isLoreal && <Loreal />}
+                {l.isSanofi && <Sanofi />}
+                {l.isBayer && <Bayer />}
+                {l.isPfizer && <Pfizer />}
+                {l.isHaleon && <Haleon />}
+                {l.isOpeaz && <Opeaz />}
+                {l.isWho && <Who />}
               </span>
               <span style={S("min-width:0;display:flex;flex-direction:column;gap:2px")}>
                 <span style={S("display:flex;align-items:center;gap:5px;min-width:0")}>

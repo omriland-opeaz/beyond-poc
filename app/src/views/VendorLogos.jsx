@@ -25,27 +25,53 @@ export function GoogleDrive() {
 }
 
 export function GoogleSheets() {
-  return (
-    <svg viewBox="0 0 32 32" aria-hidden="true" style={S("width:19px;height:19px")}>
-      <path d="M8 3 H19 L26 10 V27 A2 2 0 0 1 24 29 H10 A2 2 0 0 1 8 27 V5 A2 2 0 0 1 10 3 Z" fill="#0F9D58"></path>
-      <path d="M19 3 L26 10 H19 Z" fill="#0B8043"></path>
-      <rect x="11.5" y="14" width="11" height="11" fill="#FFFFFF"></rect>
-      <g stroke="#0F9D58" strokeWidth="1.3">
-        <path d="M11.5 17.7 H22.5 M11.5 21.4 H22.5 M15.2 14 V25 M18.8 14 V25"></path>
-      </g>
-    </svg>
-  );
+  return <VendorMark src="/assets/vendors/sheets.svg" w={16} h={22} />;
 }
 
 export function Excel() {
+  return <VendorMark src="/assets/vendors/excel.svg" w={20} h={20} />;
+}
+
+/* Real third-party marks — served from /assets/vendors. */
+function VendorMark({ src, w = 26, h = 18 }) {
   return (
-    <svg viewBox="0 0 32 32" aria-hidden="true" style={S("width:19px;height:19px")}>
-      <path d="M8 3 H19 L26 10 V27 A2 2 0 0 1 24 29 H10 A2 2 0 0 1 8 27 V5 A2 2 0 0 1 10 3 Z" fill="#217346"></path>
-      <path d="M19 3 L26 10 H19 Z" fill="#185C37"></path>
-      <polygon points="11.5,12 15.5,12 22.5,25 18.5,25" fill="#FFFFFF"></polygon>
-      <polygon points="18.5,12 22.5,12 15.5,25 11.5,25" fill="#FFFFFF"></polygon>
-    </svg>
+    <img
+      src={src}
+      alt=""
+      aria-hidden="true"
+      width={w}
+      height={h}
+      style={S(`width:${w}px;height:${h}px;object-fit:contain;display:block`)}
+    />
   );
+}
+
+export function Loreal() {
+  return <VendorMark src="/assets/vendors/loreal.svg" w={30} h={12} />;
+}
+
+export function Sanofi() {
+  return <VendorMark src="/assets/vendors/sanofi.svg" w={30} h={12} />;
+}
+
+export function Bayer() {
+  return <VendorMark src="/assets/vendors/bayer.svg" w={24} h={24} />;
+}
+
+export function Pfizer() {
+  return <VendorMark src="/assets/vendors/pfizer.svg" w={30} h={14} />;
+}
+
+export function Haleon() {
+  return <VendorMark src="/assets/vendors/haleon.svg" w={30} h={12} />;
+}
+
+export function Opeaz() {
+  return <VendorMark src="/assets/vendors/opeaz.svg" w={20} h={19} />;
+}
+
+export function Who() {
+  return <VendorMark src="/assets/vendors/who.svg" w={22} h={22} />;
 }
 
 /* Not that the data is good — that _beyond verified the feed. */

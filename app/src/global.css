@@ -102,3 +102,17 @@
 .by-h-chip:hover  { border-color:#14170F !important; background:#F7F7EF !important }
 .by-h-alert:hover { background:rgba(192,71,63,.08) !important }
 .by-h-tint:hover  { background:#EFEFE4 !important }
+
+/* The card _beyond promoted climbs into first place, and the hand-drawn arrow
+   beside it draws itself. One gesture, then the space is still. */
+@keyframes bySettle {
+  from { transform:translateY(38px); opacity:0 }
+  to   { transform:none; opacity:1 }
+}
+.by-mark {
+  stroke-dasharray:60;
+  stroke-dashoffset:60;
+  animation:byDraw 420ms ease-out 620ms forwards;
+}
+.by-mark-b { animation-delay:900ms }
+@keyframes byDraw { to { stroke-dashoffset:0 } }

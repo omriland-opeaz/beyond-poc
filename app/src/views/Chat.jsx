@@ -37,6 +37,7 @@ export default function Chat({ v }) {
                       <div style={S("font-size:12.5px;font-weight:700")}>{m.chartTitle}</div>
                       <div style={S("display:flex;gap:8px")}>
                         <button onClick={v.toggleWatch} className="by-h-ink" style={S(`padding:5px 11px;border-radius:6px;border:1px solid ${v.watchBorder};background:${v.watchBg};font-size:11px;font-weight:700;color:${v.watchFg};white-space:nowrap`)}>{v.watchLabel}</button>
+                        <button onClick={v.toggleAlert} className="by-h-ink" style={S(`padding:5px 11px;border-radius:6px;border:1px solid ${v.alertBorder};background:${v.alertBg};font-size:11px;font-weight:700;color:${v.alertFg};white-space:nowrap`)}>{v.alertLabel}</button>
                         <button className="by-h-ink" style={S("padding:5px 11px;border-radius:6px;border:1px solid #D3D3C4;background:#fff;font-size:11px;font-weight:600;color:#6B6B61")}>Export</button>
                       </div>
                     </div>

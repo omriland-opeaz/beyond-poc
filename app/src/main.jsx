@@ -12,7 +12,7 @@ const one = (name, allowed, fallback) => {
 };
 
 const props = {
-  startView: one("view", ["home", "chat", "cockpit", "settings", "intro"], "home"),
+  startView: one("view", ["home", "chat", "space", "cockpit", "spaces", "settings", "intro"], "home"),
   startStep: one("step", ["0", "1", "2"], "0"),
   startTab: one("tab", ["connect", "digest", "memory"], "connect"),
   methodNotes: q.get("methodNotes") !== "false",

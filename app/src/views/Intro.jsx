@@ -36,7 +36,7 @@ export default function Intro({ v }) {
             <span style={S("color:#B9E353")}>lake.</span>
           </h1>
           <p style={S("font-size:16px;line-height:1.65;color:#6B6B61;margin:18px 0 0;max-width:620px")}>
-            Connect whatever you have. <span style={S("font-family:'Space Grotesk',sans-serif;font-weight:700;letter-spacing:-0.02em;color:#14170F")}>_beyond</span> reads it, makes the numbers comparable, and hands you a cockpit you can question. It never writes back to a source.
+            Connect whatever you have. <span style={S("font-family:'Space Grotesk',sans-serif;font-weight:700;letter-spacing:-0.02em;color:#14170F")}>_beyond</span> reads it, makes the numbers comparable, and hands you spaces you can question. It never writes back to a source.
           </p>
         </div>
 
@@ -85,11 +85,11 @@ export default function Intro({ v }) {
             <div style={S("position:relative;overflow:hidden;border-radius:18px;background:#14170F;color:#F7F7EF;padding:26px 26px 24px;min-height:330px;display:flex;flex-direction:column")}>
               <div style={S("display:flex;align-items:flex-start;justify-content:space-between")}>
                 <span style={S("font-size:96px;font-weight:800;letter-spacing:-0.05em;line-height:.85;font-variant-numeric:tabular-nums;color:#C8F068")}>03</span>
-                <span style={S("font-size:10px;font-weight:700;letter-spacing:0.12em;padding:5px 11px;border-radius:100px;border:1px solid rgba(247,247,239,.35)")}>COCKPIT</span>
+                <span style={S("font-size:10px;font-weight:700;letter-spacing:0.12em;padding:5px 11px;border-radius:100px;border:1px solid rgba(247,247,239,.35)")}>SPACES</span>
               </div>
               <div style={S("margin-top:auto")}>
-                <div style={S("font-size:20px;font-weight:800;letter-spacing:-0.02em;line-height:1.2")}>Ask anything. Watch what matters.</div>
-                <p style={S("font-size:13px;line-height:1.6;color:rgba(247,247,239,.7);margin:9px 0 0")}>Ask a question in plain language and get the answer with its sources and its method. Keep the ones worth following, and <span style={S("font-family:'Space Grotesk',sans-serif;font-weight:700;letter-spacing:-0.02em;color:#F7F7EF")}>_beyond</span> refreshes them on every import.</p>
+                <div style={S("font-size:20px;font-weight:800;letter-spacing:-0.02em;line-height:1.2")}>Ask anything. Live in a space.</div>
+                <p style={S("font-size:13px;line-height:1.6;color:rgba(247,247,239,.7);margin:9px 0 0")}>Ask a question in plain language and get the answer with its sources and its method. Keep the ones worth following in a space, and <span style={S("font-family:'Space Grotesk',sans-serif;font-weight:700;letter-spacing:-0.02em;color:#F7F7EF")}>_beyond</span> refreshes them on every import.</p>
               </div>
             </div>
             <div className="by-veil by-d3" aria-hidden="true"></div>
