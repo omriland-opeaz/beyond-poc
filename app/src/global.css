@@ -1,3 +1,16 @@
+@layer theme, base, components, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+
+@theme {
+  --font-dmSans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --color-border: #e4e4e7;
+  --color-background: #ffffff;
+  --color-foreground: #18181b;
+  --color-muted: #f4f4f5;
+  --color-muted-foreground: #71717a;
+}
+
   html, body { margin:0; padding:0; height:100%; background:#FFFFFF; }
   body { font-family:'Space Grotesk','Inter',-apple-system,sans-serif; -webkit-font-smoothing:antialiased; color:#14170F; }
   * { box-sizing:border-box; }
