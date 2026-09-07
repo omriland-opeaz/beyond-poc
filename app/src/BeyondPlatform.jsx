@@ -116,7 +116,7 @@ export default class BeyondPlatform extends React.Component {
 
   chartBars(vals, labels, col, last) {
     const max = Math.max.apply(null, vals) * 1.08, step = 100 / vals.length, w = step * 0.58;
-    return { kind: "bars", axis: labels.map(t => ({ t: t })), bars: vals.map((v, i) => {
+    return { kind: "bars", vals: vals, axis: labels.map(t => ({ t: t })), bars: vals.map((v, i) => {
       const h = (v / max) * 44;
       return { x: (i * step + step * 0.21).toFixed(2), w: w.toFixed(2), h: h.toFixed(2), y: (44 - h).toFixed(2),
         c: i === vals.length - 1 ? (last || col) : col };
@@ -126,7 +126,7 @@ export default class BeyondPlatform extends React.Component {
   chartRing(parts) {
     const C = 100.53, tot = parts.reduce((s, p) => s + p.v, 0);
     let cum = 0;
-    return { kind: "donut", ring: parts.map(p => {
+    return { kind: "donut", vals: parts.map(p => p.v), ring: parts.map(p => {
       const len = (p.v / tot) * C, seg = { c: p.c, dash: len.toFixed(2) + " " + (C - len).toFixed(2), off: (-cum).toFixed(2) };
       cum += len; return seg;
     }), legend: parts.map(p => ({ c: p.c, t: p.n, v: p.v.toFixed(1) + "%" })) };
@@ -135,7 +135,7 @@ export default class BeyondPlatform extends React.Component {
   chartCurve(vals, labels, col, fill) {
     const max = Math.max.apply(null, vals) * 1.1;
     const pts = vals.map((v, i) => ((i / (vals.length - 1)) * 100).toFixed(1) + "," + (44 - (v / max) * 42).toFixed(1));
-    return { kind: fill ? "area" : "line", stroke: col, fill: fill, pts: pts.join(" "),
+    return { kind: fill ? "area" : "line", vals: vals, stroke: col, fill: fill, pts: pts.join(" "),
       fillD: "M0,44 L" + pts.join(" L") + " L100,44 Z", axis: labels.map(t => ({ t: t })) };
   }
 
@@ -209,6 +209,7 @@ export default class BeyondPlatform extends React.Component {
         q: "How is the analgesics category split between brands?",
         title: "Share of the analgesics category",
         v: "31.4%", delta: "−2.1 pts", dc: "#C0473F", foot: "units · July · five brands",
+        trend: [33.5, 33.6, 33.4, 33.2, 33.0, 32.9, 32.6, 32.3, 32.1, 31.8, 31.6, 31.4],
         head: "Advil holds 31.4 % of units.",
         headAccent: "Nurofen is at 23.8 % and rising.",
         body: "Advil is still first, but the lead over Nurofen is 7.6 points, down from 14.2 a year ago. Doliprane and Panadol are flat. The rest is spread across ten smaller brands, none above 5 %.",
@@ -448,33 +449,71 @@ export default class BeyondPlatform extends React.Component {
   }
 
   spaceList() {
+    /* Share of units by district, twelve months. Illustrative. The focus series is lime
+       and fills; the other two are grey strokes, per the ranked-series rule. */
+    const months = ["Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"];
+    const districts = {
+      title: "Where the share went", sub: "share of units by district · twelve months", q: this.A("loss").q,
+      labels: months,
+      series: [
+        { name: "Cocody",   color: "#5F7A12", vals: [33.8, 33.5, 33.9, 33.2, 32.8, 32.9, 32.4, 31.9, 31.6, 31.0, 30.4, 29.7] },
+        { name: "Yopougon", color: "#6B6B61", vals: [29.1, 29.3, 28.8, 28.9, 28.4, 28.6, 28.1, 27.8, 27.4, 27.0, 26.6, 26.2] },
+        { name: "Plateau",  color: "#A3A399", vals: [22.4, 22.6, 22.2, 22.5, 22.3, 22.1, 22.4, 22.0, 21.9, 21.8, 21.6, 21.5] }],
+      rows: [
+        { name: "Cocody",      v: "−0.9 pts", up: false },
+        { name: "Yopougon",    v: "−0.7 pts", up: false },
+        { name: "Plateau",     v: "−0.3 pts", up: false },
+        { name: "Bouaké",      v: "+0.1 pts", up: true }],
+      because: "share fell three months running and nobody had asked", when: "noticed today" };
+
     return [
       { id: "advil", name: "Advil · Côte d'Ivoire",
         head: "Since you looked on Monday,", headAccent: "three things broke the surface.",
-        cards: [
-          { id: "citysize2", form: "graph", rank: 2,
-            because: "a graph, because you read this brand by city size", mem: "cut", when: "learned today" },
-          { id: "rival", form: "note", rank: 3,
-            because: "written, because you watch Advil against Nurofen", mem: "brand", when: "learned from 23 questions" },
-          { id: "loss", form: "alert", rank: 1, moved: true,
-            movedWhy: "_beyond moved this up 2 h ago",
-            kicker: "Alert fired · 2 h ago",
-            head: "Advil share in Cocody fell 11.4 % week on week.",
-            sub: "you asked to be told below −10 % · set 12 Aug",
-            because: "first, because Cocody and Yopougon are where you act", mem: "act", when: "learned 12 Aug" }
-        ] },
+        tag: "Market · Côte d'Ivoire", lead: "Since you looked on Monday", n: "3", nLabel: "things broke the surface.",
+        /* The competitor's spread as a narrowing: the panel, the outlets that stock it, the
+           ones that keep reordering, the ones that now rank it first. Stages past the
+           first two are illustrative. */
+        funnel: { title: "Nurofen 400 mg through the panel", sub: "seven months, from zero", q: this.A("rival").q,
+          stages: [
+            { label: "panel pharmacies", value: 612, display: "612" },
+            { label: "stock it", value: 214, display: "214" },
+            { label: "reordered in July", value: 131, display: "131" },
+            { label: "rank it above Advil", value: 47, display: "47" }],
+          because: "a funnel, because you watch Advil against Nurofen", mem: "brand", when: "learned from 23 questions" },
+        series: Object.assign({}, districts, { moved: "_beyond moved this up · a third month of decline" }),
+        spot: { q: this.A("loss").q, kicker: "Alert fired · 2 h ago", big: "−11.4%", up: false,
+          head: "Advil share in Cocody fell week on week.", sub: "you asked to be told below −10% · set 12 Aug",
+          moved: "_beyond moved this up 2 h ago",
+          because: "first, because Cocody and Yopougon are where you act", mem: "act", when: "learned 12 Aug" } },
 
       { id: "week", name: "This week",
         head: "A flat line", headAccent: "with two currents running under it.",
-        cards: [
-          { id: "stopped", form: "note", rank: 2,
-            because: "written, because Cocody and Yopougon are where you act", mem: "act", when: "learned 12 Aug" },
-          { id: "citysize2", form: "graph", rank: 3,
-            because: "a graph, because you read this brand by city size", mem: "cut", when: "learned today" },
-          { id: "loss", form: "graph", rank: 1, moved: true,
-            movedWhy: "_beyond moved this up · a third month of decline",
-            because: "share fell three months running and nobody had asked", when: "noticed today" }
-        ] }
+        tag: "Week 35 · all brands", lead: "This week", n: "2", nLabel: "currents running under a flat line.",
+        /* Where Advil left the shelf: the panel, the outlets still stocking, the ones that
+           stopped, and how many of those now stock the rival. The last figure is from the
+           rival answer; the rest are the panel counts. */
+        funnel: { title: "Where Advil left the shelf", sub: "four months, by outlet", q: this.A("stopped").q,
+          stages: [
+            { label: "panel pharmacies", value: 612, display: "612" },
+            { label: "sold Advil this week", value: 340, display: "340" },
+            { label: "cut their order", value: 96, display: "96" },
+            { label: "stopped this year", value: 25, display: "25" }],
+          because: "a funnel, because Cocody and Yopougon are where you act", mem: "act", when: "learned 12 Aug" },
+        series: districts,
+        spot: { q: this.A("citysize2").q, kicker: "Widened today", big: "+2.7 pts", up: true,
+          head: "Small towns carry the gain after widening the cut.", sub: "share points · three months · Abidjan −2.4",
+          moved: "",
+          because: "a graph, because you read this brand by city size", mem: "cut", when: "learned today" } }
+    ];
+  }
+
+  /* Below the surface, quantified: the numbers behind what is still being measured. */
+  spaceDeepFacts() {
+    return [
+      { v: "2",  d: "two months", label: "arrivals still to come before the Sivop gap can be read" },
+      { v: "12", d: "5 days",     label: "survey questions waiting for your approval" },
+      { v: "3",  d: "shallow",    label: "interior districts under the 3-contributor line" },
+      { v: "40", d: "drafted",    label: "pharmacies still to be walked for the small-town line" }
     ];
   }
 
@@ -696,9 +735,10 @@ export default class BeyondPlatform extends React.Component {
           bg: on ? "#14170F" : "#fff", fg: on ? "#F7F7EF" : "#6B6B61", border: on ? "#14170F" : "#D3D3C4",
           pick: () => this.setState({ spaceId: sp.id }) };
       }),
-      spaceKicker: "Your space · Wednesday 26 August 2026",
-      spaceHead: space.head,
-      spaceHeadAccent: space.headAccent,
+      spaceKicker: "Wednesday 26 August 2026",
+      spaceLead: space.lead,
+      spaceN: space.n,
+      spaceNLabel: space.nLabel,
       spaceStamp: "last sounding 14 min ago",
 
       arrangeTabs: [{ k: "beyond", label: "_beyond arranges this" }, { k: "you", label: "I arrange this" }].map(t => {
@@ -714,6 +754,8 @@ export default class BeyondPlatform extends React.Component {
       spaceDeep: this.spaceDeep().map(d => {
         const on = !!this.state.deepOn[d.k];
         return { key: d.k, head: this.wm(d.head), note: this.wm(d.note), conf: d.conf, tag: d.tag,
+          /* What sits inside the hand-drawn circle: the figure, or a dash when there is none yet. */
+          confMark: /\d/.test(d.conf) ? d.conf : "—",
           btn: on ? "Will tell you ✓" : "Tell me when it surfaces",
           btnBg: on ? "#5F7A12" : "#fff", btnFg: on ? "#fff" : "#6B6B61", btnBorder: on ? "#5F7A12" : "#D3D3C4",
           toggle: () => this.setState(st => {
@@ -723,36 +765,36 @@ export default class BeyondPlatform extends React.Component {
           }) };
       }),
 
-      spaceCurrent: (arranged ? space.cards.slice().sort((a, b) => a.rank - b.rank) : space.cards).map((c, i) => {
-        const a = this.A(c.id), k = (a.chart || {}).kind, climbs = arranged && !!c.moved;
-        return {
-          key: c.id + "-" + c.form,
-          isAlert: c.form === "alert", isGraph: c.form === "graph", isNote: c.form === "note",
-          kicker: c.kicker || "", sub: c.sub || "",
-          title: a.title, head: this.wm(c.head || a.head), headAccent: a.headAccent, body: this.wm(a.body),
-          v: a.v, delta: a.delta, dc: a.dc, foot: a.foot,
-          chart: Object.assign({}, a.chart, { isBars: k === "bars", isDonut: k === "donut",
-            isLine: k === "line", isArea: k === "area", isHbars: k === "hbars", isDots: k === "dots" }),
-          showWhy: arranged,
-          climbs: climbs,
-          movedWhy: climbs ? this.wm(c.movedWhy) : "",
-          because: c.because, becauseWhen: c.when,
-          fromMemory: !!c.mem,
-          whyDot: c.mem ? "#5F7A12" : "#14170F",
-          toMemory: c.mem ? () => this.setState({ view: "settings", setTab: "memory" }) : null,
-          rise: climbs ? "bySettle 520ms cubic-bezier(.22,1,.36,1) 420ms both"
-                       : "byRise 520ms ease-out " + Math.min(i * 70, 280) + "ms both",
-          ask: c.form === "alert" ? "Ask why →" : "Ask about this →",
-          open: () => this.setState({ view: "chat", question: a.q, step: 0, draft: "" })
-        };
-      }),
+      spaceTag: space.tag,
+      showWhy: arranged,
+      why: w => ({ because: w.because, becauseWhen: w.when, fromMemory: !!w.mem,
+        whyDot: w.mem ? "#5F7A12" : "#14170F",
+        toMemory: w.mem ? () => this.setState({ view: "settings", setTab: "memory" }) : null }),
 
-      spaceStill: ["units", "share", "value"].map((id, i) => {
-        const a = this.A(id);
-        return { key: id, title: a.title, v: a.v, delta: a.delta, dc: a.dc, foot: a.foot,
-          rise: "byRise 520ms ease-out " + (300 + i * 70) + "ms both",
+      spaceFunnel: Object.assign({}, space.funnel, {
+        open: () => this.setState({ view: "chat", question: space.funnel.q, step: 0, draft: "" }) }),
+      spaceSeries: Object.assign({}, space.series, {
+        moved: arranged ? this.wm(space.series.moved || "") : "",
+        open: () => this.setState({ view: "chat", question: space.series.q, step: 0, draft: "" }) }),
+      spaceSpot: Object.assign({}, space.spot, {
+        moved: arranged ? this.wm(space.spot.moved || "") : "",
+        open: () => this.setState({ view: "chat", question: space.spot.q, step: 0, draft: "" }) }),
+
+      /* The keepers ride level at the waterline as one strip: title, the figure large,
+         the delta as a pill, and one line saying what it is measured against. */
+      spaceStill: ["units", "share", "value"].map(id => {
+        const a = this.A(id), vals = a.trend || (a.chart || {}).vals || [];
+        const lo = Math.min.apply(null, vals) * 0.9, top = Math.max.apply(null, vals);
+        /* Twelve months for every keeper, the latest one deep. Scaled from a floor so a
+           flat series still shows its shape. */
+        const spark = vals.map((v, j) => ({ h: Math.round(((v - lo) / (top - lo)) * 100),
+          c: j === vals.length - 1 ? "#5F7A12" : "#D8EBA0" }));
+        const against = { units: "+580 units on June", share: "7.6-pt lead over Nurofen, was 14.2", value: "+0.5 M XOF on June" };
+        return { key: id, title: a.title, v: a.v, delta: a.delta, dc: a.dc, foot: a.foot, against: against[id], spark: spark,
           open: () => this.setState({ view: "chat", question: a.q, step: 0, draft: "" }) };
       }),
+
+      spaceDeepFacts: this.spaceDeepFacts(),
 
       /* ---- settings ---- */
       setTabs: [{ k: "connect", label: "Connect", count: this.connected().length },

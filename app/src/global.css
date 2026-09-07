@@ -1,16 +1,3 @@
-@layer theme, base, components, utilities;
-@import "tailwindcss/theme.css" layer(theme);
-@import "tailwindcss/utilities.css" layer(utilities);
-
-@theme {
-  --font-dmSans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
-  --color-border: #e4e4e7;
-  --color-background: #ffffff;
-  --color-foreground: #18181b;
-  --color-muted: #f4f4f5;
-  --color-muted-foreground: #71717a;
-}
-
   html, body { margin:0; padding:0; height:100%; background:#FFFFFF; }
   body { font-family:'Space Grotesk','Inter',-apple-system,sans-serif; -webkit-font-smoothing:antialiased; color:#14170F; }
   * { box-sizing:border-box; }
@@ -129,3 +116,25 @@
 }
 .by-mark-b { animation-delay:900ms }
 @keyframes byDraw { to { stroke-dashoffset:0 } }
+
+/* The depth grid's marks. Funnel segments grow in from the left with a stagger; the
+   hovered stage lifts while its siblings recede, and only then does the pill with
+   its share of the first stage appear. Spark bars grow up from their baseline. */
+@keyframes byGrow  { from { transform:scale(0) } to { transform:none } }
+@keyframes byGrowY { from { transform:scaleY(0) } to { transform:none } }
+.by-seg { transition:opacity 280ms ease }
+.by-seg-shape { transform-origin:center; transition:transform 320ms cubic-bezier(.22,1,.36,1) }
+.by-seg:hover .by-seg-shape { transform:scaleY(1.08) }
+.by-funnel:has(.by-seg:hover) .by-seg:not(:hover) { opacity:.42 }
+.by-seg-pill { opacity:0; transition:opacity 200ms ease }
+.by-seg:hover .by-seg-pill { opacity:1 }
+.by-spark i { transform-origin:bottom; animation:byGrowY 480ms cubic-bezier(.22,1,.36,1) both }
+/* Vertical funnel: the hovered stage widens instead of lifting. */
+.by-funnel-v .by-seg:hover .by-seg-shape { transform:scaleX(1.12) }
+/* The spotlight card deepens its own wash on hover -- red for a fall, lime for a rise. */
+.by-h-spot-fall:hover { background:rgba(192,71,63,.14) !important }
+.by-h-spot-rise:hover { background:rgba(200,240,104,.46) !important }
+/* Card washes ease like everything else on the screen, and a hovered funnel stage
+   answers the pointer alone -- the card behind it stays white. */
+.by-h-tint, .by-h-ink, .by-h-alert, .by-h-spot-fall, .by-h-spot-rise { transition:background 160ms ease, border-color 160ms ease }
+.by-h-tint:has(.by-seg:hover) { background:#fff !important }

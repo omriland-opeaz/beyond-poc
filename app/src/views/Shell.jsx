@@ -82,6 +82,13 @@ export default function Shell({ v }) {
           ) : (
             <div style={S("font-size:12px;font-weight:600;color:#14170F")}>{v.crumb}</div>
           )}
+          {v.isSpace && (
+            <div style={S("margin-left:auto;display:flex;align-items:center;gap:6px")}>
+              {v.arrangeTabs.map(t => (
+                <button key={t.key} onClick={t.pick} aria-pressed={t.cur} className="by-h-ink" style={S(`padding:5px 12px;border-radius:100px;border:1px solid ${t.border};background:${t.bg};font-size:10.5px;font-weight:${t.w};color:${t.fg};white-space:nowrap`)}>{t.label}</button>
+              ))}
+            </div>
+          )}
         </div>
 
         <div style={S("flex:1;overflow:auto;position:relative")}>

@@ -1,7 +1,24 @@
+import { useId } from "react";
 import { S } from "../css.js";
 
 /* Two sizes of the same six chart types: 170px under an answer, 82px on a cockpit
    card. The cockpit version is built from spans because it lives inside a button. */
+
+/* The same points as the polyline, read as a curve: Catmull-Rom through them,
+   emitted as cubic beziers. The card-size area uses it for both stroke and fill. */
+export function smooth(pts) {
+  const p = pts.split(" ").map(s => s.split(",").map(Number));
+  if (p.length < 2) return { line: "", fill: "" };
+  let d = `M${p[0][0]},${p[0][1]}`;
+  for (let i = 0; i < p.length - 1; i++) {
+    const p0 = p[i - 1] || p[i], p1 = p[i], p2 = p[i + 1], p3 = p[i + 2] || p2;
+    const c1x = p1[0] + (p2[0] - p0[0]) / 6, c1y = p1[1] + (p2[1] - p0[1]) / 6;
+    const c2x = p2[0] - (p3[0] - p1[0]) / 6, c2y = p2[1] - (p3[1] - p1[1]) / 6;
+    d += ` C${c1x.toFixed(2)},${c1y.toFixed(2)} ${c2x.toFixed(2)},${c2y.toFixed(2)} ${p2[0]},${p2[1]}`;
+  }
+  const last = p[p.length - 1];
+  return { line: d, fill: `${d} L${last[0]},44 L${p[0][0]},44 Z` };
+}
 
 export function AnswerChart({ chart: c, title }) {
   if (c.isBars) return (
@@ -106,15 +123,26 @@ export function AnswerChart({ chart: c, title }) {
   return null;
 }
 
-export function CardChart({ chart: c, title, height = 82 }) {
+/* `compact` is the tile size: the ranked-row charts (hbars, dots) are laid out from
+   fixed row heights rather than a box height, so they cannot be squeezed by `height`
+   the way the SVG charts can. Compact trades type size for rows that all fit.
+   `legend` drops the donut's five-row key where the tile only has room for the ring. */
+export function CardChart({ chart: c, title, height = 82, compact = false, legend = true, axis = true }) {
+  const gid = "g" + useId().replace(/[^a-zA-Z0-9_-]/g, "");
+  const row = compact
+    ? { gap: 4, cols: "64px 1fr 30px", inner: 7, font: 9, bar: 7, dot: 7 }
+    : { gap: 6, cols: "68px 1fr 36px", inner: 9, font: 10, bar: 9, dot: 9 };
+
   if (c.isBars) return (
     <>
       <svg viewBox="0 0 100 46" preserveAspectRatio="none" role="img" aria-label={title} style={S(`display:block;width:100%;height:${height}px`)}>
         {c.bars.map((b, i) => <rect key={i} x={b.x} y={b.y} width={b.w} height={b.h} fill={b.c}></rect>)}
       </svg>
-      <span style={S("display:flex;justify-content:space-between;margin-top:5px")}>
-        {c.axis.map((a, i) => <span key={i} style={S("font-size:8.5px;color:#6B6B61")}>{a.t}</span>)}
-      </span>
+      {axis && (
+        <span style={S("display:flex;justify-content:space-between;margin-top:5px")}>
+          {c.axis.map((a, i) => <span key={i} style={S("font-size:8.5px;color:#6B6B61")}>{a.t}</span>)}
+        </span>
+      )}
     </>
   );
 
@@ -125,15 +153,17 @@ export function CardChart({ chart: c, title, height = 82 }) {
           {c.ring.map((r, i) => <circle key={i} cx="20" cy="20" r="16" fill="none" stroke={r.c} strokeWidth="7" strokeDasharray={r.dash} strokeDashoffset={r.off}></circle>)}
         </g>
       </svg>
-      <span style={S("display:flex;flex-direction:column;gap:5px;flex:1;min-width:0")}>
-        {c.legend.map((l, i) => (
-          <span key={i} style={S("display:flex;align-items:center;gap:7px;font-size:10.5px;color:#6B6B61")}>
-            <span style={S(`width:7px;height:7px;border-radius:2px;background:${l.c};flex-shrink:0`)}></span>
-            <span style={S("overflow:hidden;text-overflow:ellipsis;white-space:nowrap")}>{l.t}</span>
-            <span style={S("margin-left:auto;font-weight:700;color:#14170F;font-variant-numeric:tabular-nums")}>{l.v}</span>
-          </span>
-        ))}
-      </span>
+      {legend && (
+        <span style={S("display:flex;flex-direction:column;gap:5px;flex:1;min-width:0")}>
+          {c.legend.map((l, i) => (
+            <span key={i} style={S("display:flex;align-items:center;gap:7px;font-size:10.5px;color:#6B6B61")}>
+              <span style={S(`width:7px;height:7px;border-radius:2px;background:${l.c};flex-shrink:0`)}></span>
+              <span style={S("overflow:hidden;text-overflow:ellipsis;white-space:nowrap")}>{l.t}</span>
+              <span style={S("margin-left:auto;font-weight:700;color:#14170F;font-variant-numeric:tabular-nums")}>{l.v}</span>
+            </span>
+          ))}
+        </span>
+      )}
     </span>
   );
 
@@ -142,48 +172,61 @@ export function CardChart({ chart: c, title, height = 82 }) {
       <svg viewBox="0 0 100 46" preserveAspectRatio="none" role="img" aria-label={title} style={S(`display:block;width:100%;height:${height}px`)}>
         <polyline points={c.pts} fill="none" stroke={c.stroke} strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" vectorEffect="non-scaling-stroke"></polyline>
       </svg>
-      <span style={S("display:flex;justify-content:space-between;margin-top:5px")}>
-        {c.axis.map((a, i) => <span key={i} style={S("font-size:8.5px;color:#6B6B61")}>{a.t}</span>)}
-      </span>
+      {axis && (
+        <span style={S("display:flex;justify-content:space-between;margin-top:5px")}>
+          {c.axis.map((a, i) => <span key={i} style={S("font-size:8.5px;color:#6B6B61")}>{a.t}</span>)}
+        </span>
+      )}
     </>
   );
 
-  if (c.isArea) return (
+  if (c.isArea) {
+    const sm = smooth(c.pts);
+    return (
     <>
       <svg viewBox="0 0 100 46" preserveAspectRatio="none" role="img" aria-label={title} style={S(`display:block;width:100%;height:${height}px`)}>
-        <path d={c.fillD} fill={c.fill}></path>
-        <polyline points={c.pts} fill="none" stroke={c.stroke} strokeWidth="2" strokeLinejoin="round" vectorEffect="non-scaling-stroke"></polyline>
+        <defs>
+          <linearGradient id={gid} x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stopColor={c.stroke} stopOpacity=".38"></stop>
+            <stop offset="1" stopColor={c.stroke} stopOpacity="0"></stop>
+          </linearGradient>
+        </defs>
+        <path d={sm.fill} fill={`url(#${gid})`}></path>
+        <path d={sm.line} fill="none" stroke={c.stroke} strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" vectorEffect="non-scaling-stroke"></path>
       </svg>
-      <span style={S("display:flex;justify-content:space-between;margin-top:5px")}>
-        {c.axis.map((a, i) => <span key={i} style={S("font-size:8.5px;color:#6B6B61")}>{a.t}</span>)}
-      </span>
+      {axis && (
+        <span style={S("display:flex;justify-content:space-between;margin-top:5px")}>
+          {c.axis.map((a, i) => <span key={i} style={S("font-size:8.5px;color:#6B6B61")}>{a.t}</span>)}
+        </span>
+      )}
     </>
   );
+  }
 
   if (c.isHbars) return (
-    <span style={S("display:flex;flex-direction:column;gap:6px")}>
+    <span style={S(`display:flex;flex-direction:column;gap:${row.gap}px`)}>
       {c.rows.map((r, i) => (
-        <span key={i} style={S("display:grid;grid-template-columns:68px 1fr 36px;gap:9px;align-items:center")}>
-          <span style={S("font-size:10px;color:#6B6B61;overflow:hidden;text-overflow:ellipsis;white-space:nowrap")}>{r.name}</span>
-          <span style={S("position:relative;display:block;height:9px;background:#EFEFE4;border-radius:2px")}>
+        <span key={i} style={S(`display:grid;grid-template-columns:${row.cols};gap:${row.inner}px;align-items:center;line-height:1.15`)}>
+          <span style={S(`font-size:${row.font}px;color:#6B6B61;overflow:hidden;text-overflow:ellipsis;white-space:nowrap`)}>{r.name}</span>
+          <span style={S(`position:relative;display:block;height:${row.bar}px;background:#EFEFE4;border-radius:2px`)}>
             <span style={S(`position:absolute;top:0;bottom:0;left:${r.left};width:${r.w};background:${r.color};border-radius:2px`)}></span>
           </span>
-          <span style={S(`font-size:10px;font-weight:700;text-align:right;font-variant-numeric:tabular-nums;color:${r.color}`)}>{r.v}</span>
+          <span style={S(`font-size:${row.font}px;font-weight:700;text-align:right;font-variant-numeric:tabular-nums;color:${r.color}`)}>{r.v}</span>
         </span>
       ))}
     </span>
   );
 
   if (c.isDots) return (
-    <span style={S("display:flex;flex-direction:column;gap:6px")}>
+    <span style={S(`display:flex;flex-direction:column;gap:${row.gap}px`)}>
       {c.rows.map((r, i) => (
-        <span key={i} style={S("display:grid;grid-template-columns:68px 1fr 36px;gap:9px;align-items:center")}>
-          <span style={S("font-size:10px;color:#6B6B61;overflow:hidden;text-overflow:ellipsis;white-space:nowrap")}>{r.name}</span>
-          <span style={S("position:relative;display:block;height:9px")}>
-            <span style={S("position:absolute;left:0;right:0;top:4px;height:1px;background:#EFEFE4")}></span>
-            <span style={S(`position:absolute;top:0;left:${r.left};width:9px;height:9px;border-radius:50%;background:${r.color};margin-left:-4px`)}></span>
+        <span key={i} style={S(`display:grid;grid-template-columns:${row.cols};gap:${row.inner}px;align-items:center;line-height:1.15`)}>
+          <span style={S(`font-size:${row.font}px;color:#6B6B61;overflow:hidden;text-overflow:ellipsis;white-space:nowrap`)}>{r.name}</span>
+          <span style={S(`position:relative;display:block;height:${row.dot}px`)}>
+            <span style={S(`position:absolute;left:0;right:0;top:${(row.dot - 1) / 2}px;height:1px;background:#EFEFE4`)}></span>
+            <span style={S(`position:absolute;top:0;left:${r.left};width:${row.dot}px;height:${row.dot}px;border-radius:50%;background:${r.color};margin-left:${-row.dot / 2}px`)}></span>
           </span>
-          <span style={S(`font-size:10px;font-weight:700;text-align:right;font-variant-numeric:tabular-nums;color:${r.color}`)}>{r.v}</span>
+          <span style={S(`font-size:${row.font}px;font-weight:700;text-align:right;font-variant-numeric:tabular-nums;color:${r.color}`)}>{r.v}</span>
         </span>
       ))}
     </span>
