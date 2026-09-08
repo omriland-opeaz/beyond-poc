@@ -4,7 +4,8 @@ import BeyondPlatform from "./BeyondPlatform.jsx";
 
 /* The prototype exposed startView / startStep / startTab / methodNotes / showTrace
    as design-canvas props. Here they read off the query string, so every screen the
-   prototype could open on stays reachable: ?view=intro, ?view=settings&tab=digest … */
+   prototype could open on stays reachable: ?view=home, ?view=intro, ?view=settings&tab=digest …
+   The app lands on My space. */
 const q = new URLSearchParams(window.location.search);
 const one = (name, allowed, fallback) => {
   const val = q.get(name);
@@ -12,7 +13,7 @@ const one = (name, allowed, fallback) => {
 };
 
 const props = {
-  startView: one("view", ["home", "chat", "space", "cockpit", "spaces", "settings", "intro"], "home"),
+  startView: one("view", ["home", "chat", "space", "cockpit", "spaces", "settings", "intro"], "space"),
   startStep: one("step", ["0", "1", "2"], "0"),
   startTab: one("tab", ["connect", "digest", "memory"], "connect"),
   methodNotes: q.get("methodNotes") !== "false",
